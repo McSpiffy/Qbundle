@@ -1,4 +1,4 @@
-﻿Public Class frmSetrewardassignment
+Public Class frmSetrewardassignment
     Private Sub btnAccounts_Click(sender As Object, e As EventArgs) Handles btnAccounts.Click
         Try
             Me.cmlAccounts.Show(Me.btnAccounts, Me.btnAccounts.PointToClient(Cursor.Position))
@@ -174,9 +174,9 @@
             Dim result As String = http.PostUrl(Q.AppManager.AppStore.Wallets(cmbWallet.SelectedIndex).Address & "/burst", postData)
             If result.Length > 0 Then
                 If result.Contains("error") Then
-                    MsgBox("Rewardassignment did not succeed. Make sure the wallet you are using works and that you atleast have the fee amount in your account.", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "Error :(")
+                    MsgBox("Reward Assignment did not succeed. Make sure the wallet you are using works and that you at least have the fee amount in your account. Further details: " & vbCrLf & vbCrLf & result, MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "Error :(")
                 Else
-                    MsgBox("Rewardassignment has been set.", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "All done.")
+                    MsgBox("Reward Assignment has been set.", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "All done.")
                 End If
             Else
                 MsgBox("Wallet seem to be offline. Try another wallet.", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "No connection")
