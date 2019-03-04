@@ -1,63 +1,117 @@
-<?xml version="1.0" encoding="utf-8"?>
 <UpdateObject xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema">
   <Apps>
     <AppObject>
       <Name>Launcher</Name>
-      <UpgradeUrl>Launcher/Qb1.9Upgrade.zip</UpgradeUrl>
-      <FullUrl>Launcher/Qb1.9Upgrade.zip</FullUrl>
-      <RemoteVersion>1.9</RemoteVersion>
-      <UpdateInfo>V 1.9</UpdateInfo>
+      <DisplayName>Qbundle</DisplayName>
+      <UpgradeUrl>Launcher/Qb2.5.0Upgrade.zip</UpgradeUrl>
+      <FullUrl>Launcher/Qb2.5.0Upgrade.zip</FullUrl>
+      <RemoteVersion>2.5.0</RemoteVersion>
+      <UpdateInfo>V 2.5.0</UpdateInfo>
+      <VersionPath/>
+      <ProcessName/>
+      <ExePath/>
     </AppObject>
     <AppObject>
       <Name>BRS</Name>
-      <UpgradeUrl>NRS/burstcoin1.3.6cg.zip</UpgradeUrl>
-      <FullUrl>NRS/burstcoin1.3.6cg.zip</FullUrl>
-      <RemoteVersion>1.3.6</RemoteVersion>
-      <UpdateInfo>V 1.3.6</UpdateInfo>
+      <DisplayName>BRS - Core Wallet</DisplayName>
+      <UpgradeUrl>BRS/BRS2.2.7.zip</UpgradeUrl>
+      <FullUrl>BRS/BRS2.2.7.zip</FullUrl>
+      <RemoteVersion>2.2.7</RemoteVersion>
+      <UpdateInfo>2.2.7</UpdateInfo>
+      <VersionPath>conf\version</VersionPath>
+      <ProcessName/>
+      <ExePath/>
     </AppObject>
     <AppObject>
       <Name>JavaPortable</Name>
+      <DisplayName>Portable Java</DisplayName>
       <UpgradeUrl>Java/Java1.8.0_152.zip</UpgradeUrl>
       <FullUrl>Java/Java1.8.0_152.zip</FullUrl>
       <RemoteVersion>1.8.0_152</RemoteVersion>
       <UpdateInfo>V 1.8.0_152</UpdateInfo>
+      <VersionPath>Java\release</VersionPath>
+      <ProcessName/>
+      <ExePath/>
     </AppObject>
     <AppObject>
       <Name>MariaPortable</Name>
+      <DisplayName>Portable MariaDB</DisplayName>
       <UpgradeUrl>MariaDB/MariaDb_10.1.29_upg.zip</UpgradeUrl>
       <FullUrl>MariaDB/MariaDb_10.1.29-full.zip</FullUrl>
       <RemoteVersion>10.1.29</RemoteVersion>
       <UpdateInfo>V 10.1.29</UpdateInfo>
+      <VersionPath>MariaDb\release</VersionPath>
+      <ProcessName/>
+      <ExePath/>
     </AppObject>
     <AppObject>
       <Name>Xplotter</Name>
-      <UpgradeUrl>plotter/XPlotter.v1.0.zip</UpgradeUrl>
-      <FullUrl>plotter/XPlotter.v1.0.zip</FullUrl>
-      <RemoteVersion>1.0</RemoteVersion>
-      <UpdateInfo>V 1.0</UpdateInfo>
+      <DisplayName>Xplotter by JonnyFFM</DisplayName>
+      <UpgradeUrl>plotter/XPlotter_v1.30.zip</UpgradeUrl>
+      <FullUrl>plotter/XPlotter_v1.30.zip</FullUrl>
+      <RemoteVersion>1.30</RemoteVersion>
+      <UpdateInfo>V 1.30</UpdateInfo>
+      <VersionPath>Xplotter\release</VersionPath>
+      <ProcessName/>
+      <ExePath/>
     </AppObject>
     <AppObject>
       <Name>BlagoMiner</Name>
-      <UpgradeUrl>miner/BlagoMiner_1.170820.zip</UpgradeUrl>
-      <FullUrl>miner/BlagoMiner_1.170820.zip</FullUrl>
-      <RemoteVersion>1.170820</RemoteVersion>
-      <UpdateInfo>V 1.170820</UpdateInfo>
+      <DisplayName>Blago's Miner</DisplayName>
+      <UpgradeUrl>miner/BlagoMiner_1.170977.zip</UpgradeUrl>
+      <FullUrl>miner/BlagoMiner_1.170977.zip</FullUrl>
+      <RemoteVersion>1.170977</RemoteVersion>
+      <UpdateInfo>V 1.170977</UpdateInfo>
+      <VersionPath>BlagoMiner\version</VersionPath>
+      <ProcessName>
+        BlagoMiner_avx2.exe|BlagoMiner_avx.exe|BlagoMiner_sse.exe
+      </ProcessName>
+      <ExePath/>
+    </AppObject>
+    <AppObject>
+      <Name>PlotConverter</Name>
+      <DisplayName>Plot converter</DisplayName>
+      <UpgradeUrl>PlotConverter/PlotConverter_v2.4.zip</UpgradeUrl>
+      <FullUrl>PlotConverter/PlotConverter_v2.4.zip</FullUrl>
+      <RemoteVersion>2.4</RemoteVersion>
+      <UpdateInfo>V 2.4</UpdateInfo>
+      <VersionPath>PlotConverter\version</VersionPath>
+      <ProcessName/>
+      <ExePath/>
+    </AppObject>
+    <AppObject>
+      <Name>Paperburst</Name>
+      <DisplayName>Paperburst</DisplayName>
+      <UpgradeUrl>paperburst/PaperBurst_v1.0.zip</UpgradeUrl>
+      <FullUrl>paperburst/PaperBurst_v1.0.zip</FullUrl>
+      <RemoteVersion>1.0</RemoteVersion>
+      <UpdateInfo>V 1.0</UpdateInfo>
+      <VersionPath>PaperBurst\version</VersionPath>
+      <ProcessName>Paperburst.exe</ProcessName>
+      <ExePath/>
     </AppObject>
   </Apps>
   <Pools>
     <PoolObject>
+      <Name>BMF50 Marketing Pool</Name>
+      <Address>bmf50pool.burstcoin.ro</Address>
+      <Port>8080</Port>
+      <BurstAddress>BURST-S8Z2-TQ7W-ECVP-FM4FP</BurstAddress>
+      <DeadLine>16711252963</DeadLine>
+    </PoolObject>
+    <PoolObject>
       <Name>CryptoGuru Pool 50/50</Name>
-      <Address>burst.cryptoguru.org</Address>
+      <Address>50-50-pool.burst.cryptoguru.org</Address>
       <Port>8124</Port>
       <BurstAddress>BURST-8KLL-PBYV-6DBC-AM942</BurstAddress>
-      <DeadLine>80000000</DeadLine>
+      <DeadLine>31536000</DeadLine>
     </PoolObject>
     <PoolObject>
       <Name>CryptoGuru Pool 0-100</Name>
       <Address>0-100-pool.burst.cryptoguru.org</Address>
       <Port>8124</Port>
       <BurstAddress>BURST-HKML-NRG6-VBRA-2F8PS</BurstAddress>
-      <DeadLine>80000000</DeadLine>
+      <DeadLine>31536000</DeadLine>
     </PoolObject>
     <PoolObject>
       <Name>Fastpool.info</Name>
@@ -67,18 +121,18 @@
       <DeadLine>80000000</DeadLine>
     </PoolObject>
     <PoolObject>
-      <Name>Dobropool aka 100PB online</Name>
-      <Address>100pb.online</Address>
-      <Port>8124</Port>
-      <BurstAddress>BURST-TNHA-2CVB-UQQ8-A9XCQ</BurstAddress>
-      <DeadLine>604800</DeadLine>
-    </PoolObject>
-    <PoolObject>
       <Name>pool poolofd32th</Name>
       <Address>pool.poolofd32th.club</Address>
       <Port>8124</Port>
       <BurstAddress>BURST-GATX-U4KB-7AWU-H3N8S</BurstAddress>
       <DeadLine>2592000</DeadLine>
+    </PoolObject>
+    <PoolObject>
+      <Name>VLP Pool 0/100</Name>
+      <Address>voiplanparty.com</Address>
+      <Port>8124</Port>
+      <BurstAddress>BURST-MBCG-4ERH-FVH5-2GTXB</BurstAddress>
+      <DeadLine>31536000</DeadLine>
     </PoolObject>
     <PoolObject>
       <Name>xen poolofd32th</Name>
@@ -88,25 +142,11 @@
       <DeadLine>2592000</DeadLine>
     </PoolObject>
     <PoolObject>
-      <Name>falconburstpool.xyz</Name>
-      <Address>falconburstpool.xyz</Address>
-      <Port>8080</Port>
-      <BurstAddress>BURST-UTS4-HPFZ-XJHL-B9BB2</BurstAddress>
-      <DeadLine>43200000</DeadLine>
-    </PoolObject>
-    <PoolObject>
-      <Name>pool.burstpay.net</Name>
-      <Address>pool.burstpay.net</Address>
-      <Port>8124</Port>
-      <BurstAddress>BURST-E4ZX-KCBL-5F8A-CPU6G</BurstAddress>
-      <DeadLine>2592000</DeadLine>
-    </PoolObject>
-    <PoolObject>
       <Name>0-100 burst-team us</Name>
       <Address>0-100.burst-team.us</Address>
       <Port>8080</Port>
       <BurstAddress>BURST-YBW4-A3D3-LVUF-F9WVJ</BurstAddress>
-      <DeadLine>2592000</DeadLine>
+      <DeadLine>10368000</DeadLine>
     </PoolObject>
     <PoolObject>
       <Name>pool burst-team us</Name>
@@ -121,13 +161,6 @@
       <Port>8080</Port>
       <BurstAddress>BURST-YXZW-JH7M-QKR9-9PKBN</BurstAddress>
       <DeadLine>63072000</DeadLine>
-    </PoolObject>
-    <PoolObject>
-      <Name>burst.btfg.space</Name>
-      <Address>burst.btfg.space</Address>
-      <Port>8124</Port>
-      <BurstAddress>BURST-6YBP-TDPA-27KD-9MQVX</BurstAddress>
-      <DeadLine>169344000</DeadLine>
     </PoolObject>
     <PoolObject>
       <Name>pool.burstcoin.ro</Name>
@@ -148,7 +181,35 @@
       <Address>pool.burstmining.club</Address>
       <Port>8124</Port>
       <BurstAddress>BURST-RNMB-9FJW-3BJW-F3Z3M</BurstAddress>
-      <DeadLine>129600</DeadLine>
+      <DeadLine>86400</DeadLine>
+    </PoolObject>
+    <PoolObject>
+      <Name>BurstPool Cloud</Name>
+      <Address>burstpool.cloud</Address>
+      <Port>8124</Port>
+      <BurstAddress>BURST-DYDN-98Z8-YJMY-E2KD4</BurstAddress>
+      <DeadLine>63072000</DeadLine>
+    </PoolObject>
+    <PoolObject>
+      <Name>0-100pool.burstcoin.ro</Name>
+      <Address>0-100pool.burstcoin.ro</Address>
+      <Port>8880</Port>
+      <BurstAddress>BURST-NEWP-R7WE-KUH3-3336G</BurstAddress>
+      <DeadLine>31536000</DeadLine>
+    </PoolObject>
+    <PoolObject>
+      <Name>burstcoin.ml</Name>
+      <Address>pool.burstcoin.ml</Address>
+      <Port>8080</Port>
+      <BurstAddress>BURST-85W6-5P5V-7VLZ-GZJEF</BurstAddress>
+      <DeadLine>31536000</DeadLine>
+    </PoolObject>
+    <PoolObject>
+      <Name>moverspool.ml</Name>
+      <Address>moverspool.ml</Address>
+      <Port>8080</Port>
+      <BurstAddress>BURST-2FMM-EMKQ-9WQR-8DB52</BurstAddress>
+      <DeadLine>31104000</DeadLine>
     </PoolObject>
   </Pools>
   <Wallets>
@@ -181,6 +242,6 @@
     </WalletObject>
   </Wallets>
   <Repositories>
-    <string>http://files.getburst.net/</string>
+    <string>https://download.cryptoguru.org/burst/qbundle/</string>
   </Repositories>
 </UpdateObject>
