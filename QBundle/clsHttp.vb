@@ -17,6 +17,8 @@ Public Class clsHttp
         stbuffer = ""
         Errmsg = ""
         Try
+            ServicePointManager.Expect100Continue = true
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
             Http = CType(WebRequest.Create(url), HttpWebRequest)
             Http.ReadWriteTimeout = 60 * 1000 'give it a minute
             Http.KeepAlive = False

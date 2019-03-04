@@ -125,6 +125,8 @@ Public Class frmDownloadManager
             Dim ContentLength As Long = 0
             Dim percent As Integer = 0
 
+            ServicePointManager.Expect100Continue = true
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
             Dim http As WebRequest = WebRequest.Create(Url)
             Dim WebResponse As WebResponse = http.GetResponse
             ContentLength = WebResponse.ContentLength

@@ -55,7 +55,7 @@ Public Class clsAppManager
             Http = Nothing
         End Try
 
-        'save info if sucessfull. if not load previous config
+        'save info if successful. if not load previous config
         If data.Length > 0 Then
             Try
                 IO.File.WriteAllText(QGlobal.BaseDir & AppXML, data)
@@ -201,7 +201,7 @@ Public Class clsAppManager
         If AppName = "chromium" Then
             Dim s As New frmDownloadManager
             s.DownloadName = "Chromium Pocket Browser"
-            s.Url = QGlobal.UpdateMirrors(0) & "chromium/chromium_1.0.zip"
+            s.Url = QGlobal.UpdateMirrors(0) & "chromium_1.0.zip"
             s.Unzip = True
 
             Dim res As DialogResult

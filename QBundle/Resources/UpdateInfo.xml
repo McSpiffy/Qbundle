@@ -14,10 +14,10 @@
     <AppObject>
       <Name>BRS</Name>
       <DisplayName>BRS - Core Wallet</DisplayName>
-      <UpgradeUrl>BRS2.2.7.zip</UpgradeUrl>
-      <FullUrl>BRS2.2.7.zip</FullUrl>
-      <RemoteVersion>2.2.7</RemoteVersion>
-      <UpdateInfo>2.2.7</UpdateInfo>
+      <UpgradeUrl>BRS2.3.0.zip</UpgradeUrl>
+      <FullUrl>BRS2.3.0.zip</FullUrl>
+      <RemoteVersion>2.3.0</RemoteVersion>
+      <UpdateInfo>2.3.0</UpdateInfo>
       <VersionPath>conf\version</VersionPath>
       <ProcessName/>
       <ExePath/>
