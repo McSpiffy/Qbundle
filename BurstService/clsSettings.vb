@@ -235,7 +235,7 @@
         _ListenIf = "127.0.0.1;8125"
         _ListenPeer = "0.0.0.0;8123"
         _ConnectFrom = "127.0.0.1"
-        _LaunchString = "-cp burst.jar;conf brs.Burst"
+        _LaunchString = "-cp conf -jar burst.jar --headless"
 
         _DbType = 0
         _DbServer = "127.0.0.1:3306"

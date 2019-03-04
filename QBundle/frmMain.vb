@@ -319,8 +319,8 @@ Public Class frmMain
     'buttons
     Private Sub btnStartStop_Click(sender As Object, e As EventArgs) Handles btnStartStop.Click
         StartStop()
-
     End Sub
+
     Private Sub StartStop()
         If Running Then
             StopWallet()
@@ -749,7 +749,7 @@ Public Class frmMain
         Select Case Q.settings.DbType
             Case QGlobal.DbType.FireBird
                 lblDbName.Text = Generic.GetDbNameFromType(QGlobal.DbType.FireBird)
-                LblDbStatus.Text = "Embeded"
+                LblDbStatus.Text = "Embedded"
                 LblDbStatus.ForeColor = Color.DarkGreen
             Case QGlobal.DbType.pMariaDB
                 lblDbName.Text = Generic.GetDbNameFromType(QGlobal.DbType.pMariaDB)
@@ -761,7 +761,7 @@ Public Class frmMain
                 LblDbStatus.ForeColor = Color.DarkOrange
             Case QGlobal.DbType.H2
                 lblDbName.Text = Generic.GetDbNameFromType(QGlobal.DbType.H2)
-                LblDbStatus.Text = "Embeded"
+                LblDbStatus.Text = "Embedded"
                 LblDbStatus.ForeColor = Color.DarkGreen
         End Select
 

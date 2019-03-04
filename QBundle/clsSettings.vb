@@ -498,7 +498,7 @@
         _DbPass = ""
         _Currency = "USD"
         _JavaType = QGlobal.AppNames.JavaInstalled
-        _LaunchString = "-cp burst.jar;conf brs.Burst"
+        _LaunchString = "-cp conf -jar burst.jar --headless"
 
         _FirstRun = True
         _CheckForUpdates = False

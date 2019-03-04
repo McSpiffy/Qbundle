@@ -107,7 +107,7 @@ Public Class clsProcessHandler
 
 
         nrs.StartInfo.WorkingDirectory = AppDir
-        nrs.StartInfo.Arguments = "-cp burst.jar;conf brs.Burst"
+        nrs.StartInfo.Arguments = "-cp conf -jar burst.jar --headless"
         nrs.StartInfo.UseShellExecute = False
 
         '   nrs.StartInfo.RedirectStandardError = True

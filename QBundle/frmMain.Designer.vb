@@ -63,6 +63,7 @@ Partial Class frmMain
         Me.MinerToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.SetRewardassignmentToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.VanityAddressGeneratorToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
+        Me.PaperburstToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.HelpToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.QbundleManualToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.ToolStripMenuItem5 = New System.Windows.Forms.ToolStripSeparator()
@@ -105,7 +106,6 @@ Partial Class frmMain
         Me.cmbSelectWallet = New System.Windows.Forms.ToolStripComboBox()
         Me.lblCoinMarket = New System.Windows.Forms.ToolStripLabel()
         Me.lblUpdateAvail2 = New System.Windows.Forms.ToolStripLabel()
-        Me.PaperburstToolStripMenuItem = New System.Windows.Forms.ToolStripMenuItem()
         Me.GroupBox1.SuspendLayout()
         Me.MenuStrip1.SuspendLayout()
         Me.StatusStrip1.SuspendLayout()
@@ -120,9 +120,11 @@ Partial Class frmMain
         Me.GroupBox1.Controls.Add(Me.Label3)
         Me.GroupBox1.Controls.Add(Me.LblDbStatus)
         Me.GroupBox1.Controls.Add(Me.lblDbName)
-        Me.GroupBox1.Location = New System.Drawing.Point(321, 4)
+        Me.GroupBox1.Location = New System.Drawing.Point(428, 5)
+        Me.GroupBox1.Margin = New System.Windows.Forms.Padding(4)
         Me.GroupBox1.Name = "GroupBox1"
-        Me.GroupBox1.Size = New System.Drawing.Size(159, 90)
+        Me.GroupBox1.Padding = New System.Windows.Forms.Padding(4)
+        Me.GroupBox1.Size = New System.Drawing.Size(212, 111)
         Me.GroupBox1.TabIndex = 0
         Me.GroupBox1.TabStop = False
         Me.GroupBox1.Text = "Wallet status"
@@ -130,9 +132,10 @@ Partial Class frmMain
         'lblGotoWallet
         '
         Me.lblGotoWallet.AutoSize = True
-        Me.lblGotoWallet.Location = New System.Drawing.Point(35, 61)
+        Me.lblGotoWallet.Location = New System.Drawing.Point(47, 75)
+        Me.lblGotoWallet.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblGotoWallet.Name = "lblGotoWallet"
-        Me.lblGotoWallet.Size = New System.Drawing.Size(91, 13)
+        Me.lblGotoWallet.Size = New System.Drawing.Size(120, 17)
         Me.lblGotoWallet.TabIndex = 4
         Me.lblGotoWallet.TabStop = True
         Me.lblGotoWallet.Text = "Click here to login"
@@ -143,9 +146,10 @@ Partial Class frmMain
         Me.lblNrsStatus.AutoSize = True
         Me.lblNrsStatus.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblNrsStatus.ForeColor = System.Drawing.Color.Red
-        Me.lblNrsStatus.Location = New System.Drawing.Point(79, 41)
+        Me.lblNrsStatus.Location = New System.Drawing.Point(105, 50)
+        Me.lblNrsStatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblNrsStatus.Name = "lblNrsStatus"
-        Me.lblNrsStatus.Size = New System.Drawing.Size(54, 13)
+        Me.lblNrsStatus.Size = New System.Drawing.Size(68, 17)
         Me.lblNrsStatus.TabIndex = 3
         Me.lblNrsStatus.Text = "Stopped"
         '
@@ -153,9 +157,10 @@ Partial Class frmMain
         '
         Me.Label3.AutoSize = True
         Me.Label3.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.Label3.Location = New System.Drawing.Point(17, 41)
+        Me.Label3.Location = New System.Drawing.Point(23, 50)
+        Me.Label3.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.Label3.Name = "Label3"
-        Me.Label3.Size = New System.Drawing.Size(40, 13)
+        Me.Label3.Size = New System.Drawing.Size(51, 17)
         Me.Label3.TabIndex = 2
         Me.Label3.Text = "Wallet:"
         '
@@ -164,27 +169,30 @@ Partial Class frmMain
         Me.LblDbStatus.AutoSize = True
         Me.LblDbStatus.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.LblDbStatus.ForeColor = System.Drawing.Color.Green
-        Me.LblDbStatus.Location = New System.Drawing.Point(79, 24)
+        Me.LblDbStatus.Location = New System.Drawing.Point(105, 30)
+        Me.LblDbStatus.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.LblDbStatus.Name = "LblDbStatus"
-        Me.LblDbStatus.Size = New System.Drawing.Size(59, 13)
+        Me.LblDbStatus.Size = New System.Drawing.Size(84, 17)
         Me.LblDbStatus.TabIndex = 1
-        Me.LblDbStatus.Text = "Embeded"
+        Me.LblDbStatus.Text = "Embedded"
         '
         'lblDbName
         '
         Me.lblDbName.AutoSize = True
         Me.lblDbName.Font = New System.Drawing.Font("Microsoft Sans Serif", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblDbName.Location = New System.Drawing.Point(17, 24)
+        Me.lblDbName.Location = New System.Drawing.Point(23, 30)
+        Me.lblDbName.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblDbName.Name = "lblDbName"
-        Me.lblDbName.Size = New System.Drawing.Size(44, 13)
+        Me.lblDbName.Size = New System.Drawing.Size(60, 17)
         Me.lblDbName.TabIndex = 0
         Me.lblDbName.Text = "Firebird:"
         '
         'btnStartStop
         '
-        Me.btnStartStop.Location = New System.Drawing.Point(42, 64)
+        Me.btnStartStop.Location = New System.Drawing.Point(56, 79)
+        Me.btnStartStop.Margin = New System.Windows.Forms.Padding(4)
         Me.btnStartStop.Name = "btnStartStop"
-        Me.btnStartStop.Size = New System.Drawing.Size(202, 30)
+        Me.btnStartStop.Size = New System.Drawing.Size(269, 37)
         Me.btnStartStop.TabIndex = 2
         Me.btnStartStop.Text = "Start Wallet"
         Me.btnStartStop.UseVisualStyleBackColor = True
@@ -192,10 +200,12 @@ Partial Class frmMain
         'MenuStrip1
         '
         Me.MenuStrip1.BackColor = System.Drawing.Color.White
+        Me.MenuStrip1.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.MenuStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.FileToolStripMenuItem1, Me.EditToolStripMenuItem, Me.AccountMangerToolStripMenuItem, Me.WalletToolStripMenuItem, Me.ToolsToolStripMenuItem, Me.ToolsToolStripMenuItem1, Me.HelpToolStripMenuItem, Me.AboutToolStripMenuItem2})
         Me.MenuStrip1.Location = New System.Drawing.Point(0, 0)
         Me.MenuStrip1.Name = "MenuStrip1"
-        Me.MenuStrip1.Size = New System.Drawing.Size(567, 24)
+        Me.MenuStrip1.Padding = New System.Windows.Forms.Padding(8, 2, 0, 2)
+        Me.MenuStrip1.Size = New System.Drawing.Size(756, 28)
         Me.MenuStrip1.TabIndex = 4
         Me.MenuStrip1.Text = "MenuStrip1"
         '
@@ -203,275 +213,281 @@ Partial Class frmMain
         '
         Me.FileToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.CheckForUpdatesToolStripMenuItem, Me.ModeToolStripMenuItem1, Me.ToolStripMenuItem2, Me.ExitToolStripMenuItem1})
         Me.FileToolStripMenuItem1.Name = "FileToolStripMenuItem1"
-        Me.FileToolStripMenuItem1.Size = New System.Drawing.Size(37, 20)
+        Me.FileToolStripMenuItem1.Size = New System.Drawing.Size(44, 24)
         Me.FileToolStripMenuItem1.Text = "File"
         '
         'CheckForUpdatesToolStripMenuItem
         '
         Me.CheckForUpdatesToolStripMenuItem.Name = "CheckForUpdatesToolStripMenuItem"
-        Me.CheckForUpdatesToolStripMenuItem.Size = New System.Drawing.Size(185, 22)
+        Me.CheckForUpdatesToolStripMenuItem.Size = New System.Drawing.Size(224, 26)
         Me.CheckForUpdatesToolStripMenuItem.Text = "Application Manager"
         '
         'ModeToolStripMenuItem1
         '
         Me.ModeToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.WalletModeToolStripMenuItem1, Me.LauncherModeToolStripMenuItem1})
         Me.ModeToolStripMenuItem1.Name = "ModeToolStripMenuItem1"
-        Me.ModeToolStripMenuItem1.Size = New System.Drawing.Size(170, 22)
+        Me.ModeToolStripMenuItem1.Size = New System.Drawing.Size(224, 26)
         Me.ModeToolStripMenuItem1.Text = "Mode"
         '
         'WalletModeToolStripMenuItem1
         '
         Me.WalletModeToolStripMenuItem1.Name = "WalletModeToolStripMenuItem1"
-        Me.WalletModeToolStripMenuItem1.Size = New System.Drawing.Size(157, 22)
+        Me.WalletModeToolStripMenuItem1.Size = New System.Drawing.Size(186, 26)
         Me.WalletModeToolStripMenuItem1.Text = "Wallet Mode"
         '
         'LauncherModeToolStripMenuItem1
         '
         Me.LauncherModeToolStripMenuItem1.Name = "LauncherModeToolStripMenuItem1"
-        Me.LauncherModeToolStripMenuItem1.Size = New System.Drawing.Size(157, 22)
+        Me.LauncherModeToolStripMenuItem1.Size = New System.Drawing.Size(186, 26)
         Me.LauncherModeToolStripMenuItem1.Text = "Launcher Mode"
         '
         'ToolStripMenuItem2
         '
         Me.ToolStripMenuItem2.Name = "ToolStripMenuItem2"
-        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(167, 6)
+        Me.ToolStripMenuItem2.Size = New System.Drawing.Size(221, 6)
         '
         'ExitToolStripMenuItem1
         '
         Me.ExitToolStripMenuItem1.Name = "ExitToolStripMenuItem1"
-        Me.ExitToolStripMenuItem1.Size = New System.Drawing.Size(170, 22)
+        Me.ExitToolStripMenuItem1.Size = New System.Drawing.Size(224, 26)
         Me.ExitToolStripMenuItem1.Text = "Exit"
         '
         'EditToolStripMenuItem
         '
         Me.EditToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.SettingsToolStripMenuItem, Me.ConfigureWindowsFirewallToolStripMenuItem1, Me.ViewConsoleToolStripMenuItem})
         Me.EditToolStripMenuItem.Name = "EditToolStripMenuItem"
-        Me.EditToolStripMenuItem.Size = New System.Drawing.Size(39, 20)
+        Me.EditToolStripMenuItem.Size = New System.Drawing.Size(47, 24)
         Me.EditToolStripMenuItem.Text = "Edit"
         '
         'SettingsToolStripMenuItem
         '
         Me.SettingsToolStripMenuItem.Name = "SettingsToolStripMenuItem"
-        Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(220, 22)
+        Me.SettingsToolStripMenuItem.Size = New System.Drawing.Size(267, 26)
         Me.SettingsToolStripMenuItem.Text = "Settings"
         '
         'ConfigureWindowsFirewallToolStripMenuItem1
         '
         Me.ConfigureWindowsFirewallToolStripMenuItem1.Name = "ConfigureWindowsFirewallToolStripMenuItem1"
-        Me.ConfigureWindowsFirewallToolStripMenuItem1.Size = New System.Drawing.Size(220, 22)
+        Me.ConfigureWindowsFirewallToolStripMenuItem1.Size = New System.Drawing.Size(267, 26)
         Me.ConfigureWindowsFirewallToolStripMenuItem1.Text = "Configure Windows firewall"
         '
         'ViewConsoleToolStripMenuItem
         '
         Me.ViewConsoleToolStripMenuItem.Name = "ViewConsoleToolStripMenuItem"
-        Me.ViewConsoleToolStripMenuItem.Size = New System.Drawing.Size(220, 22)
+        Me.ViewConsoleToolStripMenuItem.Size = New System.Drawing.Size(267, 26)
         Me.ViewConsoleToolStripMenuItem.Text = "View Console"
         '
         'AccountMangerToolStripMenuItem
         '
         Me.AccountMangerToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.AddAccountToolStripMenuItem, Me.mnuLoginAccount})
         Me.AccountMangerToolStripMenuItem.Name = "AccountMangerToolStripMenuItem"
-        Me.AccountMangerToolStripMenuItem.Size = New System.Drawing.Size(114, 20)
+        Me.AccountMangerToolStripMenuItem.Size = New System.Drawing.Size(138, 24)
         Me.AccountMangerToolStripMenuItem.Text = "Account Manager"
         '
         'AddAccountToolStripMenuItem
         '
         Me.AddAccountToolStripMenuItem.Name = "AddAccountToolStripMenuItem"
-        Me.AddAccountToolStripMenuItem.Size = New System.Drawing.Size(152, 22)
+        Me.AddAccountToolStripMenuItem.Size = New System.Drawing.Size(179, 26)
         Me.AddAccountToolStripMenuItem.Text = "Manager"
         '
         'mnuLoginAccount
         '
         Me.mnuLoginAccount.Name = "mnuLoginAccount"
-        Me.mnuLoginAccount.Size = New System.Drawing.Size(152, 22)
+        Me.mnuLoginAccount.Size = New System.Drawing.Size(179, 26)
         Me.mnuLoginAccount.Text = "Login Account"
         '
         'WalletToolStripMenuItem
         '
         Me.WalletToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.tsStartStop, Me.ToolStripMenuItem4, Me.AdvancedToolStripMenuItem})
         Me.WalletToolStripMenuItem.Name = "WalletToolStripMenuItem"
-        Me.WalletToolStripMenuItem.Size = New System.Drawing.Size(52, 20)
+        Me.WalletToolStripMenuItem.Size = New System.Drawing.Size(63, 24)
         Me.WalletToolStripMenuItem.Text = "Wallet"
         '
         'tsStartStop
         '
         Me.tsStartStop.Name = "tsStartStop"
-        Me.tsStartStop.Size = New System.Drawing.Size(134, 22)
+        Me.tsStartStop.Size = New System.Drawing.Size(216, 26)
         Me.tsStartStop.Text = "Start Wallet"
         '
         'ToolStripMenuItem4
         '
         Me.ToolStripMenuItem4.Name = "ToolStripMenuItem4"
-        Me.ToolStripMenuItem4.Size = New System.Drawing.Size(131, 6)
+        Me.ToolStripMenuItem4.Size = New System.Drawing.Size(213, 6)
         '
         'AdvancedToolStripMenuItem
         '
         Me.AdvancedToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.RollbackChainpopoffToolStripMenuItem})
         Me.AdvancedToolStripMenuItem.Name = "AdvancedToolStripMenuItem"
-        Me.AdvancedToolStripMenuItem.Size = New System.Drawing.Size(134, 22)
+        Me.AdvancedToolStripMenuItem.Size = New System.Drawing.Size(216, 26)
         Me.AdvancedToolStripMenuItem.Text = "Advanced"
         '
         'RollbackChainpopoffToolStripMenuItem
         '
         Me.RollbackChainpopoffToolStripMenuItem.Name = "RollbackChainpopoffToolStripMenuItem"
-        Me.RollbackChainpopoffToolStripMenuItem.Size = New System.Drawing.Size(198, 22)
+        Me.RollbackChainpopoffToolStripMenuItem.Size = New System.Drawing.Size(240, 26)
         Me.RollbackChainpopoffToolStripMenuItem.Text = "Rollback chain (popoff)"
         '
         'ToolsToolStripMenuItem
         '
         Me.ToolsToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ImportDatabaseToolStripMenuItem1, Me.ToolStripMenuItem3, Me.ChangeDatabaseToolStripMenuItem})
         Me.ToolsToolStripMenuItem.Name = "ToolsToolStripMenuItem"
-        Me.ToolsToolStripMenuItem.Size = New System.Drawing.Size(67, 20)
+        Me.ToolsToolStripMenuItem.Size = New System.Drawing.Size(84, 24)
         Me.ToolsToolStripMenuItem.Text = "Database"
         '
         'ImportDatabaseToolStripMenuItem1
         '
         Me.ImportDatabaseToolStripMenuItem1.Name = "ImportDatabaseToolStripMenuItem1"
-        Me.ImportDatabaseToolStripMenuItem1.Size = New System.Drawing.Size(166, 22)
+        Me.ImportDatabaseToolStripMenuItem1.Size = New System.Drawing.Size(201, 26)
         Me.ImportDatabaseToolStripMenuItem1.Text = "Bootstrap chain"
         '
         'ToolStripMenuItem3
         '
         Me.ToolStripMenuItem3.Name = "ToolStripMenuItem3"
-        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(163, 6)
+        Me.ToolStripMenuItem3.Size = New System.Drawing.Size(198, 6)
         '
         'ChangeDatabaseToolStripMenuItem
         '
         Me.ChangeDatabaseToolStripMenuItem.Name = "ChangeDatabaseToolStripMenuItem"
-        Me.ChangeDatabaseToolStripMenuItem.Size = New System.Drawing.Size(166, 22)
+        Me.ChangeDatabaseToolStripMenuItem.Size = New System.Drawing.Size(201, 26)
         Me.ChangeDatabaseToolStripMenuItem.Text = "Change Database"
         '
         'ToolsToolStripMenuItem1
         '
         Me.ToolsToolStripMenuItem1.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PlottingToolStripMenuItem, Me.MinerToolStripMenuItem, Me.SetRewardassignmentToolStripMenuItem, Me.VanityAddressGeneratorToolStripMenuItem, Me.PaperburstToolStripMenuItem})
         Me.ToolsToolStripMenuItem1.Name = "ToolsToolStripMenuItem1"
-        Me.ToolsToolStripMenuItem1.Size = New System.Drawing.Size(47, 20)
+        Me.ToolsToolStripMenuItem1.Size = New System.Drawing.Size(56, 24)
         Me.ToolsToolStripMenuItem1.Text = "Tools"
         '
         'PlottingToolStripMenuItem
         '
         Me.PlottingToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.PlotterToolStripMenuItem1, Me.DynamicPlottingToolStripMenuItem1, Me.PlotconverterToolStripMenuItem1})
         Me.PlottingToolStripMenuItem.Name = "PlottingToolStripMenuItem"
-        Me.PlottingToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
+        Me.PlottingToolStripMenuItem.Size = New System.Drawing.Size(250, 26)
         Me.PlottingToolStripMenuItem.Text = "Plotting"
         '
         'PlotterToolStripMenuItem1
         '
         Me.PlotterToolStripMenuItem1.Name = "PlotterToolStripMenuItem1"
-        Me.PlotterToolStripMenuItem1.Size = New System.Drawing.Size(166, 22)
+        Me.PlotterToolStripMenuItem1.Size = New System.Drawing.Size(199, 26)
         Me.PlotterToolStripMenuItem1.Text = "Plotter"
         '
         'DynamicPlottingToolStripMenuItem1
         '
         Me.DynamicPlottingToolStripMenuItem1.Name = "DynamicPlottingToolStripMenuItem1"
-        Me.DynamicPlottingToolStripMenuItem1.Size = New System.Drawing.Size(166, 22)
+        Me.DynamicPlottingToolStripMenuItem1.Size = New System.Drawing.Size(199, 26)
         Me.DynamicPlottingToolStripMenuItem1.Text = "Dynamic plotting"
         '
         'PlotconverterToolStripMenuItem1
         '
         Me.PlotconverterToolStripMenuItem1.Name = "PlotconverterToolStripMenuItem1"
-        Me.PlotconverterToolStripMenuItem1.Size = New System.Drawing.Size(166, 22)
+        Me.PlotconverterToolStripMenuItem1.Size = New System.Drawing.Size(199, 26)
         Me.PlotconverterToolStripMenuItem1.Text = "Plotconverter"
         '
         'MinerToolStripMenuItem
         '
         Me.MinerToolStripMenuItem.Name = "MinerToolStripMenuItem"
-        Me.MinerToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
+        Me.MinerToolStripMenuItem.Size = New System.Drawing.Size(250, 26)
         Me.MinerToolStripMenuItem.Text = "Miner"
         '
         'SetRewardassignmentToolStripMenuItem
         '
         Me.SetRewardassignmentToolStripMenuItem.Name = "SetRewardassignmentToolStripMenuItem"
-        Me.SetRewardassignmentToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
+        Me.SetRewardassignmentToolStripMenuItem.Size = New System.Drawing.Size(250, 26)
         Me.SetRewardassignmentToolStripMenuItem.Text = "Reward Recipient"
         '
         'VanityAddressGeneratorToolStripMenuItem
         '
         Me.VanityAddressGeneratorToolStripMenuItem.Name = "VanityAddressGeneratorToolStripMenuItem"
-        Me.VanityAddressGeneratorToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
+        Me.VanityAddressGeneratorToolStripMenuItem.Size = New System.Drawing.Size(250, 26)
         Me.VanityAddressGeneratorToolStripMenuItem.Text = "Vanity Address generator"
+        '
+        'PaperburstToolStripMenuItem
+        '
+        Me.PaperburstToolStripMenuItem.Name = "PaperburstToolStripMenuItem"
+        Me.PaperburstToolStripMenuItem.Size = New System.Drawing.Size(250, 26)
+        Me.PaperburstToolStripMenuItem.Text = "Paperburst"
         '
         'HelpToolStripMenuItem
         '
         Me.HelpToolStripMenuItem.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.QbundleManualToolStripMenuItem, Me.ToolStripMenuItem5, Me.BurstcoinorgToolStripMenuItem1, Me.BurstcoinistToolStripMenuItem1, Me.ToolStripMenuItem6, Me.BurstforumnetToolStripMenuItem, Me.GetburstnetToolStripMenuItem, Me.ToolStripMenuItem7, Me.RedditBurstcoinToolStripMenuItem, Me.BurstWikiToolStripMenuItem})
         Me.HelpToolStripMenuItem.Name = "HelpToolStripMenuItem"
-        Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(44, 20)
+        Me.HelpToolStripMenuItem.Size = New System.Drawing.Size(53, 24)
         Me.HelpToolStripMenuItem.Text = "Help"
         '
         'QbundleManualToolStripMenuItem
         '
         Me.QbundleManualToolStripMenuItem.Name = "QbundleManualToolStripMenuItem"
-        Me.QbundleManualToolStripMenuItem.Size = New System.Drawing.Size(163, 22)
+        Me.QbundleManualToolStripMenuItem.Size = New System.Drawing.Size(194, 26)
         Me.QbundleManualToolStripMenuItem.Text = "Qbundle Manual"
         '
         'ToolStripMenuItem5
         '
         Me.ToolStripMenuItem5.Name = "ToolStripMenuItem5"
-        Me.ToolStripMenuItem5.Size = New System.Drawing.Size(160, 6)
+        Me.ToolStripMenuItem5.Size = New System.Drawing.Size(191, 6)
         '
         'BurstcoinorgToolStripMenuItem1
         '
         Me.BurstcoinorgToolStripMenuItem1.Name = "BurstcoinorgToolStripMenuItem1"
-        Me.BurstcoinorgToolStripMenuItem1.Size = New System.Drawing.Size(163, 22)
+        Me.BurstcoinorgToolStripMenuItem1.Size = New System.Drawing.Size(194, 26)
         Me.BurstcoinorgToolStripMenuItem1.Text = "Official Website"
         '
         'BurstcoinistToolStripMenuItem1
         '
         Me.BurstcoinistToolStripMenuItem1.Name = "BurstcoinistToolStripMenuItem1"
-        Me.BurstcoinistToolStripMenuItem1.Size = New System.Drawing.Size(163, 22)
+        Me.BurstcoinistToolStripMenuItem1.Size = New System.Drawing.Size(194, 26)
         Me.BurstcoinistToolStripMenuItem1.Text = "Burstcoin.ist"
         '
         'ToolStripMenuItem6
         '
         Me.ToolStripMenuItem6.Name = "ToolStripMenuItem6"
-        Me.ToolStripMenuItem6.Size = New System.Drawing.Size(160, 6)
+        Me.ToolStripMenuItem6.Size = New System.Drawing.Size(191, 6)
         '
         'BurstforumnetToolStripMenuItem
         '
         Me.BurstforumnetToolStripMenuItem.Name = "BurstforumnetToolStripMenuItem"
-        Me.BurstforumnetToolStripMenuItem.Size = New System.Drawing.Size(163, 22)
+        Me.BurstforumnetToolStripMenuItem.Size = New System.Drawing.Size(194, 26)
         Me.BurstforumnetToolStripMenuItem.Text = "Burstforum"
         '
         'GetburstnetToolStripMenuItem
         '
         Me.GetburstnetToolStripMenuItem.Name = "GetburstnetToolStripMenuItem"
-        Me.GetburstnetToolStripMenuItem.Size = New System.Drawing.Size(163, 22)
+        Me.GetburstnetToolStripMenuItem.Size = New System.Drawing.Size(194, 26)
         Me.GetburstnetToolStripMenuItem.Text = "Getburst forum"
         '
         'ToolStripMenuItem7
         '
         Me.ToolStripMenuItem7.Name = "ToolStripMenuItem7"
-        Me.ToolStripMenuItem7.Size = New System.Drawing.Size(160, 6)
+        Me.ToolStripMenuItem7.Size = New System.Drawing.Size(191, 6)
         '
         'RedditBurstcoinToolStripMenuItem
         '
         Me.RedditBurstcoinToolStripMenuItem.Name = "RedditBurstcoinToolStripMenuItem"
-        Me.RedditBurstcoinToolStripMenuItem.Size = New System.Drawing.Size(163, 22)
+        Me.RedditBurstcoinToolStripMenuItem.Size = New System.Drawing.Size(194, 26)
         Me.RedditBurstcoinToolStripMenuItem.Text = "Reddit Burstcoin"
         '
         'BurstWikiToolStripMenuItem
         '
         Me.BurstWikiToolStripMenuItem.Name = "BurstWikiToolStripMenuItem"
-        Me.BurstWikiToolStripMenuItem.Size = New System.Drawing.Size(163, 22)
+        Me.BurstWikiToolStripMenuItem.Size = New System.Drawing.Size(194, 26)
         Me.BurstWikiToolStripMenuItem.Text = "Burst Wiki"
         '
         'AboutToolStripMenuItem2
         '
         Me.AboutToolStripMenuItem2.DropDownItems.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ContributorsToolStripMenuItem, Me.DeveloperToolStripMenuItem})
         Me.AboutToolStripMenuItem2.Name = "AboutToolStripMenuItem2"
-        Me.AboutToolStripMenuItem2.Size = New System.Drawing.Size(52, 20)
+        Me.AboutToolStripMenuItem2.Size = New System.Drawing.Size(62, 24)
         Me.AboutToolStripMenuItem2.Text = "About"
         '
         'ContributorsToolStripMenuItem
         '
         Me.ContributorsToolStripMenuItem.Name = "ContributorsToolStripMenuItem"
-        Me.ContributorsToolStripMenuItem.Size = New System.Drawing.Size(141, 22)
+        Me.ContributorsToolStripMenuItem.Size = New System.Drawing.Size(166, 26)
         Me.ContributorsToolStripMenuItem.Text = "Contributors"
         '
         'DeveloperToolStripMenuItem
         '
         Me.DeveloperToolStripMenuItem.Name = "DeveloperToolStripMenuItem"
-        Me.DeveloperToolStripMenuItem.Size = New System.Drawing.Size(141, 22)
+        Me.DeveloperToolStripMenuItem.Size = New System.Drawing.Size(166, 26)
         Me.DeveloperToolStripMenuItem.Text = "Developer"
         '
         'FileToolStripMenuItem
@@ -484,18 +500,18 @@ Partial Class frmMain
         'CheckForUpdateToolStripMenuItem
         '
         Me.CheckForUpdateToolStripMenuItem.Name = "CheckForUpdateToolStripMenuItem"
-        Me.CheckForUpdateToolStripMenuItem.Size = New System.Drawing.Size(165, 22)
+        Me.CheckForUpdateToolStripMenuItem.Size = New System.Drawing.Size(197, 26)
         Me.CheckForUpdateToolStripMenuItem.Text = "Check for update"
         '
         'ToolStripMenuItem1
         '
         Me.ToolStripMenuItem1.Name = "ToolStripMenuItem1"
-        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(162, 6)
+        Me.ToolStripMenuItem1.Size = New System.Drawing.Size(194, 6)
         '
         'ExitToolStripMenuItem
         '
         Me.ExitToolStripMenuItem.Name = "ExitToolStripMenuItem"
-        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(165, 22)
+        Me.ExitToolStripMenuItem.Size = New System.Drawing.Size(197, 26)
         Me.ExitToolStripMenuItem.Text = "Exit"
         '
         'SettingsToolStripMenuItem1
@@ -508,7 +524,7 @@ Partial Class frmMain
         'WalletLauncherSettingsToolStripMenuItem
         '
         Me.WalletLauncherSettingsToolStripMenuItem.Name = "WalletLauncherSettingsToolStripMenuItem"
-        Me.WalletLauncherSettingsToolStripMenuItem.Size = New System.Drawing.Size(116, 22)
+        Me.WalletLauncherSettingsToolStripMenuItem.Size = New System.Drawing.Size(137, 26)
         Me.WalletLauncherSettingsToolStripMenuItem.Text = "Settings"
         '
         'AboutToolStripMenuItem
@@ -526,10 +542,12 @@ Partial Class frmMain
         'StatusStrip1
         '
         Me.StatusStrip1.BackColor = System.Drawing.Color.White
+        Me.StatusStrip1.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.StatusStrip1.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripStatusLabel1, Me.lblBlockInfo, Me.ToolStripStatusLabel4, Me.lblBlockDate, Me.lblSplitterWallet, Me.lblWalletIS, Me.lblWalletStatus})
-        Me.StatusStrip1.Location = New System.Drawing.Point(0, 335)
+        Me.StatusStrip1.Location = New System.Drawing.Point(0, 414)
         Me.StatusStrip1.Name = "StatusStrip1"
-        Me.StatusStrip1.Size = New System.Drawing.Size(567, 22)
+        Me.StatusStrip1.Padding = New System.Windows.Forms.Padding(1, 0, 19, 0)
+        Me.StatusStrip1.Size = New System.Drawing.Size(756, 25)
         Me.StatusStrip1.TabIndex = 5
         Me.StatusStrip1.Text = "StatusStrip1"
         '
@@ -537,48 +555,48 @@ Partial Class frmMain
         '
         Me.ToolStripStatusLabel1.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ToolStripStatusLabel1.Name = "ToolStripStatusLabel1"
-        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(75, 17)
+        Me.ToolStripStatusLabel1.Size = New System.Drawing.Size(87, 20)
         Me.ToolStripStatusLabel1.Text = "Block height:"
         '
         'lblBlockInfo
         '
         Me.lblBlockInfo.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblBlockInfo.Name = "lblBlockInfo"
-        Me.lblBlockInfo.Size = New System.Drawing.Size(11, 17)
+        Me.lblBlockInfo.Size = New System.Drawing.Size(15, 20)
         Me.lblBlockInfo.Text = "-"
         '
         'ToolStripStatusLabel4
         '
         Me.ToolStripStatusLabel4.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.ToolStripStatusLabel4.Name = "ToolStripStatusLabel4"
-        Me.ToolStripStatusLabel4.Size = New System.Drawing.Size(63, 17)
+        Me.ToolStripStatusLabel4.Size = New System.Drawing.Size(75, 20)
         Me.ToolStripStatusLabel4.Text = "Block time:"
         '
         'lblBlockDate
         '
         Me.lblBlockDate.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblBlockDate.Name = "lblBlockDate"
-        Me.lblBlockDate.Size = New System.Drawing.Size(11, 17)
+        Me.lblBlockDate.Size = New System.Drawing.Size(15, 20)
         Me.lblBlockDate.Text = "-"
         '
         'lblSplitterWallet
         '
         Me.lblSplitterWallet.Name = "lblSplitterWallet"
-        Me.lblSplitterWallet.Size = New System.Drawing.Size(10, 17)
+        Me.lblSplitterWallet.Size = New System.Drawing.Size(13, 20)
         Me.lblSplitterWallet.Text = "|"
         '
         'lblWalletIS
         '
         Me.lblWalletIS.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblWalletIS.Name = "lblWalletIS"
-        Me.lblWalletIS.Size = New System.Drawing.Size(54, 17)
+        Me.lblWalletIS.Size = New System.Drawing.Size(62, 20)
         Me.lblWalletIS.Text = "Wallet is:"
         '
         'lblWalletStatus
         '
         Me.lblWalletStatus.Font = New System.Drawing.Font("Segoe UI", 8.25!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
         Me.lblWalletStatus.Name = "lblWalletStatus"
-        Me.lblWalletStatus.Size = New System.Drawing.Size(51, 17)
+        Me.lblWalletStatus.Size = New System.Drawing.Size(60, 20)
         Me.lblWalletStatus.Text = "Stopped"
         '
         'ToolStripStatusLabel2
@@ -589,10 +607,11 @@ Partial Class frmMain
         'lblWallet
         '
         Me.lblWallet.AutoSize = True
-        Me.lblWallet.Font = New System.Drawing.Font("Rockwell", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
-        Me.lblWallet.Location = New System.Drawing.Point(38, 7)
+        Me.lblWallet.Font = New System.Drawing.Font("Microsoft Sans Serif", 15.75!, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, CType(0, Byte))
+        Me.lblWallet.Location = New System.Drawing.Point(51, 9)
+        Me.lblWallet.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblWallet.Name = "lblWallet"
-        Me.lblWallet.Size = New System.Drawing.Size(126, 23)
+        Me.lblWallet.Size = New System.Drawing.Size(162, 31)
         Me.lblWallet.TabIndex = 7
         Me.lblWallet.Text = "Burst wallet "
         '
@@ -601,9 +620,10 @@ Partial Class frmMain
         Me.lblUpdates.AutoSize = True
         Me.lblUpdates.Cursor = System.Windows.Forms.Cursors.Hand
         Me.lblUpdates.ForeColor = System.Drawing.Color.Red
-        Me.lblUpdates.Location = New System.Drawing.Point(39, 37)
+        Me.lblUpdates.Location = New System.Drawing.Point(52, 46)
+        Me.lblUpdates.Margin = New System.Windows.Forms.Padding(4, 0, 4, 0)
         Me.lblUpdates.Name = "lblUpdates"
-        Me.lblUpdates.Size = New System.Drawing.Size(206, 13)
+        Me.lblUpdates.Size = New System.Drawing.Size(275, 17)
         Me.lblUpdates.TabIndex = 8
         Me.lblUpdates.Text = "Updates available. Click here for more info"
         Me.lblUpdates.Visible = False
@@ -614,16 +634,18 @@ Partial Class frmMain
         Me.pnlLauncher.Controls.Add(Me.GroupBox1)
         Me.pnlLauncher.Controls.Add(Me.lblUpdates)
         Me.pnlLauncher.Controls.Add(Me.btnStartStop)
-        Me.pnlLauncher.Location = New System.Drawing.Point(1, 50)
+        Me.pnlLauncher.Location = New System.Drawing.Point(1, 62)
+        Me.pnlLauncher.Margin = New System.Windows.Forms.Padding(4)
         Me.pnlLauncher.Name = "pnlLauncher"
-        Me.pnlLauncher.Size = New System.Drawing.Size(555, 98)
+        Me.pnlLauncher.Size = New System.Drawing.Size(740, 121)
         Me.pnlLauncher.TabIndex = 9
         '
         'pnlAIO
         '
-        Me.pnlAIO.Location = New System.Drawing.Point(12, 160)
+        Me.pnlAIO.Location = New System.Drawing.Point(16, 197)
+        Me.pnlAIO.Margin = New System.Windows.Forms.Padding(4)
         Me.pnlAIO.Name = "pnlAIO"
-        Me.pnlAIO.Size = New System.Drawing.Size(379, 163)
+        Me.pnlAIO.Size = New System.Drawing.Size(505, 201)
         Me.pnlAIO.TabIndex = 10
         '
         'TrayIcon
@@ -637,56 +659,51 @@ Partial Class frmMain
         '
         Me.MenuBar.BackColor = System.Drawing.SystemColors.GradientInactiveCaption
         Me.MenuBar.GripStyle = System.Windows.Forms.ToolStripGripStyle.Hidden
+        Me.MenuBar.ImageScalingSize = New System.Drawing.Size(20, 20)
         Me.MenuBar.Items.AddRange(New System.Windows.Forms.ToolStripItem() {Me.ToolStripLabel1, Me.lblSelectWallet, Me.cmbSelectWallet, Me.lblCoinMarket, Me.lblUpdateAvail2})
-        Me.MenuBar.Location = New System.Drawing.Point(0, 24)
+        Me.MenuBar.Location = New System.Drawing.Point(0, 28)
         Me.MenuBar.Name = "MenuBar"
         Me.MenuBar.Padding = New System.Windows.Forms.Padding(0)
-        Me.MenuBar.Size = New System.Drawing.Size(567, 25)
+        Me.MenuBar.Size = New System.Drawing.Size(756, 28)
         Me.MenuBar.TabIndex = 11
         '
         'ToolStripLabel1
         '
         Me.ToolStripLabel1.Name = "ToolStripLabel1"
-        Me.ToolStripLabel1.Size = New System.Drawing.Size(13, 22)
+        Me.ToolStripLabel1.Size = New System.Drawing.Size(17, 25)
         Me.ToolStripLabel1.Text = "  "
         '
         'lblSelectWallet
         '
         Me.lblSelectWallet.Name = "lblSelectWallet"
-        Me.lblSelectWallet.Size = New System.Drawing.Size(71, 22)
+        Me.lblSelectWallet.Size = New System.Drawing.Size(90, 25)
         Me.lblSelectWallet.Text = "Using wallet"
         '
         'cmbSelectWallet
         '
         Me.cmbSelectWallet.Name = "cmbSelectWallet"
-        Me.cmbSelectWallet.Size = New System.Drawing.Size(160, 25)
+        Me.cmbSelectWallet.Size = New System.Drawing.Size(212, 28)
         '
         'lblCoinMarket
         '
         Me.lblCoinMarket.Name = "lblCoinMarket"
-        Me.lblCoinMarket.Size = New System.Drawing.Size(91, 22)
+        Me.lblCoinMarket.Size = New System.Drawing.Size(113, 25)
         Me.lblCoinMarket.Text = "Burst price: N/A"
         '
         'lblUpdateAvail2
         '
         Me.lblUpdateAvail2.ForeColor = System.Drawing.Color.Red
         Me.lblUpdateAvail2.Name = "lblUpdateAvail2"
-        Me.lblUpdateAvail2.Size = New System.Drawing.Size(128, 22)
+        Me.lblUpdateAvail2.Size = New System.Drawing.Size(164, 25)
         Me.lblUpdateAvail2.Text = "(New update available)"
         Me.lblUpdateAvail2.Visible = False
         '
-        'PaperburstToolStripMenuItem
-        '
-        Me.PaperburstToolStripMenuItem.Name = "PaperburstToolStripMenuItem"
-        Me.PaperburstToolStripMenuItem.Size = New System.Drawing.Size(205, 22)
-        Me.PaperburstToolStripMenuItem.Text = "Paperburst"
-        '
         'frmMain
         '
-        Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
+        Me.AutoScaleDimensions = New System.Drawing.SizeF(8.0!, 16.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
         Me.BackColor = System.Drawing.Color.White
-        Me.ClientSize = New System.Drawing.Size(567, 357)
+        Me.ClientSize = New System.Drawing.Size(756, 439)
         Me.Controls.Add(Me.MenuBar)
         Me.Controls.Add(Me.pnlLauncher)
         Me.Controls.Add(Me.StatusStrip1)
@@ -695,6 +712,7 @@ Partial Class frmMain
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MainMenuStrip = Me.MenuStrip1
+        Me.Margin = New System.Windows.Forms.Padding(4)
         Me.MaximizeBox = False
         Me.Name = "frmMain"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
