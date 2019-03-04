@@ -3,8 +3,8 @@
     <AppObject>
       <Name>Launcher</Name>
       <DisplayName>Qbundle</DisplayName>
-      <UpgradeUrl>Launcher/Qb2.5.0Upgrade.zip</UpgradeUrl>
-      <FullUrl>Launcher/Qb2.5.0Upgrade.zip</FullUrl>
+      <UpgradeUrl>Qb2.5.0Upgrade.zip</UpgradeUrl>
+      <FullUrl>Qb2.5.0Upgrade.zip</FullUrl>
       <RemoteVersion>2.5.0</RemoteVersion>
       <UpdateInfo>V 2.5.0</UpdateInfo>
       <VersionPath/>
@@ -14,8 +14,8 @@
     <AppObject>
       <Name>BRS</Name>
       <DisplayName>BRS - Core Wallet</DisplayName>
-      <UpgradeUrl>BRS/BRS2.2.7.zip</UpgradeUrl>
-      <FullUrl>BRS/BRS2.2.7.zip</FullUrl>
+      <UpgradeUrl>BRS2.2.7.zip</UpgradeUrl>
+      <FullUrl>BRS2.2.7.zip</FullUrl>
       <RemoteVersion>2.2.7</RemoteVersion>
       <UpdateInfo>2.2.7</UpdateInfo>
       <VersionPath>conf\version</VersionPath>
@@ -25,8 +25,8 @@
     <AppObject>
       <Name>JavaPortable</Name>
       <DisplayName>Portable Java</DisplayName>
-      <UpgradeUrl>Java/Java1.8.0_152.zip</UpgradeUrl>
-      <FullUrl>Java/Java1.8.0_152.zip</FullUrl>
+      <UpgradeUrl>Java1.8.0_152.zip</UpgradeUrl>
+      <FullUrl>Java1.8.0_152.zip</FullUrl>
       <RemoteVersion>1.8.0_152</RemoteVersion>
       <UpdateInfo>V 1.8.0_152</UpdateInfo>
       <VersionPath>Java\release</VersionPath>
@@ -36,8 +36,8 @@
     <AppObject>
       <Name>MariaPortable</Name>
       <DisplayName>Portable MariaDB</DisplayName>
-      <UpgradeUrl>MariaDB/MariaDb_10.1.29_upg.zip</UpgradeUrl>
-      <FullUrl>MariaDB/MariaDb_10.1.29-full.zip</FullUrl>
+      <UpgradeUrl>MariaDb_10.1.29_upg.zip</UpgradeUrl>
+      <FullUrl>MariaDb_10.1.29-full.zip</FullUrl>
       <RemoteVersion>10.1.29</RemoteVersion>
       <UpdateInfo>V 10.1.29</UpdateInfo>
       <VersionPath>MariaDb\release</VersionPath>
@@ -47,8 +47,8 @@
     <AppObject>
       <Name>Xplotter</Name>
       <DisplayName>Xplotter by JonnyFFM</DisplayName>
-      <UpgradeUrl>plotter/XPlotter_v1.30.zip</UpgradeUrl>
-      <FullUrl>plotter/XPlotter_v1.30.zip</FullUrl>
+      <UpgradeUrl>XPlotter_v1.30.zip</UpgradeUrl>
+      <FullUrl>XPlotter_v1.30.zip</FullUrl>
       <RemoteVersion>1.30</RemoteVersion>
       <UpdateInfo>V 1.30</UpdateInfo>
       <VersionPath>Xplotter\release</VersionPath>
@@ -58,8 +58,8 @@
     <AppObject>
       <Name>BlagoMiner</Name>
       <DisplayName>Blago's Miner</DisplayName>
-      <UpgradeUrl>miner/BlagoMiner_1.170977.zip</UpgradeUrl>
-      <FullUrl>miner/BlagoMiner_1.170977.zip</FullUrl>
+      <UpgradeUrl>BlagoMiner_1.170977.zip</UpgradeUrl>
+      <FullUrl>BlagoMiner_1.170977.zip</FullUrl>
       <RemoteVersion>1.170977</RemoteVersion>
       <UpdateInfo>V 1.170977</UpdateInfo>
       <VersionPath>BlagoMiner\version</VersionPath>
@@ -71,8 +71,8 @@
     <AppObject>
       <Name>PlotConverter</Name>
       <DisplayName>Plot converter</DisplayName>
-      <UpgradeUrl>PlotConverter/PlotConverter_v2.4.zip</UpgradeUrl>
-      <FullUrl>PlotConverter/PlotConverter_v2.4.zip</FullUrl>
+      <UpgradeUrl>PlotConverter_v2.4.zip</UpgradeUrl>
+      <FullUrl>PlotConverter_v2.4.zip</FullUrl>
       <RemoteVersion>2.4</RemoteVersion>
       <UpdateInfo>V 2.4</UpdateInfo>
       <VersionPath>PlotConverter\version</VersionPath>
@@ -82,8 +82,8 @@
     <AppObject>
       <Name>Paperburst</Name>
       <DisplayName>Paperburst</DisplayName>
-      <UpgradeUrl>paperburst/PaperBurst_v1.0.zip</UpgradeUrl>
-      <FullUrl>paperburst/PaperBurst_v1.0.zip</FullUrl>
+      <UpgradeUrl>PaperBurst_v1.0.zip</UpgradeUrl>
+      <FullUrl>PaperBurst_v1.0.zip</FullUrl>
       <RemoteVersion>1.0</RemoteVersion>
       <UpdateInfo>V 1.0</UpdateInfo>
       <VersionPath>PaperBurst\version</VersionPath>
@@ -242,6 +242,6 @@
     </WalletObject>
   </Wallets>
   <Repositories>
-    <string>https://download.cryptoguru.org/burst/qbundle/</string>
+    <string>https://github.com/burst-apps-team/Qbundle/releases/download/rolling</string>
   </Repositories>
 </UpdateObject>
