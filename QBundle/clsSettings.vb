@@ -502,7 +502,7 @@
 
         _FirstRun = True
         _CheckForUpdates = False
-        _Upgradev = 212
+        _Upgradev = 213
         _AlwaysAdmin = False
         _Repo = QGlobal.UpdateMirrors(0)
         _QBMode = 1 '0 = AIO 1 = Launcher

@@ -25,6 +25,10 @@ Make full settings of BRS? Make Settings profiles?
 
 'Notes
 
+v2.5.1
+Switched update server to GitHub
+BRS v2.3.0 compatibility
+
 v2.5.0
 Account manger seed generation now uses RFC4086 compliant method.
 Moved from IE to Chromium

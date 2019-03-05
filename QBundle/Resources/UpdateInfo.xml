@@ -3,10 +3,10 @@
     <AppObject>
       <Name>Launcher</Name>
       <DisplayName>Qbundle</DisplayName>
-      <UpgradeUrl>Qb2.5.0Upgrade.zip</UpgradeUrl>
-      <FullUrl>Qb2.5.0Upgrade.zip</FullUrl>
-      <RemoteVersion>2.5.0</RemoteVersion>
-      <UpdateInfo>V 2.5.0</UpdateInfo>
+      <UpgradeUrl>Qb2.5.1Upgrade.zip</UpgradeUrl>
+      <FullUrl>Qb2.5.1Upgrade.zip</FullUrl>
+      <RemoteVersion>2.5.1</RemoteVersion>
+      <UpdateInfo>V 2.5.1</UpdateInfo>
       <VersionPath/>
       <ProcessName/>
       <ExePath/>
