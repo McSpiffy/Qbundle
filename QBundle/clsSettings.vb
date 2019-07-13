@@ -489,7 +489,7 @@
         _Cpulimit = 0
         _ListenIf = "127.0.0.1;8125"
         _ListenPeer = "0.0.0.0;8123"
-        _ConnectFrom = "127.0.0.1"
+        _ConnectFrom = "0.0.0.0"
         _Broadcast = ""
         _DbType = 0
         _DbServer = "127.0.0.1:3306"

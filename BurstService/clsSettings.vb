@@ -234,7 +234,7 @@
         _Cpulimit = 0
         _ListenIf = "127.0.0.1;8125"
         _ListenPeer = "0.0.0.0;8123"
-        _ConnectFrom = "127.0.0.1"
+        _ConnectFrom = "0.0.0.0"
         _LaunchString = "-cp conf -jar burst.jar --headless"
 
         _DbType = 0
