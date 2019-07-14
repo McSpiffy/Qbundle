@@ -172,6 +172,21 @@ Public Class frmDownloadManager
         Try
             Dim filename As String = QGlobal.AppDir & Path.GetFileName(Url)
             Dim target As String = QGlobal.AppDir
+            Using archive As ZipArchive = ZipFile.OpenRead(filename)
+                For Each entry As ZipArchiveEntry In archive.Entries
+                    If Not entry.FullName.EndsWith("/") Then
+                        Dim destFileName = Path.Combine(target, entry.FullName)
+                        Dim fullDestDirPath = Path.GetFullPath(target + Path.DirectorySeparatorChar)
+                        If Not destFileName.StartsWith(fullDestDirPath) Then
+                            Throw New Exception("Entry is outside of target dir: " + destFileName)
+                        End If
+                        Try
+                            My.Computer.FileSystem.DeleteFile(destFileName)
+                        Catch ex As FileNotFoundException
+                        End Try
+                    End If
+                Next 
+            End Using
             ZipFile.ExtractToDirectory(filename, target)
             AllOk = True
         Catch ex As Exception
