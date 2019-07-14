@@ -638,7 +638,7 @@ Public Class frmMain
                 End If
                 pset(1).Cores = Q.settings.Cpulimit
                 pset(1).Params = Q.settings.LaunchString()
-                pset(1).StartSignal = "Started API server at"
+                pset(1).StartSignal = "started successfully"
                 pset(1).StartsignalMaxTime = 3600
                 pset(1).WorkingDirectory = QGlobal.AppDir
                 Q.ProcHandler.StartProcessSquence(pset)
@@ -653,7 +653,7 @@ Public Class frmMain
                 Pset.Cores = Q.settings.Cpulimit
                 Pset.Params = Q.settings.LaunchString
 
-                Pset.StartSignal = "Started API server at"
+                Pset.StartSignal = "started successfully"
                 Pset.StartsignalMaxTime = 3600
                 Pset.WorkingDirectory = QGlobal.AppDir
                 Q.ProcHandler.StartProcess(Pset)

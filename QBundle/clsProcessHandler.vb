@@ -396,7 +396,6 @@ Public Class clsProcessHandler
                 pr.StartInfo.FileName = UpgradeCmd
                 pr.Start()
                 pr.WaitForExit(300000)
-                pr = Nothing
             Catch ex As Exception
                 Generic.WriteDebug(ex)
             End Try
