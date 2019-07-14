@@ -61,11 +61,11 @@
         ' rDB2.Enabled = False
         '    rDB2.Text = rDB2.Text & " (Currently Disabled)"
 
-        'Me.Width = 501
-        'Me.Height = 436
+        'Width = 501
+        'Height = 436
         ' MsgBox(pnlWiz1.Top + pnlWiz1.Height + 40)
-        Me.Width = pnlWiz1.Left + pnlWiz1.Width + 13
-        Me.Height = pnlWiz1.Top + pnlWiz1.Height + 40
+        Width = pnlWiz1.Left + pnlWiz1.Width + 13
+        Height = pnlWiz1.Top + pnlWiz1.Height + 40
     End Sub
 
     Private Sub setdb(id As Integer)
@@ -116,9 +116,9 @@
                 If _
                     MsgBox("MariaDB Portable is not installed. Would you like to download and install it now?",
                            MsgBoxStyle.Information Or MsgBoxStyle.YesNo, "Download Maria DB?") = MsgBoxResult.Yes Then
-                    Me.Hide()
+                    Hide()
                     Dim res As Boolean = Q.AppManager.InstallApp("MariaPortable")
-                    Me.Show()
+                    Show()
                     If res = False Then Exit Sub
                 Else
                     Exit Sub
@@ -149,7 +149,7 @@
     Private Sub btnStart_Click(sender As Object, e As EventArgs) Handles btnStart.Click
 
         If btnStart.Text = "Close" Then
-            Me.Close()
+            Close()
             Exit Sub
         End If
 
@@ -194,7 +194,7 @@
             Q.settings.SaveSettings()
             Generic.WriteWalletConfig()
             frmMain.SetDbInfo()
-            Me.Close()
+            Close()
         End If
     End Sub
 
@@ -243,9 +243,9 @@
     End Sub
 
     Private Sub Starting(AppId As Integer)
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DStarting(AddressOf Starting)
-            Me.Invoke(d, New Object() {AppId})
+            Invoke(d, New Object() {AppId})
             Return
         End If
 
@@ -260,9 +260,9 @@
     End Sub
 
     Private Sub Stopped(AppId As Integer)
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DStoped(AddressOf Stopped)
-            Me.Invoke(d, New Object() {AppId})
+            Invoke(d, New Object() {AppId})
             Return
         End If
         If AppId = QGlobal.AppNames.Export Then
@@ -310,9 +310,9 @@
     End Sub
 
     Private Sub ProcEvents(AppId As Integer, Operation As Integer, data As String)
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DProcEvents(AddressOf ProcEvents)
-            Me.Invoke(d, New Object() {AppId, Operation, data})
+            Invoke(d, New Object() {AppId, Operation, data})
             Return
         End If
         Dim darray() As String = Nothing
@@ -381,9 +381,9 @@
     End Sub
 
     Private Sub Aborted(AppId As Integer, Data As String)
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DAborted(AddressOf Aborted)
-            Me.Invoke(d, New Object() {AppId, Data})
+            Invoke(d, New Object() {AppId, Data})
             Return
         End If
 

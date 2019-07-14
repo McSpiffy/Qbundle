@@ -174,33 +174,33 @@ Public Class frmMain
                  Assembly.GetExecutingAssembly.GetName.Version.Revision & " | "
         Title &= "Burstcoin Wallet v" & Q.AppManager.GetInstalledVersion("BRS", True)
         If Generic.DebugMe Then Title &= " (DebugMode)"
-        Me.Text = Title
+        Text = Title
         lblWallet.Text = "Burst wallet v" & Q.AppManager.GetInstalledVersion("BRS", True)
     End Sub
 
     Private Sub SetMode(NewMode As Integer)
         Select Case NewMode
             Case 0 ' AIO Mode
-                Me.FormBorderStyle = FormBorderStyle.Sizable
-                Me.MaximizeBox = True
-                Me.Width = 1024
-                Me.Height = 760
-                If Me.Height > My.Computer.Screen.WorkingArea.Height - 50 Then
-                    Me.Height = My.Computer.Screen.WorkingArea.Height - 50
+                FormBorderStyle = FormBorderStyle.Sizable
+                MaximizeBox = True
+                Width = 1024
+                Height = 760
+                If Height > My.Computer.Screen.WorkingArea.Height - 50 Then
+                    Height = My.Computer.Screen.WorkingArea.Height - 50
                 End If
-                If Me.Width > My.Computer.Screen.WorkingArea.Width - 50 Then
-                    Me.Width = My.Computer.Screen.WorkingArea.Width - 50
+                If Width > My.Computer.Screen.WorkingArea.Width - 50 Then
+                    Width = My.Computer.Screen.WorkingArea.Width - 50
                 End If
                 Q.settings.QBMode = 0
                 Q.settings.SaveSettings()
-                Me.Top = (My.Computer.Screen.WorkingArea.Height\2) - (Me.Height\2)
-                Me.Left = (My.Computer.Screen.WorkingArea.Width\2) - (Me.Width\2)
+                Top = (My.Computer.Screen.WorkingArea.Height\2) - (Height\2)
+                Left = (My.Computer.Screen.WorkingArea.Width\2) - (Width\2)
                 MenuBar.Visible = True
                 pnlAIO.Visible = True
                 pnlAIO.Top = MenuBar.Top + MenuBar.Height
                 pnlAIO.Left = 0
                 pnlAIO.Height = StatusStrip1.Top - 50
-                pnlAIO.Width = Me.Width - 17
+                pnlAIO.Width = Width - 17
                 pnlAIO.Anchor = AnchorStyles.Bottom Or AnchorStyles.Left Or AnchorStyles.Top Or AnchorStyles.Right
                 pnlLauncher.Visible = False
                 lblWalletIS.Visible = True
@@ -211,26 +211,26 @@ Public Class frmMain
                 lblSelectWallet.Visible = True
                 cmbSelectWallet.Visible = True
             Case 1 ' Launcher Mode
-                Me.FormBorderStyle = FormBorderStyle.FixedDialog
-                Me.MaximizeBox = False
+                FormBorderStyle = FormBorderStyle.FixedDialog
+                MaximizeBox = False
 
-                Dim g As Graphics = Me.CreateGraphics()
+                Dim g As Graphics = CreateGraphics()
                 Dim dpiX As Decimal = CDec(g.DpiX)/100
                 Dim dpiY As Decimal = CDec(g.DpiY)/100
                 If dpiY > 1 Then
                     dpiX = 1 - (dpiX - 1)
                     dpiY = 1 - (dpiY - 1)
                     Dim res As New SizeF(dpiX, dpiY)
-                    Me.Scale(res)
+                    Scale(res)
                 End If
 
-                Me.Width = pnlLauncher.Left + pnlLauncher.Width + 24
-                Me.Height = pnlLauncher.Top + pnlLauncher.Height + 70
+                Width = pnlLauncher.Left + pnlLauncher.Width + 24
+                Height = pnlLauncher.Top + pnlLauncher.Height + 70
 
                 Q.settings.QBMode = 1
                 Q.settings.SaveSettings()
-                Me.Top = (My.Computer.Screen.WorkingArea.Height\2) - (Me.Height\2)
-                Me.Left = (My.Computer.Screen.WorkingArea.Width\2) - (Me.Width\2)
+                Top = (My.Computer.Screen.WorkingArea.Height\2) - (Height\2)
+                Left = (My.Computer.Screen.WorkingArea.Width\2) - (Width\2)
                 pnlAIO.Visible = False
                 pnlLauncher.Visible = True
                 pnlLauncher.BringToFront()
@@ -259,7 +259,7 @@ Public Class frmMain
 
                 StopWallet()
                 frmShutdown.Show()
-                Me.Hide()
+                Hide()
                 WB1.Dispose()
                 Exit Sub
             End If
@@ -269,11 +269,11 @@ Public Class frmMain
     End Sub
 
     Private Sub frmMain_Resize(sender As Object, e As EventArgs) Handles Me.Resize
-        If Me.WindowState = FormWindowState.Minimized Then
+        If WindowState = FormWindowState.Minimized Then
             Try
                 If Q.settings.MinToTray Then
                     TrayIcon.Visible = True
-                    Me.ShowInTaskbar = False
+                    ShowInTaskbar = False
                 End If
             Catch ex As Exception
             End Try
@@ -282,7 +282,7 @@ Public Class frmMain
 
     Private Sub ShudownWallet_tick(sender As Object, e As EventArgs) Handles ShutdownWallet.Tick
         If Running = False Then
-            Me.Close()
+            Close()
         End If
     End Sub
 
@@ -359,7 +359,7 @@ Public Class frmMain
     End Sub
     'toolstrips
     Private Sub ExitToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles ExitToolStripMenuItem1.Click
-        Me.Close()
+        Close()
     End Sub
 
     Private Sub SettingsToolStripMenuItem_Click(sender As Object, e As EventArgs) _
@@ -409,9 +409,9 @@ Public Class frmMain
 #Region " Wallet Events "
 
     Private Sub Starting(AppId As Integer)
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DStarting(AddressOf Starting)
-            Me.Invoke(d, New Object() {AppId})
+            Invoke(d, New Object() {AppId})
             Return
         End If
 
@@ -427,9 +427,9 @@ Public Class frmMain
     End Sub
 
     Private Sub Stopped(AppId As Integer)
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DStoped(AddressOf Stopped)
-            Me.Invoke(d, New Object() {AppId})
+            Invoke(d, New Object() {AppId})
             Return
         End If
 
@@ -486,9 +486,9 @@ Public Class frmMain
 
 
     Private Sub ProcEvents(AppId As Integer, Operation As Integer, data As String)
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DUpdate(AddressOf ProcEvents)
-            Me.Invoke(d, New Object() {AppId, Operation, data})
+            Invoke(d, New Object() {AppId, Operation, data})
             Return
         End If
         'threadsafe here
@@ -584,9 +584,9 @@ Public Class frmMain
     End Sub
 
     Private Sub Aborted(AppId As Integer, Data As String)
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DAborted(AddressOf Aborted)
-            Me.Invoke(d, New Object() {AppId, Data})
+            Invoke(d, New Object() {AppId, Data})
             Return
         End If
 
@@ -782,9 +782,9 @@ Public Class frmMain
     End Sub
 
     Private Sub NewUpdatesAvilable()
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DNewUpdatesAvilable(AddressOf NewUpdatesAvilable)
-            Me.Invoke(d, New Object() {})
+            Invoke(d, New Object() {})
             Return
         End If
         Try
@@ -867,9 +867,9 @@ Public Class frmMain
 
     Private Sub APIResult(Data As String, TimeStamp As String)
         Try
-            If Me.InvokeRequired Then
+            If InvokeRequired Then
                 Dim d As New DAPIResult(AddressOf APIResult)
-                Me.Invoke(d, New Object() {Data, TimeStamp})
+                Invoke(d, New Object() {Data, TimeStamp})
                 Return
             End If
             lblBlockInfo.Text = Data '& " - " & CStr(LastShowHeight)
@@ -1050,9 +1050,9 @@ Public Class frmMain
     End Sub
 
     Private Sub HttpResult(Data As String)
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DHttpResult(AddressOf HttpResult)
-            Me.Invoke(d, New Object() {Data})
+            Invoke(d, New Object() {Data})
             Return
         End If
         Try
@@ -1095,10 +1095,10 @@ Public Class frmMain
     End Sub
 
     Private Sub TrayIcon_MouseDoubleClick(sender As Object, e As MouseEventArgs) Handles TrayIcon.MouseClick
-        Me.WindowState = FormWindowState.Normal
-        Me.ShowInTaskbar = True
+        WindowState = FormWindowState.Normal
+        ShowInTaskbar = True
         TrayIcon.Visible = False
-        Me.Show()
+        Show()
     End Sub
 
     Private Sub WalletModeToolStripMenuItem1_Click(sender As Object, e As EventArgs) _
@@ -1150,9 +1150,9 @@ Public Class frmMain
             If _
                 MsgBox("Plotconverter is not installed. Do you want to download and install it now?",
                        MsgBoxStyle.Information Or MsgBoxStyle.YesNo, "Download Plotconverter") = MsgBoxResult.Yes Then
-                Me.Hide()
+                Hide()
                 Dim res As Boolean = Q.AppManager.InstallApp("PlotConverter")
-                Me.Show()
+                Show()
                 If res = False Then Exit Sub
             Else
                 Exit Sub
@@ -1222,9 +1222,9 @@ Public Class frmMain
             If _
                 MsgBox("PaperBurst is not installed. Do you want to download and install it now?",
                        MsgBoxStyle.Information Or MsgBoxStyle.YesNo, "Download Plotconverter") = MsgBoxResult.Yes Then
-                Me.Hide()
+                Hide()
                 Dim res As Boolean = Q.AppManager.InstallApp("Paperburst")
-                Me.Show()
+                Show()
                 If res = False Then Exit Sub
             Else
                 Exit Sub

@@ -18,7 +18,7 @@ Public Class frmVanity
     Private ReadOnly mainRand As New Random
 
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles btnSave.Click
-        Me.cmSave.Show(Me.btnSave, Me.btnSave.PointToClient(Cursor.Position))
+        cmSave.Show(btnSave, btnSave.PointToClient(Cursor.Position))
     End Sub
 
     Private Sub btnStart_Click(sender As Object, e As EventArgs) Handles btnStart.Click
@@ -132,9 +132,9 @@ Public Class frmVanity
     End Function
 
     Private Sub Found(Address As String, Pass As String)
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DFound(AddressOf Found)
-            Me.Invoke(d, New Object() {Address, Pass})
+            Invoke(d, New Object() {Address, Pass})
             Return
         End If
         running = False

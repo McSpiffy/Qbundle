@@ -30,9 +30,9 @@
     End Sub
 
     Private Sub ProcEvents(AppId As Integer, Operation As Integer, data As String)
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DUpdate(AddressOf ProcEvents)
-            Me.Invoke(d, New Object() {AppId, Operation, data})
+            Invoke(d, New Object() {AppId, Operation, data})
             Return
         End If
         'threadsafe here

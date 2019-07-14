@@ -38,7 +38,7 @@
         Next
 
         If lw1.Items(0).Checked Then
-            Me.DialogResult = DialogResult.Yes
+            DialogResult = DialogResult.Yes
         End If
 
 

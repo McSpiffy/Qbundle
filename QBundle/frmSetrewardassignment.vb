@@ -1,7 +1,7 @@
 Public Class frmSetrewardassignment
     Private Sub btnAccounts_Click(sender As Object, e As EventArgs) Handles btnAccounts.Click
         Try
-            Me.cmlAccounts.Show(Me.btnAccounts, Me.btnAccounts.PointToClient(Cursor.Position))
+            cmlAccounts.Show(btnAccounts, btnAccounts.PointToClient(Cursor.Position))
         Catch ex As Exception
 
         End Try
@@ -74,7 +74,7 @@ Public Class frmSetrewardassignment
 
     Private Sub btnPool_Click(sender As Object, e As EventArgs) Handles btnPool.Click
         Try
-            Me.cmlPools.Show(Me.btnPool, Me.btnPool.PointToClient(Cursor.Position))
+            cmlPools.Show(btnPool, btnPool.PointToClient(Cursor.Position))
         Catch ex As Exception
 
         End Try

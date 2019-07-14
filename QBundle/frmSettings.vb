@@ -168,7 +168,7 @@ Public Class frmSettings
             End If
         End If
         'ok lets fix firewall if its intended to be like that
-        Me.Close()
+        Close()
     End Sub
 
     Private Sub LoadSettings()

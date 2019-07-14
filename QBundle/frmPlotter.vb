@@ -141,9 +141,9 @@ Public Class frmPlotter
             If _
                 MsgBox("Xplotter is not installed yet. Do you want to download and install it now?",
                        MsgBoxStyle.Information Or MsgBoxStyle.YesNo, "Download Xplotter") = MsgBoxResult.Yes Then
-                Me.Hide()
+                Hide()
                 Dim res As Boolean = Q.AppManager.InstallApp("Xplotter")
-                Me.Show()
+                Show()
                 If res = False Then Exit Sub
             Else
                 Exit Sub
@@ -359,14 +359,14 @@ Public Class frmPlotter
     Private Sub btnAccounts_Click(sender As Object, e As EventArgs) Handles btnAccounts.Click
 
         Try
-            Me.cmlAccounts.Show(Me.btnAccounts, Me.btnAccounts.PointToClient(Cursor.Position))
+            cmlAccounts.Show(btnAccounts, btnAccounts.PointToClient(Cursor.Position))
         Catch ex As Exception
 
         End Try
     End Sub
 
     Private Sub btnImport_Click(sender As Object, e As EventArgs) Handles btnImport.Click
-        Me.cmImport.Show(Me.btnImport, Me.btnImport.PointToClient(Cursor.Position))
+        cmImport.Show(btnImport, btnImport.PointToClient(Cursor.Position))
     End Sub
 
     Private Sub btnRemove_Click(sender As Object, e As EventArgs) Handles btnRemove.Click
@@ -447,7 +447,7 @@ Public Class frmPlotter
     End Sub
 
     Private Sub CloseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CloseToolStripMenuItem.Click
-        Me.Close()
+        Close()
     End Sub
 
     Private Sub StartPlottingToolStripMenuItem_Click(sender As Object, e As EventArgs) _
@@ -461,9 +461,9 @@ Public Class frmPlotter
             If _
                 MsgBox("Xplotter is not installed yet. Do you want to download and install it now?",
                        MsgBoxStyle.Information Or MsgBoxStyle.YesNo, "Download Xplotter") = MsgBoxResult.Yes Then
-                Me.Hide()
+                Hide()
                 Dim res As Boolean = Q.AppManager.InstallApp("Xplotter")
-                Me.Show()
+                Show()
                 If res = False Then Exit Sub
             Else
                 Exit Sub
@@ -533,14 +533,14 @@ Public Class frmPlotter
     Private Sub lblSelectAll_Click(sender As Object, e As EventArgs) Handles lblSelectAll.Click
         If lstPlots.Items.Count <= 0 Then Exit Sub
         For i = 0 To lstPlots.Items.Count - 1
-            Me.lstPlots.SetSelected(i, True)
+            lstPlots.SetSelected(i, True)
         Next
     End Sub
 
     Private Sub lblDeselectAll_Click(sender As Object, e As EventArgs) Handles lblDeselectAll.Click
         If lstPlots.Items.Count <= 0 Then Exit Sub
         For i = 0 To lstPlots.Items.Count - 1
-            Me.lstPlots.SetSelected(i, False)
+            lstPlots.SetSelected(i, False)
         Next
     End Sub
 

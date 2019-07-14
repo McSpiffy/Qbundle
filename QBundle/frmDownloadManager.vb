@@ -31,9 +31,9 @@ Public Class frmDownloadManager
     End Sub
 
     Public Sub Done()
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DDone(AddressOf Done)
-            Me.Invoke(d, New Object() {})
+            Invoke(d, New Object() {})
             Return
         End If
 
@@ -47,30 +47,30 @@ Public Class frmDownloadManager
 
         'we are done so close
         If Result = Nothing Then
-            Me.DialogResult = DialogResult.OK
+            DialogResult = DialogResult.OK
         Else
-            Me.DialogResult = Result
+            DialogResult = Result
         End If
 
-        Me.Close()
+        Close()
     End Sub
 
     Private Sub Aborting()
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DAborting(AddressOf Aborting)
-            Me.Invoke(d, New Object() {})
+            Invoke(d, New Object() {})
             Return
         End If
         If Result = Nothing Then Result = DialogResult.Abort
-        Me.DialogResult = Result
-        Me.Close()
+        DialogResult = Result
+        Close()
     End Sub
 
     Private Sub Progress(Job As Integer, AppId As Integer, percent As Integer, Speed As Integer, lRead As Long,
                          lLength As Long)
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DProgress(AddressOf Progress)
-            Me.Invoke(d, New Object() {Job, AppId, percent, Speed, lRead, lLength})
+            Invoke(d, New Object() {Job, AppId, percent, Speed, lRead, lLength})
             Return
         End If
         Dim TimeLeft As TimeSpan
@@ -105,7 +105,7 @@ Public Class frmDownloadManager
     Private Sub btnAbort_Click(sender As Object, e As EventArgs) Handles btnAbort.Click
         _Aborted = True
 
-        Me.DialogResult = DialogResult.Cancel
+        DialogResult = DialogResult.Cancel
     End Sub
 
     Public Sub DownloadFile()

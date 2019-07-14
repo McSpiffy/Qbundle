@@ -52,6 +52,6 @@ Public Class frmNewAccount
             MsgBox("You need to enter a valid Pin.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "No valid pin.")
             Exit Sub
         End If
-        Me.DialogResult = DialogResult.OK
+        DialogResult = DialogResult.OK
     End Sub
 End Class

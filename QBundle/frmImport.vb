@@ -74,7 +74,7 @@ Public Class frmImport
 
     Private Sub btnStart_Click(sender As Object, e As EventArgs) Handles btnStart.Click
         If btnStart.Text = "Close" Then
-            Me.Close()
+            Close()
             Exit Sub
         End If
 
@@ -164,9 +164,9 @@ Public Class frmImport
         S = New frmDownloadManager
         S.Url = Url
         S.Unzip = True
-        Me.Hide()
+        Hide()
         If S.ShowDialog = DialogResult.OK Then
-            Me.Show()
+            Show()
             Try
                 If File.Exists(QGlobal.BaseDir & Path.GetFileName(Url)) Then
                     File.Delete(QGlobal.BaseDir & Path.GetFileName(Url)) 'not if not ziped
@@ -191,7 +191,7 @@ Public Class frmImport
             Exit Sub
         End If
         Try
-            Me.Show()
+            Show()
             'we have aborted return to download again
             IsAborted = True
             If Q.settings.DbType = QGlobal.DbType.pMariaDB Then StopMaria()
@@ -210,9 +210,9 @@ Public Class frmImport
         S = New frmDownloadManager
         S.Url = Url
         S.Unzip = True
-        Me.Hide()
+        Hide()
         If S.ShowDialog = DialogResult.OK Then
-            Me.Show()
+            Show()
             Try
                 If File.Exists(QGlobal.BaseDir & Path.GetFileName(Url)) Then 'delete zip file
                     File.Delete(QGlobal.BaseDir & Path.GetFileName(Url)) 'not if not ziped
@@ -237,7 +237,7 @@ Public Class frmImport
             Exit Sub
         End If
         Try
-            Me.Show()
+            Show()
             'we have aborted return to download again
             IsAborted = True
             If Q.settings.DbType = QGlobal.DbType.pMariaDB Then StopMaria()
@@ -341,9 +341,9 @@ Public Class frmImport
     End Sub
 
     Private Sub UpdateInfo(bytes As Long, IsDone As Boolean)
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DUpdateinfo(AddressOf UpdateInfo)
-            Me.Invoke(d, New Object() {bytes, IsDone})
+            Invoke(d, New Object() {bytes, IsDone})
             Return
         End If
         TotalRead += bytes
@@ -362,14 +362,14 @@ Public Class frmImport
         Dim S As frmDownloadManager
         S = New frmDownloadManager
         S.Url = Url
-        Me.Hide()
+        Hide()
 
         If S.ShowDialog = DialogResult.OK Then
-            Me.Show()
+            Show()
             ImportFromFile(QGlobal.AppDir & Path.GetFileName(Url))
             Exit Sub
         End If
-        Me.Show()
+        Show()
         'we have aborted return to download again
         IsAborted = True
         If Q.settings.DbType = QGlobal.DbType.pMariaDB Then StopMaria()
@@ -398,9 +398,9 @@ Public Class frmImport
 #Region " Proc Events "
 
     Private Sub Starting(AppId As Integer)
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DStarting(AddressOf Starting)
-            Me.Invoke(d, New Object() {AppId})
+            Invoke(d, New Object() {AppId})
             Return
         End If
 
@@ -412,9 +412,9 @@ Public Class frmImport
     End Sub
 
     Private Sub Stopped(AppId As Integer)
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DStoped(AddressOf Stopped)
-            Me.Invoke(d, New Object() {AppId})
+            Invoke(d, New Object() {AppId})
             Return
         End If
 
@@ -466,9 +466,9 @@ Public Class frmImport
     End Sub
 
     Private Sub ProcEvents(AppId As Integer, Operation As Integer, data As String)
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DProcEvents(AddressOf ProcEvents)
-            Me.Invoke(d, New Object() {AppId, Operation, data})
+            Invoke(d, New Object() {AppId, Operation, data})
             Return
         End If
         'threadsafe here
@@ -533,9 +533,9 @@ Public Class frmImport
     End Sub
 
     Private Sub Aborted(AppId As Integer, Data As String)
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DAborted(AddressOf Aborted)
-            Me.Invoke(d, New Object() {AppId, Data})
+            Invoke(d, New Object() {AppId, Data})
             Return
         End If
 

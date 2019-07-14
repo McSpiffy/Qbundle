@@ -3,15 +3,15 @@
 Public Class frmFirstTime
     Private Sub frmFirstTime_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
-        Me.AutoScaleMode = AutoScaleMode.None
+        AutoScaleMode = AutoScaleMode.None
 
-        Me.Width = PnlWiz2.Left + PnlWiz2.Width + 25
-        Me.Height = PnlWiz2.Top + PnlWiz2.Height + 39
+        Width = PnlWiz2.Left + PnlWiz2.Width + 25
+        Height = PnlWiz2.Top + PnlWiz2.Height + 39
 
-        Me.AutoScaleMode = AutoScaleMode.Font
+        AutoScaleMode = AutoScaleMode.Font
 
         If Generic.DebugMe Then
-            Me.Text = Me.Text & " (DebugMode)"
+            Text = Text & " (DebugMode)"
         End If
 
         FirstNext()
@@ -54,7 +54,7 @@ Public Class frmFirstTime
 
 
     Private Sub btnDownload_Click(sender As Object, e As EventArgs) Handles btnDownload.Click
-        Me.Hide()
+        Hide()
 
 
         If Not Q.AppManager.isJavaInstalled() Then
@@ -64,7 +64,7 @@ Public Class frmFirstTime
             Q.AppManager.InstallApp("BRS")
         End If
         SetInfo()
-        Me.Show()
+        Show()
     End Sub
 
     Private Sub btnDone_Click(sender As Object, e As EventArgs) Handles btnDone.Click
@@ -103,6 +103,6 @@ Public Class frmFirstTime
 
         End Try
         Generic.WriteWalletConfig()
-        Me.DialogResult = DialogResult.No
+        DialogResult = DialogResult.No
     End Sub
 End Class

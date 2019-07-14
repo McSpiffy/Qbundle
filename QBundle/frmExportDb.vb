@@ -24,7 +24,7 @@ Public Class frmExportDb
 
     Private Sub btnStart_Click(sender As Object, e As EventArgs) Handles btnStart.Click
         If btnStart.Text = "Close" Then
-            Me.Close()
+            Close()
             Exit Sub
         End If
         btnBrowse.Enabled = False
@@ -130,9 +130,9 @@ Public Class frmExportDb
     End Sub
 
     Private Sub Starting(AppId As Integer)
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DStarting(AddressOf Starting)
-            Me.Invoke(d, New Object() {AppId})
+            Invoke(d, New Object() {AppId})
             Return
         End If
 
@@ -144,9 +144,9 @@ Public Class frmExportDb
     End Sub
 
     Private Sub Stopped(AppId As Integer)
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DStoped(AddressOf Stopped)
-            Me.Invoke(d, New Object() {AppId})
+            Invoke(d, New Object() {AppId})
             Return
         End If
         If AppId = QGlobal.AppNames.Export Then
@@ -179,9 +179,9 @@ Public Class frmExportDb
     End Sub
 
     Private Sub ProcEvents(AppId As Integer, Operation As Integer, data As String)
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DProcEvents(AddressOf ProcEvents)
-            Me.Invoke(d, New Object() {AppId, Operation, data})
+            Invoke(d, New Object() {AppId, Operation, data})
             Return
         End If
         'threadsafe here
@@ -230,9 +230,9 @@ Public Class frmExportDb
     End Sub
 
     Private Sub Aborted(AppId As Integer, Data As String)
-        If Me.InvokeRequired Then
+        If InvokeRequired Then
             Dim d As New DAborted(AddressOf Aborted)
-            Me.Invoke(d, New Object() {AppId, Data})
+            Invoke(d, New Object() {AppId, Data})
             Return
         End If
 
