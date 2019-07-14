@@ -3,6 +3,7 @@ Imports System.ServiceProcess
 Imports System.Text
 Imports System.Threading
 
+' TODO remove this, it is deprecated
 Public Class clsServiceHandler
     Public Event MonitorEvents(ByVal Operation As Integer, ByVal Data As String) '0 service information '1 pipe information
     Public Event Update(ByVal Pid As Integer, ByVal Status As Integer, ByVal Data As String) 'used to signal wallet status
@@ -12,51 +13,6 @@ Public Class clsServiceHandler
     Private PipeBuffer() As Byte
     Private ShouldPipeRun As Boolean
 #Region " Public Service Subs / Functions  "
-    Public Function InstallService() As Boolean
-        Try
-            If QB.Generic.IsAdmin Then
-                Dim Srv As String = QGlobal.BaseDir & "BurstService.exe"
-                Configuration.Install.ManagedInstallerClass.InstallHelper(New String() {Srv})
-                Return True
-            Else
-                Dim p As Process = New Process
-                p.StartInfo.WorkingDirectory = QGlobal.BaseDir
-                p.StartInfo.Arguments = "InstallService"
-                p.StartInfo.UseShellExecute = True
-                p.StartInfo.CreateNoWindow = True
-                p.StartInfo.FileName = Application.ExecutablePath
-                p.StartInfo.Verb = "runas"
-                p.Start()
-                Return False
-            End If
-        Catch ex As Exception
-            Generic.WriteDebug(ex)
-        End Try
-        Return False
-
-    End Function
-    Public Function UninstallService() As Boolean
-        Try
-            If QB.Generic.IsAdmin Then
-                Dim Srv As String = QGlobal.BaseDir & "BurstService.exe"
-                Configuration.Install.ManagedInstallerClass.InstallHelper(New String() {"/u", Srv})
-                Return True
-            Else
-                Dim p As Process = New Process
-                p.StartInfo.WorkingDirectory = QGlobal.BaseDir
-                p.StartInfo.Arguments = "UnInstallService"
-                p.StartInfo.UseShellExecute = True
-                p.StartInfo.CreateNoWindow = True
-                p.StartInfo.FileName = Application.ExecutablePath
-                p.StartInfo.Verb = "runas"
-                p.Start()
-                Return False
-            End If
-        Catch ex As Exception
-            Generic.WriteDebug(ex)
-        End Try
-        Return False
-    End Function
     Public Sub StartService(Optional ByVal Monitor As Boolean = True)
         If Not IsServiceRunning() And IsInstalled() Then
             Dim service As ServiceController = New ServiceController("Burst Service")
