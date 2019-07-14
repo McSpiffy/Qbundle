@@ -178,7 +178,7 @@ Partial Class frmDownloadManager
         Me.btnAbort.Text = "Cancel"
         Me.btnAbort.UseVisualStyleBackColor = True
         '
-        'frmDownloadExtract
+        'frmDownloadManager
         '
         Me.AutoScaleDimensions = New System.Drawing.SizeF(6.0!, 13.0!)
         Me.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font
@@ -189,9 +189,9 @@ Partial Class frmDownloadManager
         Me.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog
         Me.Icon = CType(resources.GetObject("$this.Icon"), System.Drawing.Icon)
         Me.MaximizeBox = False
-        Me.Name = "frmDownloadExtract"
+        Me.Name = "frmDownloadManager"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Download manager"
+        Me.Text = "Downloading..."
         Me.GroupBox1.ResumeLayout(False)
         Me.GroupBox1.PerformLayout()
         CType(Me.PictureBox1, System.ComponentModel.ISupportInitialize).EndInit()

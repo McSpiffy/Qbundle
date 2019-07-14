@@ -339,10 +339,11 @@ Partial Class frmChangeDatabase
         Me.Label4.AutoSize = True
         Me.Label4.Location = New System.Drawing.Point(49, 138)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(245, 39)
+        Me.Label4.Size = New System.Drawing.Size(245, 52)
         Me.Label4.TabIndex = 5
         Me.Label4.Text = "No data from the old database will be copied. " & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "If you do not have a database in " &
-    "place already" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "you will have to sync the chain from the beginning."
+    "place already" & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "you will have to sync the chain from the beginning," & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "or use the b" &
+    "ootstrap option." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
         '
         'Label3
         '
@@ -373,9 +374,9 @@ Partial Class frmChangeDatabase
         Me.rOP1.Enabled = False
         Me.rOP1.Location = New System.Drawing.Point(32, 59)
         Me.rOP1.Name = "rOP1"
-        Me.rOP1.Size = New System.Drawing.Size(164, 17)
+        Me.rOP1.Size = New System.Drawing.Size(179, 17)
         Me.rOP1.TabIndex = 2
-        Me.rOP1.Text = "Copy data (currently disabled)"
+        Me.rOP1.Text = "Copy data (currently unavailable)"
         Me.rOP1.UseVisualStyleBackColor = True
         '
         'Label9

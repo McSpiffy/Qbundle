@@ -70,7 +70,7 @@ Partial Class frmImport
         Me.Label1.Size = New System.Drawing.Size(403, 26)
         Me.Label1.TabIndex = 2
         Me.Label1.Text = "This feature will download a verified chain from one of the built in repositories" &
-    "." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "It will allow you do get started much quicker than downloading and verify fro" &
+    "." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10) & "It will allow you do get started much quicker than downloading and verifying fro" &
     "m peers."
         '
         'Label15

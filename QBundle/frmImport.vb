@@ -39,14 +39,14 @@ Public Class frmImport
             Case QGlobal.DbType.H2
                 ReDim RepoDBUrls(0)
                 RepoDBUrls(0) = "https://download.cryptoguru.org/burst/wallet/brs.h2.zip"
-                cmbRepo.Items.Add("Cryptoguru repository (H2)")
+                cmbRepo.Items.Add("CryptoGuru repository (H2)")
                 cmbRepo.SelectedIndex = 0
                 chkStartWallet.Checked = True
                 chkStartWallet.Visible = True
             Case QGlobal.DbType.pMariaDB
                 ReDim RepoDBUrls(0)
                 RepoDBUrls(0) = "https://download.cryptoguru.org/burst/wallet/brs.mariadb.zip"
-                cmbRepo.Items.Add("Cryptoguru repository (MariaDB)")
+                cmbRepo.Items.Add("CryptoGuru repository (MariaDB)")
                 cmbRepo.SelectedIndex = 0
                 chkStartWallet.Checked = False
                 chkStartWallet.Visible = False
@@ -222,14 +222,13 @@ Public Class frmImport
             End Try
             lblStatus.Text = "Importing SQL file. This will take up to an hour."
             Try
-                Dim dmpfile As New FileInfo(QGlobal.BaseDir & "brs.MariaDB.sql")
+                Dim dmpfile As New FileInfo(QGlobal.BaseDir & "brs.mariadb.sql")
                 FileSize = dmpfile.Length
                 TotalRead = 0
                 Dim trda As Thread
                 trda = New Thread(AddressOf ImportSqlDump)
                 trda.IsBackground = True
                 trda.Start()
-                trda = Nothing
             Catch ex As Exception
                 Generic.WriteDebug(ex)
             End Try
@@ -249,57 +248,6 @@ Public Class frmImport
         Catch ex As Exception
 
         End Try
-    End Sub
-
-    Private Sub MariaDBUnusedCode()
-
-
-        Dim cdata() As String = Split(Q.settings.DbServer, "/")
-        Dim svr() As String = Split(cdata(UBound(cdata) - 1), ":")
-
-        '     Dim conn As New MySqlConnection
-        Dim DatabaseName As String = cdata(UBound(cdata))
-        Dim server As String = svr(0)
-        Dim userName As String = Q.settings.DbUser
-        Dim password As String = Q.settings.DbPass
-        '   If Not conn Is Nothing Then conn.Close()
-        '   conn.ConnectionString = String.Format("server={0}; user id={1}; password={2}; database={3}; pooling=false", server, userName, password, DatabaseName)
-        '   conn.Open()
-
-        Dim sr = New StreamReader(QGlobal.BaseDir & "dump.sql")
-        Dim sql = ""
-        '    Dim cmd As New MySqlCommand
-        'cmd.Connection = conn
-
-        'cmd.CommandText = "DROP DATABASE IF EXISTS " & DatabaseName & ";"
-        'cmd.ExecuteNonQuery()
-        'cmd.CommandText = "CREATE DATABASE " & DatabaseName & " DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_general_ci;"
-        'cmd.ExecuteNonQuery()
-
-        Dim dmpfile As New FileInfo(QGlobal.BaseDir & "brs.MariaDB.sql")
-        Dim totalbytes As Long = dmpfile.Length
-        Dim totalRead As Long = 0
-        Dim percent = 0
-        Do
-            sql = ""
-            Dim line = ""
-
-
-            Do
-                line = sr.ReadLine()
-                sql &= line & vbCrLf
-                If line.EndsWith(";") Then Exit Do
-                If sr.EndOfStream Then Exit Do
-            Loop
-            totalRead += sql.Length
-            percent = CInt(Math.Round((totalRead/totalbytes)*100, 0))
-            '       cmd.CommandText = sql
-            '       cmd.ExecuteNonQuery()
-        Loop Until sr.EndOfStream
-        '   cmd.Dispose()
-        '   conn.Close()
-        '   conn.Dispose()
-        sr.Close()
     End Sub
 
     Private Sub ImportSqlDump()

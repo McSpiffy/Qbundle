@@ -138,9 +138,9 @@ Partial Class frmAccounts
         Me.lblName.AutoSize = True
         Me.lblName.Location = New System.Drawing.Point(47, 22)
         Me.lblName.Name = "lblName"
-        Me.lblName.Size = New System.Drawing.Size(39, 13)
+        Me.lblName.Size = New System.Drawing.Size(109, 13)
         Me.lblName.TabIndex = 12
-        Me.lblName.Text = "Label7"
+        Me.lblName.Text = "No Account Selected"
         '
         'txtPrivateKey
         '
@@ -187,9 +187,9 @@ Partial Class frmAccounts
         Me.Label6.AutoSize = True
         Me.Label6.Location = New System.Drawing.Point(12, 41)
         Me.Label6.Name = "Label6"
-        Me.Label6.Size = New System.Drawing.Size(92, 13)
+        Me.Label6.Size = New System.Drawing.Size(75, 13)
         Me.Label6.TabIndex = 5
-        Me.Label6.Text = "Burst RS address:"
+        Me.Label6.Text = "Burst Address:"
         '
         'Label5
         '
@@ -205,9 +205,9 @@ Partial Class frmAccounts
         Me.Label4.AutoSize = True
         Me.Label4.Location = New System.Drawing.Point(259, 41)
         Me.Label4.Name = "Label4"
-        Me.Label4.Size = New System.Drawing.Size(104, 13)
+        Me.Label4.Size = New System.Drawing.Size(106, 13)
         Me.Label4.TabIndex = 3
-        Me.Label4.Text = "Numeric Account nr:"
+        Me.Label4.Text = "Numeric Account ID:"
         '
         'Label3
         '

@@ -30,11 +30,11 @@ Partial Class frmShutdown
         'Label1
         '
         Me.Label1.AutoSize = True
-        Me.Label1.Location = New System.Drawing.Point(17, 14)
+        Me.Label1.Location = New System.Drawing.Point(25, 9)
         Me.Label1.Name = "Label1"
-        Me.Label1.Size = New System.Drawing.Size(189, 13)
+        Me.Label1.Size = New System.Drawing.Size(173, 13)
         Me.Label1.TabIndex = 0
-        Me.Label1.Text = "Shutting down core wallet. Please wait"
+        Me.Label1.Text = "Shutting down wallet, please wait..." & Global.Microsoft.VisualBasic.ChrW(13) & Global.Microsoft.VisualBasic.ChrW(10)
         '
         'ProgressBar1
         '
@@ -59,7 +59,7 @@ Partial Class frmShutdown
         Me.MinimizeBox = False
         Me.Name = "frmShutdown"
         Me.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen
-        Me.Text = "Shutting down."
+        Me.Text = "Shutting down..."
         Me.ResumeLayout(False)
         Me.PerformLayout()
 

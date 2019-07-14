@@ -115,7 +115,6 @@ Public Class clsAppManager
     End Function
 
     Friend Function DoesAppNeedUpdate(AppName As String) As Boolean
-
         Try
             For t = 0 To UBound(AppStore.Apps)
                 If AppStore.Apps(t).Name = AppName Then
