@@ -2,14 +2,20 @@
     Private WasRunning As Boolean = False
     Private wStep As Integer = 0
     Private WithEvents WaitTimer As Timer
-    Private Delegate Sub DProcEvents(ByVal [AppId] As Integer, ByVal [Operation] As Integer, ByVal [data] As String)
-    Private Delegate Sub DStarting(ByVal [AppId] As Integer)
-    Private Delegate Sub DStoped(ByVal [AppId] As Integer)
-    Private Delegate Sub DAborted(ByVal [AppId] As Integer, ByVal [data] As String)
+
+    Private Delegate Sub DProcEvents([AppId] As Integer, [Operation] As Integer, [data] As String)
+
+    Private Delegate Sub DStarting([AppId] As Integer)
+
+    Private Delegate Sub DStoped([AppId] As Integer)
+
+    Private Delegate Sub DAborted([AppId] As Integer, [data] As String)
 
 
     Private Sub btnStart_Click(sender As Object, e As EventArgs) Handles btnStart.Click
-        If MsgBox("Are you really sure you want to rollback chain?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo, "Rollback chain") = MsgBoxResult.Yes Then
+        If _
+            MsgBox("Are you really sure you want to rollback chain?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo,
+                   "Rollback chain") = MsgBoxResult.Yes Then
 
             AddHandler Q.ProcHandler.Update, AddressOf ProcEvents
             wStep = 0
@@ -82,7 +88,8 @@
     Private Sub Complete()
         RemoveHandler Q.ProcHandler.Update, AddressOf ProcEvents
     End Sub
-    Private Sub ProcEvents(ByVal AppId As Integer, ByVal Operation As Integer, ByVal data As String)
+
+    Private Sub ProcEvents(AppId As Integer, Operation As Integer, data As String)
         If Me.InvokeRequired Then
             Dim d As New DProcEvents(AddressOf ProcEvents)
             Me.Invoke(d, New Object() {AppId, Operation, data})
@@ -94,20 +101,9 @@
                     wStep = 3
             End Select
         End If
-
-
     End Sub
-
-
-
 
 
     Private Sub PopOffSome()
-
-
-
-
-
     End Sub
-
 End Class

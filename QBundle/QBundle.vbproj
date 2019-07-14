@@ -188,7 +188,6 @@
     <Compile Include="clsAccounts.vb" />
     <Compile Include="clsAppManager.vb" />
     <Compile Include="clsHttp.vb" />
-    <Compile Include="clsNonceMaker.vb" />
     <Compile Include="clsProcessHandler.vb" />
     <Compile Include="clsProperties.vb" />
     <Compile Include="clsQ.vb" />

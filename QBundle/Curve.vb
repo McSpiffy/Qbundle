@@ -1,18 +1,27 @@
 ﻿Public Class Curve
     Public Const KeySize As Integer = 32
-    Shared ReadOnly Order() As Byte = {237, 211, 245, 92, 26, 99, 18, 88, 214, 156, 247, 162, 222, 249, 222, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 16}
+
+    Shared ReadOnly _
+        Order() As Byte =
+            {237, 211, 245, 92, 26, 99, 18, 88, 214, 156, 247, 162, 222, 249, 222, 20, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+             0, 0, 0, 0, 16}
 
     Public Shared Sub ClampPrivateKeyInline(ByRef key As Byte())
         If key Is Nothing Then Throw New ArgumentNullException("key")
-        If key.Length <> 32 Then Throw New ArgumentException([String].Format("key must be 32 bytes long (but was {0} bytes long)", key.Length))
+        If key.Length <> 32 Then _
+            Throw _
+                New ArgumentException([String].Format("key must be 32 bytes long (but was {0} bytes long)", key.Length))
         key(31) = key(31) And CByte(&H7F)
         key(31) = key(31) Or CByte(&H40)
         key(0) = key(0) And CByte(&HF8)
     End Sub
 
-    Public Shared Function ClampPrivateKey(ByVal rawKey As Byte()) As Byte()
+    Public Shared Function ClampPrivateKey(rawKey As Byte()) As Byte()
         If rawKey Is Nothing Then Throw New ArgumentNullException("rawKey")
-        If rawKey.Length <> 32 Then Throw New ArgumentException([String].Format("rawKey must be 32 bytes long (but was {0} bytes long)", rawKey.Length), "rawKey")
+        If rawKey.Length <> 32 Then _
+            Throw _
+                New ArgumentException(
+                    [String].Format("rawKey must be 32 bytes long (but was {0} bytes long)", rawKey.Length), "rawKey")
         Dim res = New Byte(31) {}
         Array.Copy(rawKey, res, 32)
         res(31) = res(31) And CByte(&H7F)
@@ -31,8 +40,8 @@
 
         ClampPrivateKeyInline(privateKey)
         Core(publicKey, signingKey, privateKey, Nothing)
-
     End Sub
+
     Public Shared Function GetPublicKey(privateKey As Byte()) As Byte()
         Dim publicKey = New Byte(31) {}
         ' ClampPrivateKeyInline(privateKey)
@@ -46,6 +55,7 @@
         Core(publicKey, signingKey, privateKey, Nothing)
         Return signingKey
     End Function
+
     Public Shared Function GetSharedSecret(privateKey As Byte(), peerPublicKey As Byte()) As Byte()
         Dim sharedSecret = New Byte(31) {}
         Core(sharedSecret, Nothing, privateKey, peerPublicKey)
@@ -53,11 +63,22 @@
     End Function
 
     Private NotInheritable Class Long10
-        Public N0 As Long, N1 As Long, N2 As Long, N3 As Long, N4 As Long, N5 As Long, N6 As Long, N7 As Long, N8 As Long, N9 As Long
-        Sub New()
+        Public N0 As Long,
+               N1 As Long,
+               N2 As Long,
+               N3 As Long,
+               N4 As Long,
+               N5 As Long,
+               N6 As Long,
+               N7 As Long,
+               N8 As Long,
+               N9 As Long
 
+        Sub New()
         End Sub
-        Public Sub New(n0__1 As Long, n1__2 As Long, n2__3 As Long, n3__4 As Long, n4__5 As Long, n5__6 As Long, n6__7 As Long, n7__8 As Long, n8__9 As Long, n9__10 As Long)
+
+        Public Sub New(n0__1 As Long, n1__2 As Long, n2__3 As Long, n3__4 As Long, n4__5 As Long, n5__6 As Long,
+                       n6__7 As Long, n7__8 As Long, n8__9 As Long, n9__10 As Long)
             N0 = n0__1
             N1 = n1__2
             N2 = n2__3
@@ -69,17 +90,17 @@
             N8 = n8__9
             N9 = n9__10
         End Sub
-
     End Class
 
     Private Shared Sub Copy32(ByRef source As Byte(), ByRef destination As Byte())
         Array.Copy(source, 0, destination, 0, 32)
     End Sub
 
-    Private Shared Function MultiplyArraySmall(p As Byte(), q As Byte(), m As Integer, x As Byte(), n As Integer, z As Integer) As Integer
-        Dim v As Integer = 0
-        For i As Integer = 0 To n - 1
-            v += (q(i + m) And &HFF) + z * (x(i) And &HFF)
+    Private Shared Function MultiplyArraySmall(p As Byte(), q As Byte(), m As Integer, x As Byte(), n As Integer,
+                                               z As Integer) As Integer
+        Dim v = 0
+        For i = 0 To n - 1
+            v += (q(i + m) And &HFF) + z*(x(i) And &HFF)
             p(i + m) = CByte(v)
             v >>= 8
         Next
@@ -87,23 +108,24 @@
     End Function
 
     Private Shared Sub MultiplyArray32(p As Byte(), x As Byte(), y As Byte(), t As Integer, z As Integer)
-        Const n As Integer = 31
-        Dim w As Integer = 0
-        Dim i As Integer = 0
-        Dim zy As Integer = 0
+        Const n = 31
+        Dim w = 0
+        Dim i = 0
+        Dim zy = 0
         While i < t
-            zy = z * (y(i) And &HFF)
-            w += MultiplyArraySmall(p, p, i, x, n, zy) + (p(i + n) And &HFF) + zy * (x(n) And &HFF)
+            zy = z*(y(i) And &HFF)
+            w += MultiplyArraySmall(p, p, i, x, n, zy) + (p(i + n) And &HFF) + zy*(x(n) And &HFF)
             p(i + n) = CByte(w)
             w >>= 8
             i += 1
         End While
         p(i + n) = CByte(w + (p(i + n) And &HFF))
     End Sub
+
     Private Shared Sub DivMod(q As Byte(), r As Byte(), n As Integer, d As Byte(), t As Integer)
-        Dim rn As Integer = 0
+        Dim rn = 0
         Dim dt As Integer = ((d(t - 1) And &HFF) << 8)
-        Dim z As Integer = 0
+        Dim z = 0
         If t > 1 Then
             dt = dt Or (d(t - 2) And &HFF)
         End If
@@ -113,16 +135,17 @@
             If n > 0 Then
                 z = z Or (r(n - 1) And &HFF)
             End If
-            z = CInt(z / dt)
-            rn += MultiplyArraySmall(r, r, n - t + 1, d, t, -z)
+            z = CInt(z/dt)
+            rn += MultiplyArraySmall(r, r, n - t + 1, d, t, - z)
             q(n - t + 1) = CByte((z + rn) And &HFF)
 
-            MultiplyArraySmall(r, r, n - t + 1, d, t, -rn)
+            MultiplyArraySmall(r, r, n - t + 1, d, t, - rn)
             rn = (r(n) And &HFF)
             r(n) = 0
         End While
         r(t - 1) = CByte(rn)
     End Sub
+
     Private Shared Function GetNumSize(num As Byte(), maxSize As Integer) As Integer
         Dim i As Integer = maxSize
         While i >= 0
@@ -133,7 +156,7 @@
     End Function
 
     Private Shared Function Egcd32(x As Byte(), y As Byte(), a As Byte(), b As Byte()) As Byte()
-        Dim bn As Integer = 32
+        Dim bn = 32
         Dim i As Integer
         For i = 0 To 31
             '
@@ -155,13 +178,13 @@
             DivMod(temp, b, bn, a, an)
             bn = GetNumSize(b, bn)
             If bn = 0 Then Return x
-            MultiplyArray32(y, x, temp, qn, -1)
+            MultiplyArray32(y, x, temp, qn, - 1)
 
             qn = an - bn + 1
             DivMod(temp, a, an, b, bn)
             an = GetNumSize(a, an)
             If an = 0 Then Return y
-            MultiplyArray32(x, y, temp, qn, -1)
+            MultiplyArray32(x, y, temp, qn, - 1)
 
         End While
         'fix vs complaints
@@ -170,26 +193,37 @@
 
     Private Const P25 As Integer = 33554431
     Private Const P26 As Integer = 67108863
+
     Private Shared Sub Unpack(x As Long10, m As Byte())
         x.N0 = ((m(0) And &HFF)) Or ((m(1) And &HFF)) << 8 Or (m(2) And &HFF) << 16 Or ((m(3) And &HFF) And 3) << 24
-        x.N1 = ((m(3) And &HFF) And Not 3) >> 2 Or (m(4) And &HFF) << 6 Or (m(5) And &HFF) << 14 Or ((m(6) And &HFF) And 7) << 22
-        x.N2 = ((m(6) And &HFF) And Not 7) >> 3 Or (m(7) And &HFF) << 5 Or (m(8) And &HFF) << 13 Or ((m(9) And &HFF) And 31) << 21
-        x.N3 = ((m(9) And &HFF) And Not 31) >> 5 Or (m(10) And &HFF) << 3 Or (m(11) And &HFF) << 11 Or ((m(12) And &HFF) And 63) << 19
-        x.N4 = ((m(12) And &HFF) And Not 63) >> 6 Or (m(13) And &HFF) << 2 Or (m(14) And &HFF) << 10 Or (m(15) And &HFF) << 18
+        x.N1 = ((m(3) And &HFF) And Not 3) >> 2 Or (m(4) And &HFF) << 6 Or (m(5) And &HFF) << 14 Or
+               ((m(6) And &HFF) And 7) << 22
+        x.N2 = ((m(6) And &HFF) And Not 7) >> 3 Or (m(7) And &HFF) << 5 Or (m(8) And &HFF) << 13 Or
+               ((m(9) And &HFF) And 31) << 21
+        x.N3 = ((m(9) And &HFF) And Not 31) >> 5 Or (m(10) And &HFF) << 3 Or (m(11) And &HFF) << 11 Or
+               ((m(12) And &HFF) And 63) << 19
+        x.N4 = ((m(12) And &HFF) And Not 63) >> 6 Or (m(13) And &HFF) << 2 Or (m(14) And &HFF) << 10 Or
+               (m(15) And &HFF) << 18
         x.N5 = (m(16) And &HFF) Or (m(17) And &HFF) << 8 Or (m(18) And &HFF) << 16 Or ((m(19) And &HFF) And 1) << 24
-        x.N6 = ((m(19) And &HFF) And Not 1) >> 1 Or (m(20) And &HFF) << 7 Or (m(21) And &HFF) << 15 Or ((m(22) And &HFF) And 7) << 23
-        x.N7 = ((m(22) And &HFF) And Not 7) >> 3 Or (m(23) And &HFF) << 5 Or (m(24) And &HFF) << 13 Or ((m(25) And &HFF) And 15) << 21
-        x.N8 = ((m(25) And &HFF) And Not 15) >> 4 Or (m(26) And &HFF) << 4 Or (m(27) And &HFF) << 12 Or ((m(28) And &HFF) And 63) << 20
-        x.N9 = ((m(28) And &HFF) And Not 63) >> 6 Or (m(29) And &HFF) << 2 Or (m(30) And &HFF) << 10 Or (m(31) And &HFF) << 18
+        x.N6 = ((m(19) And &HFF) And Not 1) >> 1 Or (m(20) And &HFF) << 7 Or (m(21) And &HFF) << 15 Or
+               ((m(22) And &HFF) And 7) << 23
+        x.N7 = ((m(22) And &HFF) And Not 7) >> 3 Or (m(23) And &HFF) << 5 Or (m(24) And &HFF) << 13 Or
+               ((m(25) And &HFF) And 15) << 21
+        x.N8 = ((m(25) And &HFF) And Not 15) >> 4 Or (m(26) And &HFF) << 4 Or (m(27) And &HFF) << 12 Or
+               ((m(28) And &HFF) And 63) << 20
+        x.N9 = ((m(28) And &HFF) And Not 63) >> 6 Or (m(29) And &HFF) << 2 Or (m(30) And &HFF) << 10 Or
+               (m(31) And &HFF) << 18
     End Sub
 
     Private Shared Function IsOverflow(x As Long10) As Boolean
-        Return (((x.N0 > P26 - 19)) And ((x.N1 And x.N3 And x.N5 And x.N7 And x.N9) = P25) And ((x.N2 And x.N4 And x.N6 And x.N8) = P26)) OrElse (x.N9 > P25)
+        Return _
+            (((x.N0 > P26 - 19)) And ((x.N1 And x.N3 And x.N5 And x.N7 And x.N9) = P25) And
+             ((x.N2 And x.N4 And x.N6 And x.N8) = P26)) OrElse (x.N9 > P25)
     End Function
 
     Private Shared Sub Pack(x As Long10, m As Byte())
         Dim ld As Integer = (If(IsOverflow(x), 1, 0)) - (If((x.N9 < 0), 1, 0))
-        Dim ud As Integer = ld * -(P25 + 1)
+        Dim ud As Integer = ld*- (P25 + 1)
         ld *= 19
         Dim t As Long = ld + x.N0 + (x.N1 << 26)
         m(0) = CByte(t)
@@ -271,6 +305,7 @@
         xy.N8 = x.N8 + y.N8
         xy.N9 = x.N9 + y.N9
     End Sub
+
     Private Shared Sub [Sub](xy As Long10, x As Long10, y As Long10)
         xy.N0 = x.N0 - y.N0
         xy.N1 = x.N1 - y.N1
@@ -285,25 +320,25 @@
     End Sub
 
     Private Shared Sub MulSmall(xy As Long10, x As Long10, y As Long)
-        Dim temp As Long = (x.N8 * y)
+        Dim temp As Long = (x.N8*y)
         xy.N8 = (temp And ((1 << 26) - 1))
-        temp = (temp >> 26) + (x.N9 * y)
+        temp = (temp >> 26) + (x.N9*y)
         xy.N9 = (temp And ((1 << 25) - 1))
-        temp = 19 * (temp >> 25) + (x.N0 * y)
+        temp = 19*(temp >> 25) + (x.N0*y)
         xy.N0 = (temp And ((1 << 26) - 1))
-        temp = (temp >> 26) + (x.N1 * y)
+        temp = (temp >> 26) + (x.N1*y)
         xy.N1 = (temp And ((1 << 25) - 1))
-        temp = (temp >> 25) + (x.N2 * y)
+        temp = (temp >> 25) + (x.N2*y)
         xy.N2 = (temp And ((1 << 26) - 1))
-        temp = (temp >> 26) + (x.N3 * y)
+        temp = (temp >> 26) + (x.N3*y)
         xy.N3 = (temp And ((1 << 25) - 1))
-        temp = (temp >> 25) + (x.N4 * y)
+        temp = (temp >> 25) + (x.N4*y)
         xy.N4 = (temp And ((1 << 26) - 1))
-        temp = (temp >> 26) + (x.N5 * y)
+        temp = (temp >> 26) + (x.N5*y)
         xy.N5 = (temp And ((1 << 25) - 1))
-        temp = (temp >> 25) + (x.N6 * y)
+        temp = (temp >> 25) + (x.N6*y)
         xy.N6 = (temp And ((1 << 26) - 1))
-        temp = (temp >> 26) + (x.N7 * y)
+        temp = (temp >> 26) + (x.N7*y)
         xy.N7 = (temp And ((1 << 25) - 1))
         temp = (temp >> 25) + xy.N8
         xy.N8 = (temp And ((1 << 26) - 1))
@@ -312,29 +347,55 @@
 
     Private Shared Sub Multiply(xy As Long10, x As Long10, y As Long10)
 
-        Dim x0 As Long = x.N0, x1 As Long = x.N1, x2 As Long = x.N2, x3 As Long = x.N3, x4 As Long = x.N4, x5 As Long = x.N5,
-            x6 As Long = x.N6, x7 As Long = x.N7, x8 As Long = x.N8, x9 As Long = x.N9
-        Dim y0 As Long = y.N0, y1 As Long = y.N1, y2 As Long = y.N2, y3 As Long = y.N3, y4 As Long = y.N4, y5 As Long = y.N5,
-            y6 As Long = y.N6, y7 As Long = y.N7, y8 As Long = y.N8, y9 As Long = y.N9
-        Dim t As Long = (x0 * y8) + (x2 * y6) + (x4 * y4) + (x6 * y2) + (x8 * y0) + 2 * ((x1 * y7) + (x3 * y5) + (x5 * y3) + (x7 * y1)) + 38 * (x9 * y9)
+        Dim x0 As Long = x.N0,
+            x1 As Long = x.N1,
+            x2 As Long = x.N2,
+            x3 As Long = x.N3,
+            x4 As Long = x.N4,
+            x5 As Long = x.N5,
+            x6 As Long = x.N6,
+            x7 As Long = x.N7,
+            x8 As Long = x.N8,
+            x9 As Long = x.N9
+        Dim y0 As Long = y.N0,
+            y1 As Long = y.N1,
+            y2 As Long = y.N2,
+            y3 As Long = y.N3,
+            y4 As Long = y.N4,
+            y5 As Long = y.N5,
+            y6 As Long = y.N6,
+            y7 As Long = y.N7,
+            y8 As Long = y.N8,
+            y9 As Long = y.N9
+        Dim t As Long = (x0*y8) + (x2*y6) + (x4*y4) + (x6*y2) + (x8*y0) + 2*((x1*y7) + (x3*y5) + (x5*y3) + (x7*y1)) +
+                        38*(x9*y9)
         xy.N8 = (t And ((1 << 26) - 1))
-        t = (t >> 26) + (x0 * y9) + (x1 * y8) + (x2 * y7) + (x3 * y6) + (x4 * y5) + (x5 * y4) + (x6 * y3) + (x7 * y2) + (x8 * y1) + (x9 * y0)
+        t = (t >> 26) + (x0*y9) + (x1*y8) + (x2*y7) + (x3*y6) + (x4*y5) + (x5*y4) + (x6*y3) + (x7*y2) + (x8*y1) +
+            (x9*y0)
         xy.N9 = (t And ((1 << 25) - 1))
-        t = (x0 * y0) + 19 * ((t >> 25) + (x2 * y8) + (x4 * y6) + (x6 * y4) + (x8 * y2)) + 38 * ((x1 * y9) + (x3 * y7) + (x5 * y5) + (x7 * y3) + (x9 * y1))
+        t = (x0*y0) + 19*((t >> 25) + (x2*y8) + (x4*y6) + (x6*y4) + (x8*y2)) +
+            38*((x1*y9) + (x3*y7) + (x5*y5) + (x7*y3) + (x9*y1))
         xy.N0 = (t And ((1 << 26) - 1))
-        t = (t >> 26) + (x0 * y1) + (x1 * y0) + 19 * ((x2 * y9) + (x3 * y8) + (x4 * y7) + (x5 * y6) + (x6 * y5) + (x7 * y4) + (x8 * y3) + (x9 * y2))
+        t = (t >> 26) + (x0*y1) + (x1*y0) +
+            19*((x2*y9) + (x3*y8) + (x4*y7) + (x5*y6) + (x6*y5) + (x7*y4) + (x8*y3) + (x9*y2))
         xy.N1 = (t And ((1 << 25) - 1))
-        t = (t >> 25) + (x0 * y2) + (x2 * y0) + 19 * ((x4 * y8) + (x6 * y6) + (x8 * y4)) + 2 * (x1 * y1) + 38 * ((x3 * y9) + (x5 * y7) + (x7 * y5) + (x9 * y3))
+        t = (t >> 25) + (x0*y2) + (x2*y0) + 19*((x4*y8) + (x6*y6) + (x8*y4)) + 2*(x1*y1) +
+            38*((x3*y9) + (x5*y7) + (x7*y5) + (x9*y3))
         xy.N2 = (t And ((1 << 26) - 1))
-        t = (t >> 26) + (x0 * y3) + (x1 * y2) + (x2 * y1) + (x3 * y0) + 19 * ((x4 * y9) + (x5 * y8) + (x6 * y7) + (x7 * y6) + (x8 * y5) + (x9 * y4))
+        t = (t >> 26) + (x0*y3) + (x1*y2) + (x2*y1) + (x3*y0) +
+            19*((x4*y9) + (x5*y8) + (x6*y7) + (x7*y6) + (x8*y5) + (x9*y4))
         xy.N3 = (t And ((1 << 25) - 1))
-        t = (t >> 25) + (x0 * y4) + (x2 * y2) + (x4 * y0) + 19 * ((x6 * y8) + (x8 * y6)) + 2 * ((x1 * y3) + (x3 * y1)) + 38 * ((x5 * y9) + (x7 * y7) + (x9 * y5))
+        t = (t >> 25) + (x0*y4) + (x2*y2) + (x4*y0) + 19*((x6*y8) + (x8*y6)) + 2*((x1*y3) + (x3*y1)) +
+            38*((x5*y9) + (x7*y7) + (x9*y5))
         xy.N4 = (t And ((1 << 26) - 1))
-        t = (t >> 26) + (x0 * y5) + (x1 * y4) + (x2 * y3) + (x3 * y2) + (x4 * y1) + (x5 * y0) + 19 * ((x6 * y9) + (x7 * y8) + (x8 * y7) + (x9 * y6))
+        t = (t >> 26) + (x0*y5) + (x1*y4) + (x2*y3) + (x3*y2) + (x4*y1) + (x5*y0) +
+            19*((x6*y9) + (x7*y8) + (x8*y7) + (x9*y6))
         xy.N5 = (t And ((1 << 25) - 1))
-        t = (t >> 25) + (x0 * y6) + (x2 * y4) + (x4 * y2) + (x6 * y0) + 19 * (x8 * y8) + 2 * ((x1 * y5) + (x3 * y3) + (x5 * y1)) + 38 * ((x7 * y9) + (x9 * y7))
+        t = (t >> 25) + (x0*y6) + (x2*y4) + (x4*y2) + (x6*y0) + 19*(x8*y8) + 2*((x1*y5) + (x3*y3) + (x5*y1)) +
+            38*((x7*y9) + (x9*y7))
         xy.N6 = (t And ((1 << 26) - 1))
-        t = (t >> 26) + (x0 * y7) + (x1 * y6) + (x2 * y5) + (x3 * y4) + (x4 * y3) + (x5 * y2) + (x6 * y1) + (x7 * y0) + 19 * ((x8 * y9) + (x9 * y8))
+        t = (t >> 26) + (x0*y7) + (x1*y6) + (x2*y5) + (x3*y4) + (x4*y3) + (x5*y2) + (x6*y1) + (x7*y0) +
+            19*((x8*y9) + (x9*y8))
         xy.N7 = (t And ((1 << 25) - 1))
         t = (t >> 25) + xy.N8
         xy.N8 = (t And ((1 << 26) - 1))
@@ -342,34 +403,43 @@
     End Sub
 
     Private Shared Sub Square(xsqr As Long10, x As Long10)
-        Dim x0 As Long = x.N0, x1 As Long = x.N1, x2 As Long = x.N2, x3 As Long = x.N3, x4 As Long = x.N4, x5 As Long = x.N5,
-            x6 As Long = x.N6, x7 As Long = x.N7, x8 As Long = x.N8, x9 As Long = x.N9
+        Dim x0 As Long = x.N0,
+            x1 As Long = x.N1,
+            x2 As Long = x.N2,
+            x3 As Long = x.N3,
+            x4 As Long = x.N4,
+            x5 As Long = x.N5,
+            x6 As Long = x.N6,
+            x7 As Long = x.N7,
+            x8 As Long = x.N8,
+            x9 As Long = x.N9
 
-        Dim t As Long = (x4 * x4) + 2 * ((x0 * x8) + (x2 * x6)) + 38 * (x9 * x9) + 4 * ((x1 * x7) + (x3 * x5))
+        Dim t As Long = (x4*x4) + 2*((x0*x8) + (x2*x6)) + 38*(x9*x9) + 4*((x1*x7) + (x3*x5))
 
         xsqr.N8 = (t And ((1 << 26) - 1))
-        t = (t >> 26) + 2 * ((x0 * x9) + (x1 * x8) + (x2 * x7) + (x3 * x6) + (x4 * x5))
+        t = (t >> 26) + 2*((x0*x9) + (x1*x8) + (x2*x7) + (x3*x6) + (x4*x5))
         xsqr.N9 = (t And ((1 << 25) - 1))
-        t = 19 * (t >> 25) + (x0 * x0) + 38 * ((x2 * x8) + (x4 * x6) + (x5 * x5)) + 76 * ((x1 * x9) + (x3 * x7))
+        t = 19*(t >> 25) + (x0*x0) + 38*((x2*x8) + (x4*x6) + (x5*x5)) + 76*((x1*x9) + (x3*x7))
         xsqr.N0 = (t And ((1 << 26) - 1))
-        t = (t >> 26) + 2 * (x0 * x1) + 38 * ((x2 * x9) + (x3 * x8) + (x4 * x7) + (x5 * x6))
+        t = (t >> 26) + 2*(x0*x1) + 38*((x2*x9) + (x3*x8) + (x4*x7) + (x5*x6))
         xsqr.N1 = (t And ((1 << 25) - 1))
-        t = (t >> 25) + 19 * (x6 * x6) + 2 * ((x0 * x2) + (x1 * x1)) + 38 * (x4 * x8) + 76 * ((x3 * x9) + (x5 * x7))
+        t = (t >> 25) + 19*(x6*x6) + 2*((x0*x2) + (x1*x1)) + 38*(x4*x8) + 76*((x3*x9) + (x5*x7))
         xsqr.N2 = (t And ((1 << 26) - 1))
-        t = (t >> 26) + 2 * ((x0 * x3) + (x1 * x2)) + 38 * ((x4 * x9) + (x5 * x8) + (x6 * x7))
+        t = (t >> 26) + 2*((x0*x3) + (x1*x2)) + 38*((x4*x9) + (x5*x8) + (x6*x7))
         xsqr.N3 = (t And ((1 << 25) - 1))
-        t = (t >> 25) + (x2 * x2) + 2 * (x0 * x4) + 38 * ((x6 * x8) + (x7 * x7)) + 4 * (x1 * x3) + 76 * (x5 * x9)
+        t = (t >> 25) + (x2*x2) + 2*(x0*x4) + 38*((x6*x8) + (x7*x7)) + 4*(x1*x3) + 76*(x5*x9)
         xsqr.N4 = (t And ((1 << 26) - 1))
-        t = (t >> 26) + 2 * ((x0 * x5) + (x1 * x4) + (x2 * x3)) + 38 * ((x6 * x9) + (x7 * x8))
+        t = (t >> 26) + 2*((x0*x5) + (x1*x4) + (x2*x3)) + 38*((x6*x9) + (x7*x8))
         xsqr.N5 = (t And ((1 << 25) - 1))
-        t = (t >> 25) + 19 * (x8 * x8) + 2 * ((x0 * x6) + (x2 * x4) + (x3 * x3)) + 4 * (x1 * x5) + 76 * (x7 * x9)
+        t = (t >> 25) + 19*(x8*x8) + 2*((x0*x6) + (x2*x4) + (x3*x3)) + 4*(x1*x5) + 76*(x7*x9)
         xsqr.N6 = (t And ((1 << 26) - 1))
-        t = (t >> 26) + 2 * ((x0 * x7) + (x1 * x6) + (x2 * x5) + (x3 * x4)) + 38 * (x8 * x9)
+        t = (t >> 26) + 2*((x0*x7) + (x1*x6) + (x2*x5) + (x3*x4)) + 38*(x8*x9)
         xsqr.N7 = (t And ((1 << 25) - 1))
         t = (t >> 25) + xsqr.N8
         xsqr.N8 = (t And ((1 << 26) - 1))
         xsqr.N9 += (t >> 26)
     End Sub
+
     Private Shared Sub Reciprocal(y As Long10, x As Long10, sqrtAssist As Boolean)
         Dim t0 As New Long10(), t1 As New Long10(), t2 As New Long10(), t3 As New Long10(), t4 As New Long10()
         Dim i As Integer
@@ -453,7 +523,8 @@
         [Sub](t2, ax, az)
     End Sub
 
-    Private Shared Sub MontyAdd(t1 As Long10, t2 As Long10, t3 As Long10, t4 As Long10, ax As Long10, az As Long10, dx As Long10)
+    Private Shared Sub MontyAdd(t1 As Long10, t2 As Long10, t3 As Long10, t4 As Long10, ax As Long10, az As Long10,
+                                dx As Long10)
         Multiply(ax, t2, t3)
         Multiply(az, t1, t4)
         Add(t1, ax, az)
@@ -497,7 +568,6 @@
         Dim x As Long10() = {New Long10(), New Long10()}, z As Long10() = {New Long10(), New Long10()}
 
 
-
         If peerPublicKey IsNot Nothing Then
             Unpack(dx, peerPublicKey)
         Else
@@ -505,19 +575,17 @@
         End If
 
 
-
         [Set](x(0), 1)
         [Set](z(0), 0)
-
 
 
         Copy(x(1), dx)
         [Set](z(1), 1)
 
-        Dim i As Integer = 32
+        Dim i = 32
         While i <> 0
             i -= 1
-            Dim j As Integer = 8
+            Dim j = 8
             While j <> 0
                 j -= 1
                 Dim bit1 As Integer = (privateKey(i) And &HFF) >> j And 1
@@ -530,7 +598,7 @@
                 MontyPrepare(t1, t2, ax, az)
                 MontyPrepare(t3, t4, bx, bz)
                 MontyAdd(t1, t2, t3, t4, ax, az,
-                    dx)
+                         dx)
                 MontyDouble(t1, t2, t3, t4, bx, bz)
             End While
         End While
@@ -538,7 +606,6 @@
         Reciprocal(t1, z(0), False)
         Multiply(dx, x(0), t1)
         Pack(dx, publicKey)
-
 
 
         If signingKey IsNot Nothing Then
@@ -569,7 +636,7 @@
                 Copy32(privateKey, signingKey)
             Else
 
-                MultiplyArraySmall(signingKey, OrderTimes8, 0, privateKey, 32, -1)
+                MultiplyArraySmall(signingKey, OrderTimes8, 0, privateKey, 32, - 1)
             End If
 
 
@@ -584,11 +651,12 @@
         End If
     End Sub
 
-    Shared ReadOnly OrderTimes8 As Byte() = {104, 159, 174, 231, 210, 24, 147, 192, 178, 230, 188, 23, 245, 206, 247, 166, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 128}
+    Shared ReadOnly _
+        OrderTimes8 As Byte() =
+            {104, 159, 174, 231, 210, 24, 147, 192, 178, 230, 188, 23, 245, 206, 247, 166, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0,
+             0, 0, 0, 0, 0, 128}
 
-    Shared ReadOnly BaseR2Y As New Long10(5744, 8160848, 4790893, 13779497, 35730846, 12541209, 49101323, 30047407, 40071253, 6226132)
-
-
-
-
+    Shared ReadOnly _
+        BaseR2Y As _
+            New Long10(5744, 8160848, 4790893, 13779497, 35730846, 12541209, 49101323, 30047407, 40071253, 6226132)
 End Class

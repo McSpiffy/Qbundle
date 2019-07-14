@@ -1,17 +1,31 @@
-﻿Imports System.Management
+﻿Imports System.IO
+Imports System.Management
 Imports System.Net
+Imports System.Net.NetworkInformation
 Imports System.Net.Sockets
+Imports System.Reflection
 Imports System.Text.RegularExpressions
+Imports System.Threading
+Imports Microsoft.VisualBasic.ApplicationServices
 Imports Microsoft.Win32
 
 
 Friend Class Generic
-    Private Declare Function GetDiskFreeSpaceEx Lib "kernel32" Alias "GetDiskFreeSpaceExA" (ByVal lpDirectoryName As String, ByRef lpFreeBytesAvailableToCaller As Long, ByRef lpTotalNumberOfBytes As Long, ByRef lpTotalNumberOfFreeBytes As Long) As Long
+    Private Declare Function GetDiskFreeSpaceEx Lib "kernel32" Alias "GetDiskFreeSpaceExA"(lpDirectoryName As String,
+                                                                                           ByRef _
+                                                                                              lpFreeBytesAvailableToCaller _
+                                                                                              As Long,
+                                                                                           ByRef lpTotalNumberOfBytes As _
+                                                                                              Long,
+                                                                                           ByRef _
+                                                                                              lpTotalNumberOfFreeBytes _
+                                                                                              As Long) As Long
     Public Shared DebugMe As Boolean
+
     Friend Shared Sub CheckUpgrade()
-        Dim CurVer As Integer = Reflection.Assembly.GetExecutingAssembly.GetName.Version.Major * 100
-        CurVer += Reflection.Assembly.GetExecutingAssembly.GetName.Version.Minor * 10
-        CurVer += Reflection.Assembly.GetExecutingAssembly.GetName.Version.Revision
+        Dim CurVer As Integer = Assembly.GetExecutingAssembly.GetName.Version.Major*100
+        CurVer += Assembly.GetExecutingAssembly.GetName.Version.Minor*10
+        CurVer += Assembly.GetExecutingAssembly.GetName.Version.Revision
         Dim OldVer As Integer = Q.settings.Upgradev
         If CurVer <= OldVer Then Exit Sub
         Do
@@ -21,8 +35,8 @@ Friend Class Generic
                     'if there is we use maria and local java
                     Try
                         'only execute this if there is a settings.ini.
-                        If IO.File.Exists(QGlobal.BaseDir & "\Settings.ini") Then
-                            Dim lines() As String = IO.File.ReadAllLines(QGlobal.BaseDir & "\Settings.ini")
+                        If File.Exists(QGlobal.BaseDir & "\Settings.ini") Then
+                            Dim lines() As String = File.ReadAllLines(QGlobal.BaseDir & "\Settings.ini")
                             Q.settings.FirstRun = False
                             'CheckForUpdates, True, 3
                             Dim cell() As String
@@ -45,14 +59,13 @@ Friend Class Generic
                                     Q.settings.JavaType = QGlobal.AppNames.JavaPortable
                                 End If
                             Next
-                            IO.File.Delete(QGlobal.BaseDir & "\Settings.ini")
+                            File.Delete(QGlobal.BaseDir & "\Settings.ini")
                             Q.settings.SaveSettings()
                         End If
 
 
-
                     Catch ex As Exception
-                        Generic.WriteDebug(ex)
+                        WriteDebug(ex)
                     End Try
 
                 Case 12 'from 12-13
@@ -64,12 +77,12 @@ Friend Class Generic
                 Case 15 ' from 15-16
                 Case 16 ' from 16-17
                     Try
-                        If IO.File.Exists(QGlobal.BaseDir & "\Acconts.xml") Then
-                            IO.File.Move(QGlobal.BaseDir & "\Acconts.xml", QGlobal.BaseDir & "\Accounts.xml")
+                        If File.Exists(QGlobal.BaseDir & "\Acconts.xml") Then
+                            File.Move(QGlobal.BaseDir & "\Acconts.xml", QGlobal.BaseDir & "\Accounts.xml")
                             Q.Accounts.LoadAccounts()
                         End If
                     Catch ex As Exception
-                        Generic.WriteDebug(ex)
+                        WriteDebug(ex)
                     End Try
 
                     Select Case Q.settings.DbType
@@ -112,8 +125,8 @@ Friend Class Generic
                 Case 190 '1.9.0-2.0.0
                 Case 200 '2.0.0-2.0.1
                     Try
-                        If IO.File.Exists(QGlobal.BaseDir & "restarter.exe") Then
-                            IO.File.Delete(QGlobal.BaseDir & "restarter.exe")
+                        If File.Exists(QGlobal.BaseDir & "restarter.exe") Then
+                            File.Delete(QGlobal.BaseDir & "restarter.exe")
                         End If
                     Catch ex As Exception
 
@@ -128,7 +141,6 @@ Friend Class Generic
 
         Q.settings.Upgradev = CurVer
         Q.settings.SaveSettings()
-
     End Sub
 
     Friend Shared Sub WriteNewBRSConfig(Optional ByVal WriteDebug As Boolean = False)
@@ -205,21 +217,20 @@ Friend Class Generic
         End If
 
         Props.Save(QGlobal.AppDir & "conf\brs.properties")
-
     End Sub
 
 
     Friend Shared Sub WriteBRSConfig(Optional ByVal WriteDebug As Boolean = False)
         Dim Buffer() As String = Nothing
         Try
-            If IO.File.Exists(QGlobal.AppDir & "conf\brs.properties") Then
-                Buffer = IO.File.ReadAllLines(QGlobal.AppDir & "conf\brs.properties")
+            If File.Exists(QGlobal.AppDir & "conf\brs.properties") Then
+                Buffer = File.ReadAllLines(QGlobal.AppDir & "conf\brs.properties")
             End If
         Catch ex As Exception
             Generic.WriteDebug(ex)
         End Try
 
-        Dim Data As String = ""
+        Dim Data = ""
 
         'writing brs.properties
 
@@ -275,7 +286,6 @@ Friend Class Generic
         Data &= "DB.Password = " & Q.settings.DbPass & vbCrLf & vbCrLf
 
 
-
         If Q.settings.useOpenCL Then
             Data &= "#CPU Offload" & vbCrLf
             Data &= "GPU.AutoDetect = on" & vbCrLf
@@ -294,21 +304,20 @@ Friend Class Generic
             Data &= "API.Debug = true" & vbCrLf & vbCrLf
         End If
         Try
-            IO.File.WriteAllText(QGlobal.AppDir & "conf\brs.properties", Data)
+            File.WriteAllText(QGlobal.AppDir & "conf\brs.properties", Data)
         Catch ex As Exception
             Generic.WriteDebug(ex)
         End Try
-
-
-
     End Sub
+
     Friend Shared Sub WriteWalletConfig(Optional ByVal WriteDebug As Boolean = False)
         WriteNewBRSConfig(WriteDebug)
     End Sub
 
-    Friend Shared Function CalculateBytes(ByVal value As Long, ByVal decimals As Integer, Optional ByVal startat As Integer = 0) As String
+    Friend Shared Function CalculateBytes(value As Long, decimals As Integer, Optional ByVal startat As Integer = 0) _
+        As String
         Dim t As Integer
-        Dim res As Double = CDbl(value)
+        Dim res = CDbl(value)
         For t = startat To 10
             If res > 1024 Then
                 res /= 1024
@@ -335,11 +344,11 @@ Friend Class Generic
             Return Math.Round(res, decimals).ToString("0.00") & "TiB"
         End If
         Return "??"
-
     End Function
+
     Friend Shared Function IsAdmin() As Boolean
         Try
-            If My.User.IsInRole(ApplicationServices.BuiltInRole.Administrator) Then
+            If My.User.IsInRole(BuiltInRole.Administrator) Then
             Else
                 Return False
             End If
@@ -348,6 +357,7 @@ Friend Class Generic
         End Try
         Return True
     End Function
+
     Friend Shared Sub SetFirewallFromSettings()
 
         Dim s() As String
@@ -371,11 +381,12 @@ Friend Class Generic
                 MsgBox("Failed to apply firewall rules.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Firewall")
                 End
             End If
-            MsgBox("Windows firewall rules sucessfully applied.", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "Firewall")
+            MsgBox("Windows firewall rules sucessfully applied.", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly,
+                   "Firewall")
         Else
             'start it as admin
             Try
-                Dim p As Process = New Process
+                Dim p = New Process
                 p.StartInfo.WorkingDirectory = QGlobal.BaseDir
                 p.StartInfo.Arguments = "ADDFW"
                 p.StartInfo.UseShellExecute = True
@@ -386,11 +397,10 @@ Friend Class Generic
                 MsgBox("Failed to apply firewall rules.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Firewall")
             End Try
         End If
-
-
     End Sub
 
-    Private Shared Function SetFirewall(ByVal fwName As String, ByVal ports As String, LocalNet As String, RemoteNet As String) As Boolean
+    Private Shared Function SetFirewall(fwName As String, ports As String, LocalNet As String, RemoteNet As String) _
+        As Boolean
         Try
             'first we try to remove old rule if any
             Const NET_FW_IP_PROTOCOL_TCP = 6
@@ -410,7 +420,8 @@ Friend Class Generic
             NewRule.Direction = NET_FW_RULE_DIR_IN
             NewRule.Enabled = True
             NewRule.LocalAddresses = LocalNet
-            NewRule.RemoteAddresses = RemoteNet '"127.0.0.1/255.255.255.255,192.168.0.0/255.255.255.0,192.168.1.0/255.255.0.0"
+            NewRule.RemoteAddresses = RemoteNet _
+            '"127.0.0.1/255.255.255.255,192.168.0.0/255.255.255.0,192.168.1.0/255.255.0.0"
             NewRule.Profiles = 7 'CurrentProfiles
             NewRule.Action = NET_FW_ACTION_ALLOW
             RulesObject.Add(NewRule)
@@ -419,8 +430,8 @@ Friend Class Generic
         End Try
 
         Return True
-
     End Function
+
     Friend Shared Sub CheckCommandArgs()
         '0 = appname
         '1 = Type to do
@@ -430,24 +441,26 @@ Friend Class Generic
             Select Case clArgs(1)
                 Case "ADDFW"
                     Try
-                        QB.Generic.SetFirewallFromSettings()
+                        SetFirewallFromSettings()
                     Catch ex As Exception
-                        MsgBox("Failed to apply firewall rules. Maybe you run another firewall on your computer?", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Firewall")
+                        MsgBox("Failed to apply firewall rules. Maybe you run another firewall on your computer?",
+                               MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Firewall")
                     End Try
                     End
                 Case "Debug"
-                    QB.Generic.DebugMe = True
+                    DebugMe = True
                 Case "BetaUpdate"
                     Q.AppManager.AppXML = "BetaUpdate.xml"
             End Select
         End If
     End Sub
+
     Friend Shared Function SanityCheck() As Boolean
 
-        Dim Ok As Boolean = True
+        Dim Ok = True
 
-        Dim cmdline As String = ""
-        Dim Msg As String = ""
+        Dim cmdline = ""
+        Dim Msg = ""
         Dim res As MsgBoxResult = Nothing
         'Check if Java is running another burst.jar
         Try
@@ -466,7 +479,7 @@ Friend Class Generic
                     If res = MsgBoxResult.Yes Then
                         Dim proc As Process = Process.GetProcessById(Integer.Parse(p("ProcessId").ToString))
                         proc.Kill()
-                        Threading.Thread.Sleep(1000)
+                        Thread.Sleep(1000)
                     ElseIf res = MsgBoxResult.No Then
                         'do nothing 
                     Else
@@ -476,14 +489,15 @@ Friend Class Generic
             Next
 
         Catch ex As Exception
-            Generic.WriteDebug(ex)
+            WriteDebug(ex)
         End Try
         Try
             If Q.settings.DbType = QGlobal.DbType.pMariaDB And Ok = True Then
                 cmdline = ""
                 Msg = ""
                 Dim searcher As ManagementObjectSearcher
-                searcher = New ManagementObjectSearcher("root\CIMV2", "SELECT * FROM Win32_Process WHERE Name='mysqld.exe'")
+                searcher = New ManagementObjectSearcher("root\CIMV2",
+                                                        "SELECT * FROM Win32_Process WHERE Name='mysqld.exe'")
                 For Each p As ManagementObject In searcher.[Get]()
                     ' cmdline = p("CommandLine")
                     Msg = "Qbundle has detected that another Mysql/MariaDB is running." & vbCrLf
@@ -496,7 +510,7 @@ Friend Class Generic
                     If res = MsgBoxResult.Yes Then
                         Dim proc As Process = Process.GetProcessById(Integer.Parse(p("ProcessId").ToString))
                         proc.Kill()
-                        Threading.Thread.Sleep(1000)
+                        Thread.Sleep(1000)
                     ElseIf res = MsgBoxResult.No Then
                         'do nothing 
                     Else
@@ -505,13 +519,14 @@ Friend Class Generic
                 Next
             End If
         Catch ex As Exception
-            Generic.WriteDebug(ex)
+            WriteDebug(ex)
         End Try
         If Q.settings.NTPCheck Then
             Try
                 Dim ntpTime As Date = GetNTPTime("time.windows.com")
-                Dim OffSeconds As Integer = 0
-                Dim localTimezoneNTPTime As Date = TimeZoneInfo.ConvertTime(ntpTime, TimeZoneInfo.Utc, TimeZoneInfo.Local)
+                Dim OffSeconds = 0
+                Dim localTimezoneNTPTime As Date = TimeZoneInfo.ConvertTime(ntpTime, TimeZoneInfo.Utc,
+                                                                            TimeZoneInfo.Local)
                 If Now > localTimezoneNTPTime Then
                     OffSeconds = CInt((Now - localTimezoneNTPTime).TotalSeconds)
                 ElseIf Now < localTimezoneNTPTime Then
@@ -530,95 +545,102 @@ Friend Class Generic
                     Ok = False
                 End If
             Catch ex As Exception
-                Generic.WriteDebug(ex)
+                WriteDebug(ex)
             End Try
         End If
         Return Ok
     End Function
-    Friend Shared Function IsProcessRunning(ByVal Name As String) As Boolean
-        Dim Ok As Boolean = True
+
+    Friend Shared Function IsProcessRunning(Name As String) As Boolean
+        Dim Ok = True
         Dim searcher As ManagementObjectSearcher
-        Dim RetVal As Boolean = False
-        Dim prc As String = ""
-        searcher = New ManagementObjectSearcher("root\CIMV2", "SELECT * FROM Win32_Process") ' WHERE Name='" & exeName & "'
+        Dim RetVal = False
+        Dim prc = ""
+        searcher = New ManagementObjectSearcher("root\CIMV2", "SELECT * FROM Win32_Process") _
+        ' WHERE Name='" & exeName & "'
         For Each p As ManagementObject In searcher.[Get]()
             prc = LCase(p("Name").ToString)
             If prc.Contains(LCase(Name)) Then RetVal = True
         Next
         Return RetVal
     End Function
-    Friend Shared Sub KillAllProcessesWithName(ByVal Name As String)
-        Dim Ok As Boolean = True
+
+    Friend Shared Sub KillAllProcessesWithName(Name As String)
+        Dim Ok = True
         Dim searcher As ManagementObjectSearcher
-        Dim prc As String = ""
-        searcher = New ManagementObjectSearcher("root\CIMV2", "SELECT * FROM Win32_Process") ' WHERE Name='" & exeName & "'
+        Dim prc = ""
+        searcher = New ManagementObjectSearcher("root\CIMV2", "SELECT * FROM Win32_Process") _
+        ' WHERE Name='" & exeName & "'
         For Each p As ManagementObject In searcher.[Get]()
             prc = LCase(p("Name").ToString)
             If prc.Contains(LCase(Name)) Then
                 Dim proc As Process = Process.GetProcessById(Integer.Parse(p("ProcessId").ToString))
                 proc.Kill()
-                Threading.Thread.Sleep(100)
+                Thread.Sleep(100)
             End If
 
 
         Next
     End Sub
+
     Friend Shared Function GetMyIp() As String
         Try
-            Dim WC As Net.WebClient = New Net.WebClient()
+            Dim WC = New WebClient()
             Return WC.DownloadString("http://whatismyip.akamai.com/")
         Catch ex As Exception
-            Generic.WriteDebug(ex)
+            WriteDebug(ex)
         End Try
         Return ""
     End Function
+
     Friend Shared Function CheckWritePermission() As Boolean
         Try
-            IO.File.WriteAllText(QGlobal.AppDir & "testfile", "test")
-            IO.File.Delete(QGlobal.AppDir & "testfile")
+            File.WriteAllText(QGlobal.AppDir & "testfile", "test")
+            File.Delete(QGlobal.AppDir & "testfile")
             Return True
         Catch ex As Exception
             Return False
         End Try
     End Function
-    Friend Shared Sub WriteDebug(ByVal exc As Exception)
+
+    Friend Shared Sub WriteDebug(exc As Exception)
 
         Try
             If DebugMe Then
-                Dim strErr As String = "------------------------- " & Now.ToString & " --------------------------" & vbCrLf
+                Dim strErr As String = "------------------------- " & Now.ToString & " --------------------------" &
+                                       vbCrLf
                 strErr &= "Message: " & exc.Message & vbCrLf
                 strErr &= "StackTrace:" & exc.StackTrace & vbCrLf
 
-                IO.File.AppendAllText(QGlobal.LogDir & "\bwl_debug.txt", strErr)
-
+                File.AppendAllText(QGlobal.LogDir & "\bwl_debug.txt", strErr)
 
 
             End If
         Catch ex As Exception
             MsgBox(ex.Message)
         End Try
-
-
     End Sub
+
     Friend Shared Sub RestartBundle()
         Try
-            Dim p As Process = New Process
+            Dim p = New Process
             p.StartInfo.WorkingDirectory = QGlobal.BaseDir
             p.StartInfo.UseShellExecute = True
-            If QB.Generic.DebugMe Then p.StartInfo.Arguments = "Debug"
+            If DebugMe Then p.StartInfo.Arguments = "Debug"
             p.StartInfo.FileName = Application.ExecutablePath
             p.Start()
         Catch ex As Exception
             MsgBox("Failed to start Qbundle", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly)
         End Try
     End Sub
+
     Friend Shared Sub RestartAsAdmin()
 
         Try
-            Dim p As Process = New Process
+            Dim p = New Process
             p.StartInfo.WorkingDirectory = QGlobal.BaseDir
             p.StartInfo.UseShellExecute = True
-            If QB.Generic.DebugMe Then p.StartInfo.Arguments = "Debug"
+            If DebugMe Then p.StartInfo.Arguments = "Debug"
             p.StartInfo.FileName = Application.ExecutablePath
             p.StartInfo.Verb = "runas"
             p.Start()
@@ -626,10 +648,12 @@ Friend Class Generic
             MsgBox("Failed to start Qbundle as administrator.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Admin")
         End Try
     End Sub
+
     Public Shared Function GetLatencyMs(ByRef hostNameOrAddress As String) As Long
-        Dim ping As New System.Net.NetworkInformation.Ping
+        Dim ping As New Ping
         Return ping.Send(hostNameOrAddress, 300).RoundtripTime
     End Function
+
     Public Shared Sub UpdateLocalWallet()
         Dim s() As String = Split(Q.settings.ListenIf, ";")
         Dim url As String = Nothing
@@ -640,7 +664,8 @@ Friend Class Generic
         End If
         Q.AppManager.AppStore.Wallets(0).Address = url
     End Sub
-    Friend Shared Function GetStartNonce(ByVal AccountID As String, ByVal Length As Double) As Double
+
+    Friend Shared Function GetStartNonce(AccountID As String, Length As Double) As Double
 
         Dim Plotfiles() As String
 
@@ -653,7 +678,7 @@ Friend Class Generic
                 Plotfiles = Split(Q.settings.Plots, "|")
                 For Each Plot As String In Plotfiles
                     If Plot.Length > 1 Then
-                        Dim N() As String = Split(IO.Path.GetFileName(Plot), "_")
+                        Dim N() As String = Split(Path.GetFileName(Plot), "_")
                         If UBound(N) > 1 Then
                             If N(0) = Trim(AccountID) Then
                                 PEndNonce = CDbl(N(1)) + CDbl(N(2))
@@ -669,7 +694,8 @@ Friend Class Generic
 
         Return HighestEndNonce
     End Function
-    Public Shared Function GetNTPTime(ByVal ntpServer As String) As Date
+
+    Public Shared Function GetNTPTime(ntpServer As String) As Date
 
         Dim socket = New Socket(AddressFamily.InterNetwork, SocketType.Dgram, ProtocolType.Udp)
         Try
@@ -687,26 +713,27 @@ Friend Class Generic
             socket.Receive(ntpData)
             socket.Close()
 
-            Dim intPart As ULong = CULng(ntpData(40)) << 24 Or CULng(ntpData(41)) << 16 Or CULng(ntpData(42)) << 8 Or CULng(ntpData(43))
-            Dim fractPart As ULong = CULng(ntpData(44)) << 24 Or CULng(ntpData(45)) << 16 Or CULng(ntpData(46)) << 8 Or CULng(ntpData(47))
+            Dim intPart As ULong = CULng(ntpData(40)) << 24 Or CULng(ntpData(41)) << 16 Or CULng(ntpData(42)) << 8 Or
+                                   CULng(ntpData(43))
+            Dim fractPart As ULong = CULng(ntpData(44)) << 24 Or CULng(ntpData(45)) << 16 Or CULng(ntpData(46)) << 8 Or
+                                     CULng(ntpData(47))
 
-            Dim milliseconds = (intPart * 1000) + ((fractPart * 1000) / &H100000000L)
+            Dim milliseconds = (intPart*1000) + ((fractPart*1000)/&H100000000L)
             Dim networkDateTime = (New DateTime(1900, 1, 1)).AddMilliseconds(CLng(milliseconds))
 
             Return networkDateTime
 
         Catch ex As Exception
-            Generic.WriteDebug(ex)
+            WriteDebug(ex)
         Finally
             socket.Dispose()
         End Try
         Return Now
-
     End Function
 
-    Friend Shared Function PlotDriveTypeOk(ByVal path As String) As Boolean
+    Friend Shared Function PlotDriveTypeOk(path As String) As Boolean
 
-        Dim TheDrive As System.IO.DriveInfo = New System.IO.DriveInfo(path)
+        Dim TheDrive = New DriveInfo(path)
 
         If TheDrive.DriveFormat = "NTFS" Then
             Return True
@@ -714,18 +741,21 @@ Friend Class Generic
 
 
         Return False
-
     End Function
-    Friend Shared Function DriveCompressed(ByVal path As String) As Boolean
-        Dim dirInfo As IO.DirectoryInfo = New IO.DirectoryInfo(path)
-        If (dirInfo.Attributes And IO.FileAttributes.Compressed) = IO.FileAttributes.Compressed Then
+
+    Friend Shared Function DriveCompressed(path As String) As Boolean
+        Dim dirInfo = New DirectoryInfo(path)
+        If (dirInfo.Attributes And FileAttributes.Compressed) = FileAttributes.Compressed Then
             Return True
         End If
         Return False
     End Function
+
     Friend Shared Function CheckDotNet() As Boolean
-        Const subkey As String = "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\"
-        Using ndpKey As RegistryKey = RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey)
+        Const subkey = "SOFTWARE\Microsoft\NET Framework Setup\NDP\v4\Full\"
+        Using _
+            ndpKey As RegistryKey =
+                RegistryKey.OpenBaseKey(RegistryHive.LocalMachine, RegistryView.Registry32).OpenSubKey(subkey)
             If ndpKey IsNot Nothing AndAlso ndpKey.GetValue("Release") IsNot Nothing Then
                 If ((CInt(ndpKey.GetValue("Release")) >= 379893)) Then 'ver 4.5.2
                     Return True
@@ -748,22 +778,22 @@ Friend Class Generic
 
     Friend Shared Function IsValidPlottFilePath(filepath As String) As Boolean
         If IsNothing(filepath) Then Return False
-        Return IsValidPlottFilename(IO.Path.GetFileName(filepath))
+        Return IsValidPlottFilename(Path.GetFileName(filepath))
     End Function
-    Friend Shared Function GetDiskspace(ByVal path As String) As Long
+
+    Friend Shared Function GetDiskspace(path As String) As Long
 
         Try
             Dim FreeSpace As Long
             GetDiskFreeSpaceEx(path, vbNull, vbNull, FreeSpace)
             Return FreeSpace
         Catch ex As Exception
-            Generic.WriteDebug(ex)
+            WriteDebug(ex)
         End Try
         Return 0
-
     End Function
 
-    Friend Shared Function GetDbNameFromType(ByVal Dtype As Integer) As String
+    Friend Shared Function GetDbNameFromType(Dtype As Integer) As String
         Select Case Dtype
             Case QGlobal.DbType.H2
                 Return "H2"
@@ -776,17 +806,15 @@ Friend Class Generic
         End Select
         Return ""
     End Function
+
     Public Shared Function CheckOpenCL() As Boolean
         Try
-            If IO.File.Exists(Environment.SystemDirectory & "\OpenCL.dll") Then
+            If File.Exists(Environment.SystemDirectory & "\OpenCL.dll") Then
                 Return True
             End If
         Catch ex As Exception
-            Generic.WriteDebug(ex)
+            WriteDebug(ex)
         End Try
         Return False
     End Function
-
-
-
 End Class

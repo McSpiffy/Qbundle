@@ -1,4 +1,7 @@
-﻿Friend Class clsSettings
+﻿Imports System.IO
+Imports System.Reflection
+
+Friend Class clsSettings
     'NRS
     Private _autoip As Boolean
     Private _WalletException As Boolean
@@ -62,420 +65,462 @@
     Private _UseMultithread As Boolean
 
 
-
-
     'NRS
-    Public Property AutoIp() As Boolean
+    Public Property AutoIp As Boolean
         Get
             Return _autoip
         End Get
-        Set(ByVal value As Boolean)
+        Set
             _autoip = value
         End Set
     End Property
-    Public Property WalletException() As Boolean
+
+    Public Property WalletException As Boolean
         Get
             Return _WalletException
         End Get
-        Set(ByVal value As Boolean)
+        Set
             _WalletException = value
         End Set
     End Property
-    Public Property DynPlatform() As Boolean
+
+    Public Property DynPlatform As Boolean
         Get
             Return _DynPlatform
         End Get
-        Set(ByVal value As Boolean)
+        Set
             _DynPlatform = value
         End Set
     End Property
-    Public Property useOpenCL() As Boolean
+
+    Public Property useOpenCL As Boolean
         Get
             Return _useOpenCL
         End Get
-        Set(ByVal value As Boolean)
+        Set
             _useOpenCL = value
         End Set
     End Property
-    Public Property Cpulimit() As Integer
+
+    Public Property Cpulimit As Integer
         Get
             Return _Cpulimit
         End Get
-        Set(ByVal value As Integer)
+        Set
             _Cpulimit = value
         End Set
     End Property
-    Public Property ListenIf() As String
+
+    Public Property ListenIf As String
         Get
             Return _ListenIf
         End Get
-        Set(ByVal value As String)
+        Set
             _ListenIf = value
         End Set
     End Property
-    Public Property ListenPeer() As String
+
+    Public Property ListenPeer As String
         Get
             Return _ListenPeer
         End Get
-        Set(ByVal value As String)
+        Set
             _ListenPeer = value
         End Set
     End Property
-    Public Property ConnectFrom() As String
+
+    Public Property ConnectFrom As String
         Get
             Return _ConnectFrom
         End Get
-        Set(ByVal value As String)
+        Set
             _ConnectFrom = value
         End Set
     End Property
-    Public Property AutoStart() As Boolean
+
+    Public Property AutoStart As Boolean
         Get
             Return _AutoStart
         End Get
-        Set(ByVal value As Boolean)
+        Set
             _AutoStart = value
         End Set
     End Property
-    Public Property Broadcast() As String
+
+    Public Property Broadcast As String
         Get
             Return _Broadcast
         End Get
-        Set(ByVal value As String)
+        Set
             _Broadcast = value
         End Set
     End Property
-    Public Property LaunchString() As String
+
+    Public Property LaunchString As String
         Get
             Return _LaunchString
         End Get
-        Set(ByVal value As String)
+        Set
             _LaunchString = value
         End Set
     End Property
     'DB
-    Public Property DbType() As Integer
+    Public Property DbType As Integer
         Get
             Return _DbType
         End Get
-        Set(ByVal value As Integer)
+        Set
             _DbType = value
         End Set
     End Property
-    Public Property DbServer() As String
+
+    Public Property DbServer As String
         Get
             Return _DbServer
         End Get
-        Set(ByVal value As String)
+        Set
             _DbServer = value
         End Set
     End Property
-    Public Property DbName() As String
+
+    Public Property DbName As String
         Get
             Return _DbName
         End Get
-        Set(ByVal value As String)
+        Set
             _DbName = value
         End Set
     End Property
-    Public Property DbUser() As String
+
+    Public Property DbUser As String
         Get
             Return _DbUser
         End Get
-        Set(ByVal value As String)
+        Set
             _DbUser = value
         End Set
     End Property
-    Public Property DbPass() As String
+
+    Public Property DbPass As String
         Get
             Return _DbPass
         End Get
-        Set(ByVal value As String)
+        Set
             _DbPass = value
         End Set
     End Property
     'JAVA
-    Public Property JavaType() As Integer
+    Public Property JavaType As Integer
         Get
             Return _JavaType
         End Get
-        Set(ByVal value As Integer)
+        Set
             _JavaType = value
         End Set
     End Property
     'General
-    Public Property FirstRun() As Boolean
+    Public Property FirstRun As Boolean
         Get
             Return _FirstRun
         End Get
-        Set(ByVal value As Boolean)
+        Set
             _FirstRun = value
         End Set
     End Property
-    Public Property CheckForUpdates() As Boolean
+
+    Public Property CheckForUpdates As Boolean
         Get
             Return _CheckForUpdates
         End Get
-        Set(ByVal value As Boolean)
+        Set
             _CheckForUpdates = value
         End Set
     End Property
-    Public Property Upgradev() As Integer
+
+    Public Property Upgradev As Integer
         Get
             Return _Upgradev
         End Get
-        Set(ByVal value As Integer)
+        Set
             _Upgradev = value
         End Set
     End Property
-    Public Property AlwaysAdmin() As Boolean
+
+    Public Property AlwaysAdmin As Boolean
         Get
             Return _AlwaysAdmin
         End Get
-        Set(ByVal value As Boolean)
+        Set
             _AlwaysAdmin = value
         End Set
     End Property
-    Public Property Repo() As String
+
+    Public Property Repo As String
         Get
             Return _Repo
         End Get
-        Set(ByVal value As String)
+        Set
             _Repo = value
         End Set
     End Property
-    Public Property QBMode() As Integer
+
+    Public Property QBMode As Integer
         Get
             Return _QBMode
         End Get
-        Set(ByVal value As Integer)
+        Set
             _QBMode = value
         End Set
     End Property
-    Public Property DebugMode() As Boolean
+
+    Public Property DebugMode As Boolean
         Get
             Return _Debug
         End Get
-        Set(ByVal value As Boolean)
+        Set
             _Debug = value
         End Set
     End Property
-    Public Property UseOnlineWallet() As Boolean
+
+    Public Property UseOnlineWallet As Boolean
         Get
             Return _UseOnlineWallet
         End Get
-        Set(ByVal value As Boolean)
+        Set
             _UseOnlineWallet = value
         End Set
     End Property
-    Public Property NTPCheck() As Boolean
+
+    Public Property NTPCheck As Boolean
         Get
             Return _NTPCheck
         End Get
-        Set(ByVal value As Boolean)
+        Set
             _NTPCheck = value
         End Set
     End Property
     'Plotting And Mining
-    Public Property Plots() As String
+    Public Property Plots As String
         Get
             Return _Plots
         End Get
-        Set(ByVal value As String)
+        Set
             _Plots = value
         End Set
     End Property
     'dynamic plotting
-    Public Property DynPlotEnabled() As Boolean
+    Public Property DynPlotEnabled As Boolean
         Get
             Return _DynPlotEnabled
         End Get
-        Set(ByVal value As Boolean)
+        Set
             _DynPlotEnabled = value
         End Set
     End Property
-    Public Property DynPlotPath() As String
+
+    Public Property DynPlotPath As String
         Get
             Return _DynPlotPath
         End Get
-        Set(ByVal value As String)
+        Set
             _DynPlotPath = value
         End Set
     End Property
-    Public Property DynPlotAcc() As String
+
+    Public Property DynPlotAcc As String
         Get
             Return _DynPlotAcc
         End Get
-        Set(ByVal value As String)
+        Set
             _DynPlotAcc = value
         End Set
     End Property
-    Public Property DynPlotSize() As Integer
+
+    Public Property DynPlotSize As Integer
         Get
             Return _DynPlotSize
         End Get
-        Set(ByVal value As Integer)
+        Set
             _DynPlotSize = value
         End Set
     End Property
-    Public Property DynPlotFree() As Integer
+
+    Public Property DynPlotFree As Integer
         Get
             Return _DynPlotFree
         End Get
-        Set(ByVal value As Integer)
+        Set
             _DynPlotFree = value
         End Set
     End Property
-    Public Property DynPlotHide() As Boolean
+
+    Public Property DynPlotHide As Boolean
         Get
             Return _DynPlotHide
         End Get
-        Set(ByVal value As Boolean)
+        Set
             _DynPlotHide = value
         End Set
     End Property
-    Public Property DynPlotType() As Integer
+
+    Public Property DynPlotType As Integer
         Get
             Return _DynPlotType
         End Get
-        Set(ByVal value As Integer)
+        Set
             _DynPlotType = value
         End Set
     End Property
-    Public Property DynThreads() As Integer
+
+    Public Property DynThreads As Integer
         Get
             Return _DynThreads
         End Get
-        Set(ByVal value As Integer)
+        Set
             _DynThreads = value
         End Set
     End Property
-    Public Property DynRam() As Integer
+
+    Public Property DynRam As Integer
         Get
             Return _DynRam
         End Get
-        Set(ByVal value As Integer)
+        Set
             _DynRam = value
         End Set
     End Property
-    Public Property MinToTray() As Boolean
+
+    Public Property MinToTray As Boolean
         Get
             Return _MinToTray
         End Get
-        Set(ByVal value As Boolean)
+        Set
             _MinToTray = value
         End Set
     End Property
-    Public Property GetCoinMarket() As Boolean
+
+    Public Property GetCoinMarket As Boolean
         Get
             Return _CoinMarket
         End Get
-        Set(ByVal value As Boolean)
+        Set
             _CoinMarket = value
         End Set
     End Property
-    Public Property Currency() As String
+
+    Public Property Currency As String
         Get
             Return _Currency
         End Get
-        Set(ByVal value As String)
+        Set
             _Currency = value
         End Set
     End Property
-    Public Property NoDirectLogin() As Boolean
+
+    Public Property NoDirectLogin As Boolean
         Get
             Return _NoDirectLogin
         End Get
-        Set(ByVal value As Boolean)
+        Set
             _NoDirectLogin = value
         End Set
     End Property
 
-    Public Property Solomining() As Boolean
+    Public Property Solomining As Boolean
         Get
             Return _SoloMining
         End Get
-        Set(ByVal value As Boolean)
+        Set
             _SoloMining = value
         End Set
     End Property
-    Public Property MiningServer() As String
+
+    Public Property MiningServer As String
         Get
             Return _MiningServer
         End Get
-        Set(ByVal value As String)
+        Set
             _MiningServer = value
         End Set
     End Property
-    Public Property UpdateServer() As String
+
+    Public Property UpdateServer As String
         Get
             Return _UpdateServer
         End Get
-        Set(ByVal value As String)
+        Set
             _UpdateServer = value
         End Set
     End Property
-    Public Property InfoServer() As String
+
+    Public Property InfoServer As String
         Get
             Return _InfoServer
         End Get
-        Set(ByVal value As String)
+        Set
             _InfoServer = value
         End Set
     End Property
-    Public Property Deadline() As String
+
+    Public Property Deadline As String
         Get
             Return _Deadline
         End Get
-        Set(ByVal value As String)
+        Set
             _Deadline = value
         End Set
     End Property
-    Public Property MiningServerPort() As Integer
+
+    Public Property MiningServerPort As Integer
         Get
             Return _MiningServerPort
         End Get
-        Set(ByVal value As Integer)
+        Set
             _MiningServerPort = value
         End Set
     End Property
-    Public Property UpdateServerPort() As Integer
+
+    Public Property UpdateServerPort As Integer
         Get
             Return _UpdateServerPort
         End Get
-        Set(ByVal value As Integer)
+        Set
             _UpdateServerPort = value
         End Set
     End Property
-    Public Property InfoServerPort() As Integer
+
+    Public Property InfoServerPort As Integer
         Get
             Return _InfoServerPort
         End Get
-        Set(ByVal value As Integer)
+        Set
             _InfoServerPort = value
         End Set
     End Property
-    Public Property Hddwakeup() As Boolean
+
+    Public Property Hddwakeup As Boolean
         Get
             Return _Hddwakeup
         End Get
-        Set(ByVal value As Boolean)
+        Set
             _Hddwakeup = value
         End Set
     End Property
-    Public Property ShowWinner() As Boolean
+
+    Public Property ShowWinner As Boolean
         Get
             Return _ShowWinner
         End Get
-        Set(ByVal value As Boolean)
+        Set
             _ShowWinner = value
         End Set
     End Property
-    Public Property UseMultithread() As Boolean
+
+    Public Property UseMultithread As Boolean
         Get
             Return _UseMultithread
         End Get
-        Set(ByVal value As Boolean)
+        Set
             _UseMultithread = value
         End Set
     End Property
@@ -536,51 +581,16 @@
         _Hddwakeup = True
         _ShowWinner = False
         _UseMultithread = True
-
-
-
     End Sub
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
     Friend Sub LoadSettings()
 
         Try
-            Dim param As String = ""
+            Dim param = ""
             Dim Cell() As String = Nothing
-            If IO.File.Exists(QGlobal.AppDir & "\BWL.ini") Then
-                Dim lines() As String = IO.File.ReadAllLines(QGlobal.AppDir & "\BWL.ini")
+            If File.Exists(QGlobal.AppDir & "\BWL.ini") Then
+                Dim lines() As String = File.ReadAllLines(QGlobal.AppDir & "\BWL.ini")
                 For Each line As String In lines 'lets populate
                     Try
                         If line.Contains("=") Then
@@ -588,7 +598,7 @@
                             If UBound(Cell) > 0 Then
                                 param = Cell(1)
                                 If UBound(Cell) > 1 Then
-                                    For t As Integer = 2 To UBound(Cell)
+                                    For t = 2 To UBound(Cell)
                                         param &= "=" & Cell(t)
                                     Next
                                 End If
@@ -602,16 +612,16 @@
         Catch ex As Exception
             If _Debug = True Then Generic.DebugMe = True
         End Try
-
     End Sub
+
     Friend Sub SaveSettings()
         Try
-            Dim Sdata As String = ""
-            Dim RP() As Reflection.PropertyInfo = Me.GetType().GetProperties()
+            Dim Sdata = ""
+            Dim RP() As PropertyInfo = Me.GetType().GetProperties()
             For Each prop In RP
                 Sdata &= prop.Name & "=" & CStr(prop.GetValue(Me)) & vbCrLf
             Next
-            IO.File.WriteAllText(QGlobal.SettingsDir & "\BWL.ini", Sdata)
+            File.WriteAllText(QGlobal.SettingsDir & "\BWL.ini", Sdata)
         Catch ex As Exception
             If _Debug = True Then Generic.DebugMe = True
         End Try

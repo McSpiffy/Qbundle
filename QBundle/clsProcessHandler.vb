@@ -1,25 +1,25 @@
-﻿Imports System.Runtime.InteropServices
-Imports System.Threading
-Public Class clsProcessHandler
-    Public Event Update(ByVal Pid As Integer, ByVal Status As Integer, ByVal Data As String)
-    Public Event Stopped(ByVal Pid As Integer)
-    Public Event Started(ByVal Pid As Integer)
-    Public Event Aborting(ByVal Pid As Integer, ByVal Data As String)
+﻿Imports System.Threading
 
-    Private P() As clsProcessWorker
+Public Class clsProcessHandler
+    Public Event Update(Pid As Integer, Status As Integer, Data As String)
+    Public Event Stopped(Pid As Integer)
+    Public Event Started(Pid As Integer)
+    Public Event Aborting(Pid As Integer, Data As String)
+
+    Private ReadOnly P() As clsProcessWorker
 
     Sub New()
         ReDim P(UBound([Enum].GetNames(GetType(QGlobal.AppNames))))
     End Sub
 
-    Public Sub StartProcess(ByVal Pcls As pSettings)
+    Public Sub StartProcess(Pcls As pSettings)
         P(Pcls.AppId) = New clsProcessWorker
         P(Pcls.AppId).Appid = Pcls.AppId
         P(Pcls.AppId).AppToStart = Pcls.AppPath
         P(Pcls.AppId).Arguments = Pcls.Params
         P(Pcls.AppId).WorkingDirectory = Pcls.WorkingDirectory
         P(Pcls.AppId).StartSignal = Pcls.StartSignal
-        P(Pcls.AppId).Cores = CInt(2 ^ Pcls.Cores) - 1 'processaffinity is set bitwise 
+        P(Pcls.AppId).Cores = CInt(2^Pcls.Cores) - 1 'processaffinity is set bitwise 
         P(Pcls.AppId).SSMTEnd = Pcls.StartsignalMaxTime
 
         P(Pcls.AppId).UpgradeSignal = Pcls.UpgradeSignal
@@ -32,17 +32,17 @@ Public Class clsProcessHandler
         trda.IsBackground = True
         trda.Start()
         trda = Nothing
-
-
     End Sub
-    Friend Sub ReStartProcess(ByVal AppId As Object)
+
+    Friend Sub ReStartProcess(AppId As Object)
         Dim trda As Thread
         trda = New Thread(AddressOf RestartWorker)
         trda.IsBackground = True
         trda.Start(AppId)
         trda = Nothing
     End Sub
-    Private Sub RestartWorker(ByVal AppId As Object)
+
+    Private Sub RestartWorker(AppId As Object)
         If Not IsNothing(P(CInt(AppId))) Then
             If P(CInt(AppId)).IsRunning Then
                 P(CInt(AppId)).StopProc()
@@ -61,7 +61,7 @@ Public Class clsProcessHandler
     End Sub
 
 
-    Public Sub StartProcessSquence(ByVal Pcls() As pSettings)
+    Public Sub StartProcessSquence(Pcls() As pSettings)
         'this is needed if working with mariadb portable. maybe for otherthings later aswell.
         Dim trda As Thread
         '  trda = New Thread(AddressOf StartPS)
@@ -69,10 +69,10 @@ Public Class clsProcessHandler
         trda.IsBackground = True
         trda.Start(Pcls)
         trda = Nothing
-
     End Sub
-    Private Sub StartPS(ByVal pcls() As Object)
-        Dim ps() As pSettings = CType(pcls, pSettings())
+
+    Private Sub StartPS(pcls() As Object)
+        Dim ps = CType(pcls, pSettings())
 
         For Each Proc As pSettings In ps
             P(Proc.AppId) = New clsProcessWorker
@@ -81,7 +81,7 @@ Public Class clsProcessHandler
             P(Proc.AppId).Arguments = Proc.Params
             P(Proc.AppId).WorkingDirectory = Proc.WorkingDirectory
             P(Proc.AppId).StartSignal = Proc.StartSignal
-            P(Proc.AppId).Cores = CInt(2 ^ Proc.Cores) - 1 'processaffinity is set bitwise 
+            P(Proc.AppId).Cores = CInt(2^Proc.Cores) - 1 'processaffinity is set bitwise 
             P(Proc.AppId).SSMTEnd = Proc.StartsignalMaxTime
 
             P(Proc.AppId).UpgradeSignal = Proc.UpgradeSignal
@@ -103,23 +103,25 @@ Public Class clsProcessHandler
     End Sub
 
 
-    Public Sub StopProcess(ByVal Appid As Integer)
+    Public Sub StopProcess(Appid As Integer)
         Try
             If Not IsNothing(P(Appid)) Then
                 P(Appid).StopProc()
             End If
         Catch ex As Exception
-            QB.Generic.WriteDebug(ex)
+            Generic.WriteDebug(ex)
         End Try
     End Sub
-    Public Sub StopProcessSquence(ByVal Appid() As Object)
+
+    Public Sub StopProcessSquence(Appid() As Object)
         Dim trda As Thread
         trda = New Thread(AddressOf StopPS)
         trda.IsBackground = True
         trda.Start(Appid)
         trda = Nothing
     End Sub
-    Private Sub StopPS(ByVal pId() As Object)
+
+    Private Sub StopPS(pId() As Object)
 
         For Each Appid As Integer In pId
             P(Appid).StopProc()
@@ -128,10 +130,9 @@ Public Class clsProcessHandler
                 If P(Appid).IsRunning = False Then Exit Do
             Loop
         Next
-
     End Sub
 
-    Private Sub ProcUpdate(ByVal AppId As Integer, ByVal Operation As Integer, ByVal Data As String)
+    Private Sub ProcUpdate(AppId As Integer, Operation As Integer, Data As String)
         'Streamlineing threads output
         Select Case Operation
             Case QGlobal.ProcOp.Running
@@ -149,7 +150,6 @@ Public Class clsProcessHandler
             Case QGlobal.ProcOp.ConsoleErr
                 RaiseEvent Update(AppId, Operation, Data)
         End Select
-
     End Sub
 
 
@@ -166,7 +166,7 @@ Public Class clsProcessHandler
     End Class
 
     Private Class clsProcessWorker
-        Public Event UpdateConsole(ByVal AppId As Integer, ByVal Operation As Integer, ByVal Data As String)
+        Public Event UpdateConsole(AppId As Integer, Operation As Integer, Data As String)
 
         Private p As Process
         Private OutputBuffer As String
@@ -193,17 +193,25 @@ Public Class clsProcessHandler
             CTRL_LOGOFF_EVENT = 5
             CTRL_SHUTDOWN_EVENT
         End Enum
-        Private Delegate Function ConsoleCtrlDelegate(CtrlType As CtrlTypes) As Boolean
-        Private Declare Function AttachConsole Lib "kernel32" (dwProcessId As UInteger) As Boolean
-        Private Declare Function GenerateConsoleCtrlEvent Lib "kernel32" Alias "GenerateConsoleCtrlEvent" (ByVal dwCtrlEvent As Long, ByVal dwProcessGroupId As Long) As Long
-        Private Declare Function SetConsoleCtrlHandler Lib "kernel32" (Handler As ConsoleCtrlDelegate, Add As Boolean) As Boolean
-        Private Declare Function FreeConsole Lib "kernel32" () As Boolean
 
-        Private Sub ShutDown(ByVal SigIntSleep As Integer, ByVal SigKillSleep As Integer)
+        Private Delegate Function ConsoleCtrlDelegate(CtrlType As CtrlTypes) As Boolean
+
+        Private Declare Function AttachConsole Lib "kernel32"(dwProcessId As UInteger) As Boolean
+        Private Declare Function GenerateConsoleCtrlEvent Lib "kernel32" Alias "GenerateConsoleCtrlEvent"(
+                                                                                                          dwCtrlEvent As _
+                                                                                                             Long,
+                                                                                                          dwProcessGroupId _
+                                                                                                             As Long) _
+            As Long
+        Private Declare Function SetConsoleCtrlHandler Lib "kernel32"(Handler As ConsoleCtrlDelegate, Add As Boolean) _
+            As Boolean
+        Private Declare Function FreeConsole Lib "kernel32"() As Boolean
+
+        Private Sub ShutDown(SigIntSleep As Integer, SigKillSleep As Integer)
             Try
                 FreeConsole()
             Catch ex As Exception
-                QB.Generic.WriteDebug(ex)
+                Generic.WriteDebug(ex)
             End Try
             Try
                 AttachConsole(p.Id)
@@ -225,6 +233,7 @@ Public Class clsProcessHandler
                 Generic.WriteDebug(ex)
             End Try
         End Sub
+
         Private Function OnExit(CtrlType As CtrlTypes) As Boolean
             Return True
         End Function
@@ -268,7 +277,9 @@ Public Class clsProcessHandler
 
             Do 'just wait and see if we have exit.
                 If FoundStartSignal = False And Now > SSMTEndTime Then
-                    RaiseEvent UpdateConsole(Appid, QGlobal.ProcOp.Err, "Process did not completely start in reasonable time. Shutting down.")
+                    RaiseEvent _
+                        UpdateConsole(Appid, QGlobal.ProcOp.Err,
+                                      "Process did not completely start in reasonable time. Shutting down.")
                     Exit Do
                 End If
                 Thread.Sleep(500)
@@ -283,6 +294,7 @@ Public Class clsProcessHandler
             _state = QGlobal.ProcOp.Stopped
             RaiseEvent UpdateConsole(Appid, QGlobal.ProcOp.Stopped, "")
         End Sub
+
         Public Function IsRunning() As Boolean
             Try
                 If p.HasExited Then
@@ -294,11 +306,12 @@ Public Class clsProcessHandler
             End Try
             If FoundStartSignal Then Return True
             Return False
-
         End Function
+
         Public Function State() As Integer
             Return _state
         End Function
+
         Public Sub StopProc()
             Abort = True
         End Sub
@@ -312,6 +325,7 @@ Public Class clsProcessHandler
             End Try
             Return False
         End Function
+
         Public Sub Cleanup()
             Try
                 p = Nothing
@@ -325,6 +339,7 @@ Public Class clsProcessHandler
 
             End Try
         End Sub
+
         Sub OutputHandler(sender As Object, e As DataReceivedEventArgs)
             If Not String.IsNullOrEmpty(e.Data) Then
                 If UpgradeSignal.Length > 0 And e.Data.Contains(UpgradeSignal) Then FoundUpgradeSignal = True
@@ -333,7 +348,9 @@ Public Class clsProcessHandler
                     If StartSignal.Length > 0 And e.Data.Contains(StartSignal) Then
 
                         If FoundUpgradeSignal Then
-                            RaiseEvent UpdateConsole(Appid, QGlobal.ProcOp.ConsoleOut, "Qbundle: Executing second stage upgrade. Please wait up to 5 minutes for completion.")
+                            RaiseEvent _
+                                UpdateConsole(Appid, QGlobal.ProcOp.ConsoleOut,
+                                              "Qbundle: Executing second stage upgrade. Please wait up to 5 minutes for completion.")
                             ExecuteUpgradeCmd()
                         End If
                         FoundStartSignal = True 'we have this before upgrade so we do not kill proces during upgrade
@@ -344,6 +361,7 @@ Public Class clsProcessHandler
                 RaiseEvent UpdateConsole(Appid, QGlobal.ProcOp.ConsoleOut, e.Data)
             End If
         End Sub
+
         Sub ErroutHandler(sender As Object, e As DataReceivedEventArgs)
 
             If Not String.IsNullOrEmpty(e.Data) Then
@@ -353,7 +371,9 @@ Public Class clsProcessHandler
                 If FoundStartSignal = False Then
                     If StartSignal.Length > 0 And e.Data.Contains(StartSignal) Then
                         If FoundUpgradeSignal Then
-                            RaiseEvent UpdateConsole(Appid, QGlobal.ProcOp.ConsoleErr, "Qbundle: Executing second stage upgrade. Please wait up to 5 minutes for completion.")
+                            RaiseEvent _
+                                UpdateConsole(Appid, QGlobal.ProcOp.ConsoleErr,
+                                              "Qbundle: Executing second stage upgrade. Please wait up to 5 minutes for completion.")
                             ExecuteUpgradeCmd()
                         End If
                         FoundStartSignal = True 'we have this before upgrade so we do not kill proces during upgrade
@@ -368,7 +388,7 @@ Public Class clsProcessHandler
 
         Private Sub ExecuteUpgradeCmd()
             Try
-                Dim pr As Process = New Process
+                Dim pr = New Process
                 pr.StartInfo.WorkingDirectory = WorkingDirectory
                 pr.StartInfo.Arguments = ""
                 pr.StartInfo.UseShellExecute = False
@@ -381,15 +401,5 @@ Public Class clsProcessHandler
                 Generic.WriteDebug(ex)
             End Try
         End Sub
-
     End Class
-
-
-
-
-
-
-
-
-
 End Class

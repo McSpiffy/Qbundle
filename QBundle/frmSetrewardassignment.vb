@@ -10,11 +10,11 @@ Public Class frmSetrewardassignment
     Private Sub frmSetrewardassignment_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         cmlAccounts.Items.Clear()
         Dim mnuitm As ToolStripMenuItem
-        For Each account As QB.clsAccounts.Account In Q.Accounts.AccArray
+        For Each account As clsAccounts.Account In Q.Accounts.AccArray
             mnuitm = New ToolStripMenuItem
             mnuitm.Name = account.AccountName
             mnuitm.Text = account.AccountName
-            AddHandler(mnuitm.Click), AddressOf SelectAccountID
+            AddHandler (mnuitm.Click), AddressOf SelectAccountID
             cmlAccounts.Items.Add(mnuitm)
         Next
 
@@ -22,26 +22,25 @@ Public Class frmSetrewardassignment
         mnuitm = New ToolStripMenuItem
         mnuitm.Name = "Solo mining"
         mnuitm.Text = "Solo mining"
-        AddHandler(mnuitm.Click), AddressOf SelectPoolID
+        AddHandler (mnuitm.Click), AddressOf SelectPoolID
         cmlPools.Items.Add(mnuitm)
 
-        For x As Integer = 0 To UBound(Q.AppManager.AppStore.Pools)
+        For x = 0 To UBound(Q.AppManager.AppStore.Pools)
             mnuitm = New ToolStripMenuItem
             mnuitm.Name = Q.AppManager.AppStore.Pools(x).Name
             mnuitm.Text = Q.AppManager.AppStore.Pools(x).Name
-            AddHandler(mnuitm.Click), AddressOf SelectPoolID
+            AddHandler (mnuitm.Click), AddressOf SelectPoolID
             cmlPools.Items.Add(mnuitm)
         Next
 
         cmbWallet.Items.Clear()
         Generic.UpdateLocalWallet()
-        For t As Integer = 0 To UBound(Q.AppManager.AppStore.Wallets)
+        For t = 0 To UBound(Q.AppManager.AppStore.Wallets)
             cmbWallet.Items.Add(Q.AppManager.AppStore.Wallets(t).Name)
         Next
         cmbWallet.SelectedIndex = 0
-
-
     End Sub
+
     Private Sub SelectAccountID(sender As Object, e As EventArgs)
         Dim mnuitm As ToolStripMenuItem = Nothing
         Try
@@ -52,6 +51,7 @@ Public Class frmSetrewardassignment
         End Try
         txtAccount.Text = Q.Accounts.GetAccountRS(mnuitm.Text)
     End Sub
+
     Private Sub SelectPoolID(sender As Object, e As EventArgs)
         Dim mnuitm As ToolStripMenuItem = Nothing
         Try
@@ -63,7 +63,7 @@ Public Class frmSetrewardassignment
         If mnuitm.Text = "Solo mining" Then
             txtPool.Text = txtAccount.Text
         Else
-            For x As Integer = 0 To UBound(Q.AppManager.AppStore.Pools)
+            For x = 0 To UBound(Q.AppManager.AppStore.Pools)
                 If mnuitm.Text = Q.AppManager.AppStore.Pools(x).Name Then
                     txtPool.Text = Q.AppManager.AppStore.Pools(x).BurstAddress
                     Exit For
@@ -92,14 +92,15 @@ Public Class frmSetrewardassignment
 
         Try
 
-            Dim Passphrase As String = ""
+            Dim Passphrase = ""
             'check first for account and ask for pin
             If txtAccount.Text.Length > 0 And UCase(txtAccount.Text).StartsWith("BURST-") Then
-                For Each account As QB.clsAccounts.Account In Q.Accounts.AccArray
+                For Each account As clsAccounts.Account In Q.Accounts.AccArray
                     If account.RSAddress = txtAccount.Text Then
 
                         pwdf.Text = "Enter your pin"
-                        pwdf.lblInfo.Text = "Enter pin for account " & account.AccountName & " (" & account.RSAddress & ")"
+                        pwdf.lblInfo.Text = "Enter pin for account " & account.AccountName & " (" & account.RSAddress &
+                                            ")"
                         If pwdf.ShowDialog() = DialogResult.OK Then
                             Dim pin As String = pwdf.txtPwd.Text
                             If pin.Length > 0 Then
@@ -107,11 +108,13 @@ Public Class frmSetrewardassignment
                                 If tmp.Length > 0 Then
                                     Passphrase = tmp
                                 Else
-                                    MsgBox("You entered the wrong pin.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Wrong Pin")
+                                    MsgBox("You entered the wrong pin.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly,
+                                           "Wrong Pin")
                                     Exit Sub
                                 End If
                             Else
-                                MsgBox("You entered the wrong pin.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Wrong Pin")
+                                MsgBox("You entered the wrong pin.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly,
+                                       "Wrong Pin")
                                 Exit Sub
                             End If
                             Exit For
@@ -128,11 +131,13 @@ Public Class frmSetrewardassignment
                             If UCase(txtAccount.Text) = UCase("BURST-" & Q.Accounts.GetRSFromPassPhrase(tmp)) Then
                                 Passphrase = tmp
                             Else
-                                MsgBox("You entered the wrong passphrase.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Wrong passphrase")
+                                MsgBox("You entered the wrong passphrase.",
+                                       MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Wrong passphrase")
                                 Exit Sub
                             End If
                         Else
-                            MsgBox("You entered the wrong passphrase.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Wrong passphrase")
+                            MsgBox("You entered the wrong passphrase.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly,
+                                   "Wrong passphrase")
                             Exit Sub
                         End If
                     End If
@@ -143,7 +148,7 @@ Public Class frmSetrewardassignment
             End If
             'now get AccountID from AccountRS for pool if not defined yet
 
-            Dim AccID As String = ""
+            Dim AccID = ""
             'if only numeric the ok
             If txtPool.Text.Length > 0 Then
                 If IsNumeric(txtPool.Text) And txtPool.Text.Length < 21 Then
@@ -151,11 +156,13 @@ Public Class frmSetrewardassignment
                 ElseIf UCase(txtPool.Text).StartsWith("BURST-") And txtPool.Text.Length = 26 Then
                     AccID = Q.Accounts.ConvertRSToId(txtPool.Text)
                 Else
-                    MsgBox("You seem to have entered an invalid pool address.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Wrong pool address.")
+                    MsgBox("You seem to have entered an invalid pool address.",
+                           MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Wrong pool address.")
                     Exit Sub
                 End If
             Else
-                MsgBox("You need to enter a pool address.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Wrong pool address.")
+                MsgBox("You need to enter a pool address.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly,
+                       "Wrong pool address.")
                 Exit Sub
             End If
 
@@ -171,21 +178,24 @@ Public Class frmSetrewardassignment
             postData &= "&feeNQT=" & http.URLEncode(fee)
 
 
-            Dim result As String = http.PostUrl(Q.AppManager.AppStore.Wallets(cmbWallet.SelectedIndex).Address & "/burst", postData)
+            Dim result As String =
+                    http.PostUrl(Q.AppManager.AppStore.Wallets(cmbWallet.SelectedIndex).Address & "/burst", postData)
             If result.Length > 0 Then
                 If result.Contains("error") Then
-                    MsgBox("Reward Assignment did not succeed. Make sure the wallet you are using works and that you at least have the fee amount in your account. Further details: " & vbCrLf & vbCrLf & result, MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "Error :(")
+                    MsgBox(
+                        "Reward Assignment did not succeed. Make sure the wallet you are using works and that you at least have the fee amount in your account. Further details: " &
+                        vbCrLf & vbCrLf & result, MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "Error :(")
                 Else
                     MsgBox("Reward Assignment has been set.", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "All done.")
                 End If
             Else
-                MsgBox("Wallet seem to be offline. Try another wallet.", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "No connection")
+                MsgBox("Wallet seem to be offline. Try another wallet.", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly,
+                       "No connection")
             End If
         Catch ex As Exception
             Generic.WriteDebug(ex)
         End Try
     End Sub
-
 
 
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
@@ -196,10 +206,12 @@ Public Class frmSetrewardassignment
 
         If cmbWallet.SelectedIndex = 0 Then
             If Not frmMain.Running Then
-                MsgBox("Your local wallet is not running. Please select an online wallet", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "Not running")
+                MsgBox("Your local wallet is not running. Please select an online wallet",
+                       MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "Not running")
                 Exit Sub
             ElseIf Not frmMain.FullySynced Then
-                MsgBox("Your local wallet is running but not fully synced. Please select an online wallet", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "Not synced")
+                MsgBox("Your local wallet is running but not fully synced. Please select an online wallet",
+                       MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "Not synced")
                 Exit Sub
             End If
         End If
@@ -208,18 +220,24 @@ Public Class frmSetrewardassignment
 
             Dim http As New clsHttp
             Dim buffer() As String = Nothing
-            Dim AccountID As String = ""
-            Dim PoolRS As String = ""
-            Dim result() As String = Split(Replace(http.GetUrl(Q.AppManager.AppStore.Wallets(cmbWallet.SelectedIndex).Address & "/burst?requestType=getRewardRecipient&account=" & txtAccount.Text), Chr(34), ""), ",")
+            Dim AccountID = ""
+            Dim PoolRS = ""
+            Dim result() As String =
+                    Split(
+                        Replace(
+                            http.GetUrl(
+                                Q.AppManager.AppStore.Wallets(cmbWallet.SelectedIndex).Address &
+                                "/burst?requestType=getRewardRecipient&account=" & txtAccount.Text), Chr(34), ""), ",")
             If result(0).StartsWith("{rewardRecipient:") Then
                 AccountID = Mid(result(0), 18)
             Else
-                MsgBox("Unable to get reward recipient status with selected wallet.", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "No response")
+                MsgBox("Unable to get reward recipient status with selected wallet.",
+                       MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "No response")
                 Exit Sub
             End If
 
             Dim msg As String
-            For t As Integer = 0 To UBound(Q.AppManager.AppStore.Pools)
+            For t = 0 To UBound(Q.AppManager.AppStore.Pools)
                 If Q.AppManager.AppStore.Pools(t).BurstAddress = "BURST-" & Q.Accounts.ConvertIdToRS(AccountID) Then
                     msg = "Your current reward recipient is:" & vbCrLf
                     msg &= "Burst address: " & Q.AppManager.AppStore.Pools(t).BurstAddress & vbCrLf
@@ -229,9 +247,14 @@ Public Class frmSetrewardassignment
                 End If
             Next
 
-            result = Split(Replace(http.GetUrl(Q.AppManager.AppStore.Wallets(cmbWallet.SelectedIndex).Address & "/burst?requestType=getAccount&account=" & AccountID), Chr(34), ""), ",")
+            result =
+                Split(
+                    Replace(
+                        http.GetUrl(
+                            Q.AppManager.AppStore.Wallets(cmbWallet.SelectedIndex).Address &
+                            "/burst?requestType=getAccount&account=" & AccountID), Chr(34), ""), ",")
             If UBound(result) > 0 Then
-                For t As Integer = 0 To UBound(result)
+                For t = 0 To UBound(result)
                     If result(t).StartsWith("name:") Then
                         msg = "Your current reward recipient is:" & vbCrLf
                         msg &= "Burst address: BURST-" & Q.Accounts.ConvertIdToRS(AccountID) & vbCrLf
@@ -247,14 +270,11 @@ Public Class frmSetrewardassignment
             MsgBox(msg, MsgBoxStyle.Information, "Reward recipient")
 
         Catch ex As Exception
-            MsgBox("Unable to get reward recipient status with selected wallet.", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "No response")
+            MsgBox("Unable to get reward recipient status with selected wallet.",
+                   MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "No response")
             Generic.WriteDebug(ex)
             Exit Sub
 
         End Try
-
-
     End Sub
-
-
 End Class

@@ -1,11 +1,19 @@
-﻿Public Class frmExportDb
+﻿Imports System.IO
+
+Public Class frmExportDb
     Private Running As Boolean
     Private WithEvents WaitTimer As Timer
-    Private Delegate Sub DProcEvents(ByVal [AppId] As Integer, ByVal [Operation] As Integer, ByVal [data] As String)
-    Private Delegate Sub DStarting(ByVal [AppId] As Integer)
-    Private Delegate Sub DStoped(ByVal [AppId] As Integer)
-    Private Delegate Sub DAborted(ByVal [AppId] As Integer, ByVal [data] As String)
+
+    Private Delegate Sub DProcEvents([AppId] As Integer, [Operation] As Integer, [data] As String)
+
+    Private Delegate Sub DStarting([AppId] As Integer)
+
+    Private Delegate Sub DStoped([AppId] As Integer)
+
+    Private Delegate Sub DAborted([AppId] As Integer, [data] As String)
+
     Private StartTime As Date
+
     Private Sub btnBrowse_Click(sender As Object, e As EventArgs) Handles btnBrowse.Click
         Dim sfd As New SaveFileDialog
         sfd.Filter = "Burst Binary Database (*.bbd)|*.bbd|All Files (*.*)|*.*"
@@ -26,15 +34,21 @@
 
         'try create file to check write permisions
         Try
-            IO.File.WriteAllText(txtFilename.Text, "")
+            File.WriteAllText(txtFilename.Text, "")
         Catch ex As Exception
-            MsgBox("You do not have permission to write the database here." & vbCrLf & " Try another location to store the database.", MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "No permissions")
+            MsgBox(
+                "You do not have permission to write the database here." & vbCrLf &
+                " Try another location to store the database.", MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly,
+                "No permissions")
             Exit Sub
         End Try
         Try 'delete the file so nothing is there when exporting
-            IO.File.Delete(txtFilename.Text)
+            File.Delete(txtFilename.Text)
         Catch ex As Exception
-            MsgBox("You do not have permission to write the database here." & vbCrLf & " Try another filename or location to store the database.", MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "No permissions")
+            MsgBox(
+                "You do not have permission to write the database here." & vbCrLf &
+                " Try another filename or location to store the database.", MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly,
+                "No permissions")
             Exit Sub
         End Try
 
@@ -42,7 +56,9 @@
         StartTime = Now
         'if wallet is running shut it down
         If frmMain.Running Then
-            If MsgBox("The wallet must be stopped to export the database." & vbCrLf & " Would you like to stop it now?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo, "Stop wallet?") = MsgBoxResult.Yes Then
+            If _
+                MsgBox("The wallet must be stopped to export the database." & vbCrLf & " Would you like to stop it now?",
+                       MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo, "Stop wallet?") = MsgBoxResult.Yes Then
                 lblStatus.Text = "Waiting for wallet to stop."
                 frmMain.StopWallet()
                 WaitTimer = New Timer
@@ -63,9 +79,8 @@
         End If
 
         'start process
-
-
     End Sub
+
     Sub StartExport()
 
 
@@ -85,7 +100,8 @@
 
         Running = True
     End Sub
-    Private Sub frmExportDb_Closing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles MyBase.FormClosing
+
+    Private Sub frmExportDb_Closing(sender As Object, e As FormClosingEventArgs) Handles MyBase.FormClosing
         Try
             If Running Then
                 MsgBox("You must wait until the export is finished.", MsgBoxStyle.OkOnly, "Close")
@@ -95,7 +111,6 @@
         Catch ex As Exception
             Generic.WriteDebug(ex)
         End Try
-
     End Sub
 
     Private Sub WaitTimer_tick() Handles WaitTimer.Tick
@@ -114,7 +129,7 @@
         End If
     End Sub
 
-    Private Sub Starting(ByVal AppId As Integer)
+    Private Sub Starting(AppId As Integer)
         If Me.InvokeRequired Then
             Dim d As New DStarting(AddressOf Starting)
             Me.Invoke(d, New Object() {AppId})
@@ -126,10 +141,9 @@
                 lblStatus.Text = "Starting to export"
                 pb1.Value = 0
         End Select
-
     End Sub
 
-    Private Sub Stopped(ByVal AppId As Integer)
+    Private Sub Stopped(AppId As Integer)
         If Me.InvokeRequired Then
             Dim d As New DStoped(AddressOf Stopped)
             Me.Invoke(d, New Object() {AppId})
@@ -146,9 +160,11 @@
             Complete()
         End If
     End Sub
+
     Private Sub Complete()
         Dim ElapsedTime As TimeSpan = Now.Subtract(StartTime)
-        lblStatus.Text = "Done! Export completed in " & ElapsedTime.Hours & "h " & ElapsedTime.Minutes & "m " & ElapsedTime.Seconds & "s"
+        lblStatus.Text = "Done! Export completed in " & ElapsedTime.Hours & "h " & ElapsedTime.Minutes & "m " &
+                         ElapsedTime.Seconds & "s"
         btnBrowse.Enabled = True
         txtFilename.Enabled = True
         btnStart.Text = "Close"
@@ -161,7 +177,8 @@
         RemoveHandler Q.ProcHandler.Stopped, AddressOf Stopped
         RemoveHandler Q.ProcHandler.Update, AddressOf ProcEvents
     End Sub
-    Private Sub ProcEvents(ByVal AppId As Integer, ByVal Operation As Integer, ByVal data As String)
+
+    Private Sub ProcEvents(AppId As Integer, Operation As Integer, data As String)
         If Me.InvokeRequired Then
             Dim d As New DProcEvents(AddressOf ProcEvents)
             Me.Invoke(d, New Object() {AppId, Operation, data})
@@ -169,7 +186,7 @@
         End If
         'threadsafe here
         Dim darray() As String = Nothing
-        Dim percent As Integer = 0
+        Dim percent = 0
         If AppId = QGlobal.AppNames.Export Then 'we need to filter messages
             Select Case Operation
                 Case QGlobal.ProcOp.Stopped
@@ -189,11 +206,12 @@
                                 'we can now asume we have something to parse
                                 'lets create percent
                                 If Not darray(6) = "0" And Not darray(8) = "0" Then
-                                    percent = CInt(Math.Round(Val(darray(6)) / Val(darray(8)) * 100, 0))
+                                    percent = CInt(Math.Round(Val(darray(6))/Val(darray(8))*100, 0))
                                 Else
                                     percent = 100
                                 End If
-                                lblStatus.Text = "Exporting " & darray(5).Replace(":", "") & " " & darray(6) & " of " & darray(8)
+                                lblStatus.Text = "Exporting " & darray(5).Replace(":", "") & " " & darray(6) & " of " &
+                                                 darray(8)
                                 pb1.Value = percent
                             End If
                         End If
@@ -209,11 +227,9 @@
                 StartExport()
             End If
         End If
-
-
     End Sub
 
-    Private Sub Aborted(ByVal AppId As Integer, ByVal Data As String)
+    Private Sub Aborted(AppId As Integer, Data As String)
         If Me.InvokeRequired Then
             Dim d As New DAborted(AddressOf Aborted)
             Me.Invoke(d, New Object() {AppId, Data})
@@ -223,17 +239,14 @@
         If AppId = QGlobal.AppNames.Export Then
             MsgBox(Data)
         End If
-
     End Sub
 
     Private Sub frmExportDb_Load(sender As Object, e As EventArgs) Handles MyBase.Load
-
-
-
     End Sub
+
     Private Sub StartMaria()
         Try
-            If QB.Generic.SanityCheck Then
+            If Generic.SanityCheck Then
                 Dim pr As New clsProcessHandler.pSettings
                 pr.AppId = QGlobal.AppNames.MariaPortable
                 pr.AppPath = QGlobal.AppDir & "MariaDb\bin\mysqld.exe"
@@ -247,8 +260,8 @@
         Catch ex As Exception
             MsgBox("Unable to start Maria Portable.")
         End Try
-
     End Sub
+
     Private Sub StopMaria()
         lblStatus.Text = "Stopping MariaDB"
         Q.ProcHandler.StopProcess(QGlobal.AppNames.MariaPortable)

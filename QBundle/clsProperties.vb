@@ -1,29 +1,33 @@
 ﻿Imports System.IO
 
 Friend Class clsProperties
-    Private m_Properties As Hashtable
+    Private ReadOnly m_Properties As Hashtable
+
     Sub New()
         m_Properties = New Hashtable
     End Sub
-    Friend Sub Add(ByVal key As String, ByVal value As String)
+
+    Friend Sub Add(key As String, value As String)
         m_Properties.Remove(key)
         m_Properties.Add(key, value)
     End Sub
-    Friend Sub Delete(ByVal key As String)
+
+    Friend Sub Delete(key As String)
         Try
             m_Properties.Remove(key)
         Catch ex As Exception
             Generic.WriteDebug(ex)
         End Try
     End Sub
-    Friend Function Load(ByVal FileName As String)
+
+    Friend Function Load(FileName As String)
         Try
             If File.Exists(FileName) Then
-                Dim sr As StreamReader = New StreamReader(FileName)
+                Dim sr = New StreamReader(FileName)
                 Dim line As String
                 Dim key As String
                 Dim value As String
-                Do While sr.Peek <> -1
+                Do While sr.Peek <> - 1
                     line = sr.ReadLine
                     If line = Nothing OrElse line.Length = 0 OrElse line.StartsWith("#") Then
                         Continue Do
@@ -42,29 +46,27 @@ Friend Class clsProperties
             Generic.WriteDebug(ex)
         End Try
         Return False
-
-
     End Function
-    Friend Function Save(ByVal FileName As String)
+
+    Friend Function Save(FileName As String)
         Try
-            Dim Data As String = ""
+            Dim Data = ""
             For Each key As String In m_Properties.Keys
                 Data &= key & " = " & m_Properties.Item(key) & vbCrLf
             Next
-            IO.File.WriteAllText(FileName, Data)
+            File.WriteAllText(FileName, Data)
         Catch ex As Exception
             Generic.WriteDebug(ex)
         End Try
         Return True
     End Function
 
-    Friend Function GetProperty(ByVal key As String)
+    Friend Function GetProperty(key As String)
 
         Return m_Properties.Item(key)
-
     End Function
 
-    Friend Function GetProperty(ByVal key As String, ByVal defValue As String) As String
+    Friend Function GetProperty(key As String, defValue As String) As String
 
         Dim value As String = GetProperty(key)
         If value = Nothing Then
@@ -72,11 +74,5 @@ Friend Class clsProperties
         End If
 
         Return value
-
     End Function
-
-
-
-
-
 End Class

@@ -5,10 +5,12 @@ Public Class frmSettings
     Private JavaType As Integer
 
 #Region " Form events "
+
     Private Sub frmSettings_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         LoadSettings()
     End Sub
-    Private Sub TabControl1_DrawItem(ByVal sender As Object, ByVal e As DrawItemEventArgs) Handles TabControl1.DrawItem
+
+    Private Sub TabControl1_DrawItem(sender As Object, e As DrawItemEventArgs) Handles TabControl1.DrawItem
         Dim g As Graphics = e.Graphics
         Dim _TB As Brush
         Dim _TP As TabPage = TabControl1.TabPages(e.Index)
@@ -26,12 +28,15 @@ Public Class frmSettings
         _strFlags.LineAlignment = StringAlignment.Center
         g.DrawString(_TP.Text, _TF, _TB, _TA, New StringFormat(_strFlags))
     End Sub
+
 #End Region
 
 #Region " Clickable objects "
+
     Private Sub rJava0_Click(sender As Object, e As EventArgs) Handles rJava0.Click
         ChangeJavaType(QGlobal.AppNames.JavaInstalled)
     End Sub
+
     Private Sub rJava1_Click(sender As Object, e As EventArgs) Handles rJava1.Click
         ChangeJavaType(QGlobal.AppNames.JavaPortable)
     End Sub
@@ -39,9 +44,11 @@ Public Class frmSettings
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         SaveSettings()
     End Sub
+
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         SaveSettings()
     End Sub
+
     Private Sub Button2_Click(sender As Object, e As EventArgs) Handles Button2.Click
         Dim buffer() As String = Split(txtAddAllow.Text, "/")
 
@@ -50,45 +57,53 @@ Public Class frmSettings
         Select Case UBound(buffer)
             Case 0
                 If Not IPAddress.TryParse(buffer(0), ip) Then
-                    MsgBox("You have not entered a valid IP.", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "Wrong format")
+                    MsgBox("You have not entered a valid IP.", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly,
+                           "Wrong format")
                     Exit Sub
                 End If
 
                 lstConnectFrom.Items.Add(buffer(0))
             Case 1
                 If Not IPAddress.TryParse(buffer(0), ip) Then
-                    MsgBox("You have not entered a valid cidr network.", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "Wrong format")
+                    MsgBox("You have not entered a valid cidr network.", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly,
+                           "Wrong format")
                     Exit Sub
                 End If
                 If buffer(0).Contains(":") Then 'ipv6
                     If Val(buffer(1)) > 128 Or Val(buffer(1)) < 0 Then
-                        MsgBox("You have not entered a valid ipv6 cidr network.", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "Wrong format")
+                        MsgBox("You have not entered a valid ipv6 cidr network.",
+                               MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "Wrong format")
                         Exit Sub
                     End If
 
                 Else 'ipv4
                     If Val(buffer(1)) > 32 Or Val(buffer(1)) < 0 Then
-                        MsgBox("You have not entered a valid  ipv4 cidr network.", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "Wrong format")
+                        MsgBox("You have not entered a valid  ipv4 cidr network.",
+                               MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "Wrong format")
                         Exit Sub
                     End If
                 End If
                 lstConnectFrom.Items.Add(buffer(0) & "/" & buffer(1))
             Case Else
-                MsgBox("You have not entered a valid IP or network.", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "Wrong format")
+                MsgBox("You have not entered a valid IP or network.", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly,
+                       "Wrong format")
         End Select
     End Sub
+
     Private Sub Button5_Click(sender As Object, e As EventArgs) Handles Button5.Click
-        If lstConnectFrom.SelectedIndex = -1 Then Exit Sub
+        If lstConnectFrom.SelectedIndex = - 1 Then Exit Sub
         lstConnectFrom.Items.RemoveAt(lstConnectFrom.SelectedIndex)
     End Sub
+
     Private Sub Button6_Click(sender As Object, e As EventArgs) Handles Button6.Click
         SaveSettings()
     End Sub
+
 #End Region
 
     Private Sub SaveSettings()
 
-        Dim buffer As String = ""
+        Dim buffer = ""
 
         'generic
         Q.settings.CheckForUpdates = chkCheckForUpdates.Checked
@@ -100,7 +115,7 @@ Public Class frmSettings
         Q.settings.GetCoinMarket = chkCoinmarket.Checked
         Q.settings.NoDirectLogin = chkNoDirectLogin.Checked
 
-        If cmbCurrency.SelectedIndex > -1 Then
+        If cmbCurrency.SelectedIndex > - 1 Then
             Q.settings.Currency = cmbCurrency.Items.Item(cmbCurrency.SelectedIndex).ToString
         End If
 
@@ -115,14 +130,16 @@ Public Class frmSettings
         If cmbListen.SelectedIndex = 0 Then
             Q.settings.ListenIf = "0.0.0.0" & ";" & CStr(nrListenPort.Value)
         Else
-            Q.settings.ListenIf = cmbListen.Items.Item(cmbListen.SelectedIndex).ToString & ";" & CStr(nrListenPort.Value)
+            Q.settings.ListenIf = cmbListen.Items.Item(cmbListen.SelectedIndex).ToString & ";" &
+                                  CStr(nrListenPort.Value)
         End If
         If cmbPeerIP.SelectedIndex = 0 Then
             Q.settings.ListenPeer = "0.0.0.0" & ";" & CStr(nrPeerPort.Value)
         Else
-            Q.settings.ListenPeer = cmbPeerIP.Items.Item(cmbPeerIP.SelectedIndex).ToString & ";" & CStr(nrPeerPort.Value)
+            Q.settings.ListenPeer = cmbPeerIP.Items.Item(cmbPeerIP.SelectedIndex).ToString & ";" &
+                                    CStr(nrPeerPort.Value)
         End If
-        For x As Integer = 0 To lstConnectFrom.Items.Count - 1
+        For x = 0 To lstConnectFrom.Items.Count - 1
             buffer &= lstConnectFrom.Items.Item(x).ToString & ";"
         Next
 
@@ -138,11 +155,13 @@ Public Class frmSettings
         Else
             Generic.DebugMe = False
         End If
-        
+
         ' Java
-        
+
         If Q.settings.JavaType = QGlobal.AppNames.JavaPortable And Not Q.AppManager.IsAppInstalled("JavaPortable") Then
-            If MsgBox("Java Portable is not installed. Would you like to download and install it now?", MsgBoxStyle.Information Or MsgBoxStyle.YesNo, "Download Portable Java?") = MsgBoxResult.Yes Then
+            If _
+                MsgBox("Java Portable is not installed. Would you like to download and install it now?",
+                       MsgBoxStyle.Information Or MsgBoxStyle.YesNo, "Download Portable Java?") = MsgBoxResult.Yes Then
                 If Not Q.AppManager.InstallApp("JavaPortable") Then
                     MsgBox("Error installing Java Portable")
                 End If
@@ -150,9 +169,8 @@ Public Class frmSettings
         End If
         'ok lets fix firewall if its intended to be like that
         Me.Close()
-
-
     End Sub
+
     Private Sub LoadSettings()
         chkCheckForUpdates.Checked = Q.settings.CheckForUpdates
         chkAlwaysAdmin.Checked = Q.settings.AlwaysAdmin
@@ -172,7 +190,7 @@ Public Class frmSettings
             txtBroadcast.Enabled = True
             txtBroadcast.Text = Q.settings.Broadcast
         End If
-        For t As Integer = 0 To cmbCurrency.Items.Count - 1
+        For t = 0 To cmbCurrency.Items.Count - 1
             If cmbCurrency.Items.Item(t).ToString = Q.settings.Currency Then
                 cmbCurrency.SelectedIndex = t
                 Exit For
@@ -203,9 +221,6 @@ Public Class frmSettings
         End Select
 
 
-
-
-
         'SetNRSnet
         SetIf()
         SetAllowedIP()
@@ -214,8 +229,8 @@ Public Class frmSettings
     Private Sub nrCores_ValueChanged(sender As Object, e As EventArgs)
         If nrCores.Value > Environment.ProcessorCount Then nrCores.Value = Environment.ProcessorCount
         If nrCores.Value < 1 Then nrCores.Value = 1
-
     End Sub
+
     Private Sub ChangeJavaType(id As Integer)
         rJava0.Checked = False
         rJava1.Checked = False
@@ -230,6 +245,7 @@ Public Class frmSettings
         End Select
         JavaType = id
     End Sub
+
     Private Sub SetIf()
         Dim adapters As NetworkInterface() = NetworkInterface.GetAllNetworkInterfaces()
         Dim adapter As NetworkInterface
@@ -244,7 +260,9 @@ Public Class frmSettings
             Dim properties As IPInterfaceProperties = adapter.GetIPProperties()
             For Each address In properties.UnicastAddresses
                 'If address.Address.AddressFamily = Net.Sockets.AddressFamily.InterNetwork Then
-                If adapter.OperationalStatus = OperationalStatus.Up And adapter.NetworkInterfaceType = NetworkInterfaceType.Ethernet Then
+                If _
+                    adapter.OperationalStatus = OperationalStatus.Up And
+                    adapter.NetworkInterfaceType = NetworkInterfaceType.Ethernet Then
                     If address.Address.ToString.Contains("%") Then
                         Dim buffer As String = address.Address.ToString.Remove(address.Address.ToString.IndexOf("%"))
                         cmbListen.Items.Add(buffer)
@@ -268,7 +286,7 @@ Public Class frmSettings
             If S(0) = "0.0.0.0" Then
                 cmbPeerIP.SelectedIndex = 0
             Else
-                For t As Integer = 0 To cmbListen.Items.Count - 1
+                For t = 0 To cmbListen.Items.Count - 1
                     If cmbPeerIP.Items.Item(t).ToString = S(0) Then cmbListen.SelectedIndex = t
                 Next
             End If
@@ -283,16 +301,15 @@ Public Class frmSettings
             If S(0) = "0.0.0.0" Then
                 cmbListen.SelectedIndex = 0
             Else
-                For t As Integer = 0 To cmbListen.Items.Count - 1
+                For t = 0 To cmbListen.Items.Count - 1
                     If cmbListen.Items.Item(t).ToString = S(0) Then cmbListen.SelectedIndex = t
                 Next
             End If
         Catch ex As Exception
             Generic.WriteDebug(ex)
         End Try
-
-
     End Sub
+
     Private Sub SetAllowedIP()
 
         Dim s() As String = Split(Q.settings.ConnectFrom, ";")
@@ -302,7 +319,6 @@ Public Class frmSettings
                 lstConnectFrom.Items.Add(Trim(netw))
             End If
         Next
-
     End Sub
 
     Private Sub chkAutoIP_CheckedChanged(sender As Object, e As EventArgs) Handles chkAutoIP.Click

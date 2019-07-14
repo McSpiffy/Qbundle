@@ -1,6 +1,6 @@
-﻿Public Class frmFirstTime
+﻿Imports System.Reflection
 
-
+Public Class frmFirstTime
     Private Sub frmFirstTime_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
         Me.AutoScaleMode = AutoScaleMode.None
@@ -10,14 +10,13 @@
 
         Me.AutoScaleMode = AutoScaleMode.Font
 
-        If QB.Generic.DebugMe Then
+        If Generic.DebugMe Then
             Me.Text = Me.Text & " (DebugMode)"
         End If
 
         FirstNext()
-
-
     End Sub
+
     Private Sub FirstNext()
         SetInfo()
         PnlWiz2.Visible = True
@@ -25,7 +24,7 @@
 
     Sub SetInfo()
 
-        Dim ok As Boolean = True
+        Dim ok = True
 
         If Not Q.AppManager.isJavaInstalled Then
             pnlJava.BackColor = Color.LightCoral
@@ -51,9 +50,7 @@
             btnDownload.Enabled = True
             btnDone.Enabled = False
         End If
-
     End Sub
-
 
 
     Private Sub btnDownload_Click(sender As Object, e As EventArgs) Handles btnDownload.Click
@@ -69,6 +66,7 @@
         SetInfo()
         Me.Show()
     End Sub
+
     Private Sub btnDone_Click(sender As Object, e As EventArgs) Handles btnDone.Click
         Q.settings.CheckForUpdates = chkUpdates.Checked
         Q.settings.AutoIp = chkUpdates.Checked
@@ -80,24 +78,21 @@
         Q.settings.DbUser = QGlobal.Dbinfo(0).Username
         Q.settings.DbServer = QGlobal.Dbinfo(0).ConnString
         Q.settings.FirstRun = False
-        Dim CurVer As Integer = Reflection.Assembly.GetExecutingAssembly.GetName.Version.Major * 100
-        CurVer += Reflection.Assembly.GetExecutingAssembly.GetName.Version.Minor * 10
-        CurVer += Reflection.Assembly.GetExecutingAssembly.GetName.Version.Revision
+        Dim CurVer As Integer = Assembly.GetExecutingAssembly.GetName.Version.Major*100
+        CurVer += Assembly.GetExecutingAssembly.GetName.Version.Minor*10
+        CurVer += Assembly.GetExecutingAssembly.GetName.Version.Revision
         Q.settings.Upgradev = CurVer
         finalSteps()
-
     End Sub
 
 
     Private Sub Button2_Click(sender As Object, e As EventArgs)
 
         PnlWiz2.Visible = True
-
     End Sub
 
     Private Sub Button1_Click(sender As Object, e As EventArgs)
         finalSteps()
-
     End Sub
 
     Private Sub finalSteps()
@@ -107,9 +102,7 @@
         Catch ex As Exception
 
         End Try
-        QB.Generic.WriteWalletConfig()
+        Generic.WriteWalletConfig()
         Me.DialogResult = DialogResult.No
-
-
     End Sub
 End Class

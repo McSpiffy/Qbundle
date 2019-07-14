@@ -9,12 +9,16 @@ Public Class frmDownloadManager
     Friend Url As String = ""
     Friend Unzip As Boolean = False
 
-    Private Delegate Sub DProgress(ByVal [Job] As Integer, ByVal [AppId] As Integer, ByVal [percent] As Integer, ByVal [Speed] As Integer, ByVal [lRead] As Long, ByVal [lLength] As Long)
+    Private Delegate Sub DProgress _
+        ([Job] As Integer, [AppId] As Integer, [percent] As Integer, [Speed] As Integer, [lRead] As Long,
+         [lLength] As Long)
+
     Private Delegate Sub DDone()
+
     Private Delegate Sub DAborting()
 
     Private Result As DialogResult = Nothing
-    Private TimeElapsed As New Stopwatch
+    Private ReadOnly TimeElapsed As New Stopwatch
 
     Private Sub frmDownloadManager_Load(sender As Object, e As EventArgs) Handles MyBase.Load
 
@@ -24,8 +28,8 @@ Public Class frmDownloadManager
         TimeElapsed.Start()
         Pb1.Value = 0
         DownloadFile()
-
     End Sub
+
     Public Sub Done()
         If Me.InvokeRequired Then
             Dim d As New DDone(AddressOf Done)
@@ -62,7 +66,8 @@ Public Class frmDownloadManager
         Me.Close()
     End Sub
 
-    Private Sub Progress(ByVal Job As Integer, ByVal AppId As Integer, percent As Integer, ByVal Speed As Integer, ByVal lRead As Long, ByVal lLength As Long)
+    Private Sub Progress(Job As Integer, AppId As Integer, percent As Integer, Speed As Integer, lRead As Long,
+                         lLength As Long)
         If Me.InvokeRequired Then
             Dim d As New DProgress(AddressOf Progress)
             Me.Invoke(d, New Object() {Job, AppId, percent, Speed, lRead, lLength})
@@ -72,13 +77,13 @@ Public Class frmDownloadManager
         Select Case Job
             Case 0
                 Try
-                    TimeLeft = TimeSpan.FromMilliseconds((lLength - lRead) * TimeElapsed.ElapsedMilliseconds / lRead)
+                    TimeLeft = TimeSpan.FromMilliseconds((lLength - lRead)*TimeElapsed.ElapsedMilliseconds/lRead)
                 Catch ex As Exception
                 End Try
 
                 lblStatus.Text = "Downloading " & DownloadName
                 If Speed > 1024 Then
-                    lblSpeed.Text = CStr(Math.Round(Speed / 1024, 2)) & " MiB / sec"
+                    lblSpeed.Text = CStr(Math.Round(Speed/1024, 2)) & " MiB / sec"
                 Else
                     lblSpeed.Text = CStr(Speed) & " KiB / sec"
                 End If
@@ -101,7 +106,6 @@ Public Class frmDownloadManager
         _Aborted = True
 
         Me.DialogResult = DialogResult.Cancel
-
     End Sub
 
     Public Sub DownloadFile()
@@ -112,18 +116,19 @@ Public Class frmDownloadManager
         trda.Start()
         trda = Nothing
     End Sub
+
     Private Function Download() As Boolean
 
-        Dim DLOk As Boolean = False
+        Dim DLOk = False
         Dim filename As String = QGlobal.AppDir & Path.GetFileName(Url)
         Dim File As FileStream = Nothing
 
         Try
             Dim bBuffer(262143) As Byte '256k chunks downloadbuffer
             Dim TotalRead As Long = 0
-            Dim iBytesRead As Integer = 0
+            Dim iBytesRead = 0
             Dim ContentLength As Long = 0
-            Dim percent As Integer = 0
+            Dim percent = 0
 
             ServicePointManager.Expect100Continue = true
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
@@ -134,15 +139,15 @@ Public Class frmDownloadManager
             File = New FileStream(filename, FileMode.Create, FileAccess.Write)
             TotalRead = 0
             Dim SW As Stopwatch = Stopwatch.StartNew
-            Dim speed As Integer = 0
+            Dim speed = 0
             Do
                 If _Aborted Then Exit Do 'we will return false 
                 iBytesRead = sChunks.Read(bBuffer, 0, 262144)
                 If iBytesRead = 0 Then Exit Do
                 TotalRead += iBytesRead
                 File.Write(bBuffer, 0, iBytesRead)
-                If SW.ElapsedMilliseconds > 0 Then speed = CInt(TotalRead / SW.ElapsedMilliseconds)
-                percent = CInt(Math.Round((TotalRead / ContentLength) * 100, 0))
+                If SW.ElapsedMilliseconds > 0 Then speed = CInt(TotalRead/SW.ElapsedMilliseconds)
+                percent = CInt(Math.Round((TotalRead/ContentLength)*100, 0))
                 Progress(0, 0, percent, speed, TotalRead, ContentLength)
             Loop
             File.Flush()
@@ -163,15 +168,16 @@ Public Class frmDownloadManager
         Done()
         Return True
     End Function
+
     Private Function Extract() As Boolean
-        Dim AllOk As Boolean = False
+        Dim AllOk = False
         Try
             Dim filename As String = QGlobal.AppDir & Path.GetFileName(Url)
             Dim target As String = QGlobal.AppDir
             Dim Archive As ZipArchive = ZipFile.OpenRead(filename)
             Dim totalfiles As Integer = Archive.Entries.Count
-            Dim counter As Integer = 0
-            Dim percent As Integer = 0
+            Dim counter = 0
+            Dim percent = 0
 
 
             For Each entry As ZipArchiveEntry In Archive.Entries
@@ -189,7 +195,7 @@ Public Class frmDownloadManager
                 End If
 
                 counter += 1
-                percent = CInt(Math.Round((counter / totalfiles) * 100, 0))
+                percent = CInt(Math.Round((counter/totalfiles)*100, 0))
                 Progress(1, 0, percent, 0, 0, 0)
             Next
             AllOk = True
@@ -199,8 +205,6 @@ Public Class frmDownloadManager
         End Try
 
         Return AllOk
-
-
     End Function
 
     Private Sub DeleteFile()

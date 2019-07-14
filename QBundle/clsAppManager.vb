@@ -1,5 +1,6 @@
 ﻿Imports System.IO
 Imports System.Management
+Imports System.Reflection
 Imports System.Threading
 Imports System.Xml.Serialization
 
@@ -10,11 +11,13 @@ Public Class clsAppManager
     Friend Messages As String
     Private _UpdateNotifyState As Integer
     Public Event UpdateAvailable()
+
     Sub New()
         AppXML = "QInfo.xml"
         AppStore = New UpdateObject
         LoadAppStore()
     End Sub
+
     Friend Sub LoadAppStore()
         Try
             Dim data As String
@@ -25,22 +28,22 @@ Public Class clsAppManager
             Reader.Close()
             Reader.Dispose()
             x = Nothing
-        Catch ex As System.IO.FileNotFoundException
+        Catch ex As FileNotFoundException
             UpdateAppStoreInformation()
         Catch ex As Exception
             Generic.WriteDebug(ex)
             MessageBox.Show(ex.Message.ToString(),
-            "FileNotFoundError",
-            MessageBoxButtons.OK,
-            MessageBoxIcon.Error,
-            MessageBoxDefaultButton.Button1)
+                            "FileNotFoundError",
+                            MessageBoxButtons.OK,
+                            MessageBoxIcon.Error,
+                            MessageBoxDefaultButton.Button1)
             Environment.Exit(1)
         End Try
-
     End Sub
+
     Friend Sub UpdateAppStoreInformation()
         'load previous data
-        Dim data As String = ""
+        Dim data = ""
         ReDim AppStore.Repositories(0)
         Dim SourceMirror As String = QGlobal.UpdateMirrors(0)
         Try
@@ -58,7 +61,7 @@ Public Class clsAppManager
         'save info if successful. if not load previous config
         If data.Length > 0 Then
             Try
-                IO.File.WriteAllText(QGlobal.BaseDir & AppXML, data)
+                File.WriteAllText(QGlobal.BaseDir & AppXML, data)
             Catch ex As Exception
                 Generic.WriteDebug(ex)
             End Try
@@ -66,21 +69,20 @@ Public Class clsAppManager
         End If
     End Sub
 
-    Friend Function IsAppInstalled(ByVal AppName As String) As Boolean
+    Friend Function IsAppInstalled(AppName As String) As Boolean
         If AppName = "Launcher" Then Return True
-        For t As Integer = 0 To UBound(AppStore.Apps)
-            If AppStore.Apps(t).Name = AppName Then Return IO.File.Exists(QGlobal.BaseDir & AppStore.Apps(t).VersionPath)
+        For t = 0 To UBound(AppStore.Apps)
+            If AppStore.Apps(t).Name = AppName Then Return File.Exists(QGlobal.BaseDir & AppStore.Apps(t).VersionPath)
         Next
 
         Return False
-
-
     End Function
-    Friend Function GetInstalledVersion(ByVal AppName As String, Optional ByVal UseFilter As Boolean = False) As String
-        Dim Version As String = ""
+
+    Friend Function GetInstalledVersion(AppName As String, Optional ByVal UseFilter As Boolean = False) As String
+        Dim Version = ""
         If AppName = "Launcher" Then Return GetQbundleVersion()
         Try
-            For t As Integer = 0 To UBound(AppStore.Apps)
+            For t = 0 To UBound(AppStore.Apps)
                 If AppStore.Apps(t).Name = AppName Then
                     If File.Exists(QGlobal.BaseDir & AppStore.Apps(t).VersionPath) Then
                         Version = File.ReadAllText(QGlobal.BaseDir & AppStore.Apps(t).VersionPath)
@@ -95,10 +97,11 @@ Public Class clsAppManager
 
         Return Version
     End Function
-    Friend Function GetAppStoreVersion(ByVal AppName As String, Optional ByVal UseFilter As Boolean = False) As String
-        Dim Version As String = ""
+
+    Friend Function GetAppStoreVersion(AppName As String, Optional ByVal UseFilter As Boolean = False) As String
+        Dim Version = ""
         Try
-            For t As Integer = 0 To UBound(AppStore.Apps)
+            For t = 0 To UBound(AppStore.Apps)
                 If AppStore.Apps(t).Name = AppName Then
                     Version = AppStore.Apps(t).RemoteVersion
                     Exit For
@@ -110,10 +113,11 @@ Public Class clsAppManager
         End Try
         Return Version
     End Function
-    Friend Function DoesAppNeedUpdate(ByVal AppName As String) As Boolean
+
+    Friend Function DoesAppNeedUpdate(AppName As String) As Boolean
 
         Try
-            For t As Integer = 0 To UBound(AppStore.Apps)
+            For t = 0 To UBound(AppStore.Apps)
                 If AppStore.Apps(t).Name = AppName Then
                     Return CheckVersion(GetInstalledVersion(AppName), GetAppStoreVersion(AppName), True)
                 End If
@@ -123,7 +127,8 @@ Public Class clsAppManager
         End Try
         Return False
     End Function
-    Friend Function CheckVersion(ByVal OldVersion As String, ByVal NewVersion As String, ByVal OnlyNew As Boolean) As Boolean
+
+    Friend Function CheckVersion(OldVersion As String, NewVersion As String, OnlyNew As Boolean) As Boolean
 
         OldVersion = FilterVersionNr(OldVersion)
         NewVersion = FilterVersionNr(NewVersion)
@@ -142,8 +147,8 @@ Public Class clsAppManager
             End If
         End If
 
-        Dim vheight As Integer = 1 '0=lower version '1 same version '2 newer version
-        For t As Integer = 0 To UBound(mver)
+        Dim vheight = 1 '0=lower version '1 same version '2 newer version
+        For t = 0 To UBound(mver)
             If Val(nver(t)) > Val(mver(t)) Then
                 vheight = 2
                 Exit For
@@ -152,7 +157,7 @@ Public Class clsAppManager
                 Exit For
             End If
         Next
-        Dim result As Boolean = False
+        Dim result = False
         If OnlyNew Then
             If vheight = 2 Then result = True
         Else
@@ -161,9 +166,10 @@ Public Class clsAppManager
 
         Return result
     End Function
-    Friend Function IsAppRunning(ByVal AppName As String) As Boolean
-        Dim ProcessName As String = ""
-        For t As Integer = 0 To UBound(AppStore.Apps)
+
+    Friend Function IsAppRunning(AppName As String) As Boolean
+        Dim ProcessName = ""
+        For t = 0 To UBound(AppStore.Apps)
             If AppStore.Apps(t).Name = AppName Then
                 ProcessName = AppStore.Apps(t).ProcessName
             End If
@@ -173,7 +179,8 @@ Public Class clsAppManager
         For Each ProcessName In ProcArray
             Try
                 Dim searcher As ManagementObjectSearcher
-                searcher = New ManagementObjectSearcher("root\CIMV2", "SELECT * FROM Win32_Process WHERE Name='" & ProcessName & "'")
+                searcher = New ManagementObjectSearcher("root\CIMV2",
+                                                        "SELECT * FROM Win32_Process WHERE Name='" & ProcessName & "'")
                 For Each p As ManagementObject In searcher.[Get]()
                     ' cmdline = p("CommandLine")
 
@@ -185,11 +192,12 @@ Public Class clsAppManager
         Next
         Return False
     End Function
+
     Friend Function GetQbundleVersion() As String
         Try
-            Dim Major As String = CStr(Reflection.Assembly.GetExecutingAssembly.GetName.Version.Major)
-            Dim Minor As String = CStr(Reflection.Assembly.GetExecutingAssembly.GetName.Version.Minor)
-            Dim Revision As String = CStr(Reflection.Assembly.GetExecutingAssembly.GetName.Version.Revision)
+            Dim Major = CStr(Assembly.GetExecutingAssembly.GetName.Version.Major)
+            Dim Minor = CStr(Assembly.GetExecutingAssembly.GetName.Version.Minor)
+            Dim Revision = CStr(Assembly.GetExecutingAssembly.GetName.Version.Revision)
             Return Major & "." & Minor & "." & Revision
         Catch ex As Exception
             Generic.WriteDebug(ex)
@@ -197,7 +205,7 @@ Public Class clsAppManager
         Return "1.0"
     End Function
 
-    Friend Function InstallApp(ByVal AppName As String, Optional ForceReinstall As Boolean = False) As Boolean
+    Friend Function InstallApp(AppName As String, Optional ForceReinstall As Boolean = False) As Boolean
         If AppName = "chromium" Then
             Dim s As New frmDownloadManager
             s.DownloadName = "Chromium Pocket Browser"
@@ -209,13 +217,14 @@ Public Class clsAppManager
             If res = DialogResult.Cancel Then
                 Return False
             ElseIf res = DialogResult.Abort Then
-                MsgBox("Something went wrong. Internet connection might have been lost.", MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Error")
+                MsgBox("Something went wrong. Internet connection might have been lost.",
+                       MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Error")
                 Return False
             End If
             Return True
         End If
 
-        For t As Integer = 0 To UBound(AppStore.Apps)
+        For t = 0 To UBound(AppStore.Apps)
             If AppStore.Apps(t).Name = AppName Then
                 Dim s As New frmDownloadManager
                 s.DownloadName = AppStore.Apps(t).DisplayName
@@ -235,7 +244,8 @@ Public Class clsAppManager
                 If res = DialogResult.Cancel Then
                     Return True
                 ElseIf res = DialogResult.Abort Then
-                    MsgBox("Something went wrong. Internet connection might have been lost.", MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Error")
+                    MsgBox("Something went wrong. Internet connection might have been lost.",
+                           MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Error")
                     Return True
                 End If
                 Return True
@@ -247,10 +257,10 @@ Public Class clsAppManager
 
     Friend Function isJavaInstalled() As Boolean
 
-        Dim JavaFound As Boolean = False
+        Dim JavaFound = False
         Try
             Dim p As New Process
-            Dim result As String = ""
+            Dim result = ""
             p.StartInfo.RedirectStandardError = True
             p.StartInfo.RedirectStandardOutput = True
             p.StartInfo.UseShellExecute = False
@@ -287,11 +297,9 @@ Public Class clsAppManager
         End Try
 
         Return IsAppInstalled("JavaPortable")
-
-
     End Function
 
-    Private Function FilterVersionNr(ByVal data As String) As String
+    Private Function FilterVersionNr(data As String) As String
         data = Split(data, vbCr)(0)
         data = Split(data, vbLf)(0)
         Dim acceptedChars() As Char = "01234567890._".ToCharArray
@@ -315,6 +323,7 @@ Public Class clsAppManager
     End Function
 
 #Region " Updates "
+
     Public Sub StartUpdateNotifications()
 
         If Not _UpdateNotifyState = QGlobal.States.Stopped Then
@@ -328,12 +337,14 @@ Public Class clsAppManager
         trda.Start()
         trda = Nothing
     End Sub
+
     Public Sub StopUpdateNotifications()
         _UpdateNotifyState = QGlobal.States.Abort
     End Sub
+
     Private Sub UpdateNotifyTimer()
         Dim Nextcheck As New Date
-        Dim Data As String = ""
+        Dim Data = ""
         Do
             Nextcheck = Now.AddDays(1) '24 hours check
             Do 'sleepthread
@@ -344,7 +355,7 @@ Public Class clsAppManager
             If _UpdateNotifyState = QGlobal.States.Abort Then Exit Do
 
             UpdateAppStoreInformation()
-            For t As Integer = 0 To UBound(AppStore.Apps)
+            For t = 0 To UBound(AppStore.Apps)
                 If DoesAppNeedUpdate(AppStore.Apps(t).Name) Then
                     RaiseEvent UpdateAvailable()
                     Exit For
@@ -353,9 +364,8 @@ Public Class clsAppManager
         Loop
         _UpdateNotifyState = QGlobal.States.Stopped
     End Sub
+
 #End Region
-
-
 
 
     <Serializable>
@@ -379,10 +389,12 @@ Public Class clsAppManager
             Public BurstAddress As String
             Public DeadLine As String
         End Structure
+
         Public Structure WalletObject
             Public Name As String
             Public Address As String
         End Structure
+
         Public Apps() As AppObject
         Public Pools() As PoolObject
         Public Wallets() As WalletObject

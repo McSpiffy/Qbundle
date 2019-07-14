@@ -1,31 +1,35 @@
 ﻿
+Imports System.IO
 
 Public Class frmPlotter
-
     Private Sub btnPath_Click(sender As Object, e As EventArgs) Handles btnPath.Click
         Dim FD As New FolderBrowserDialog
         If FD.ShowDialog() = DialogResult.OK Then
             txtPath.Text = FD.SelectedPath
             HSSize.Enabled = True
-            If IO.Path.GetPathRoot(FD.SelectedPath) = FD.SelectedPath Then
-                MsgBox("Xplotter does not allow to plot directly to root path of a drive. Create a directory and put your plots in there.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Wrong path")
+            If Path.GetPathRoot(FD.SelectedPath) = FD.SelectedPath Then
+                MsgBox(
+                    "Xplotter does not allow to plot directly to root path of a drive. Create a directory and put your plots in there.",
+                    MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Wrong path")
             End If
             If Not Generic.PlotDriveTypeOk(FD.SelectedPath) Then
                 MsgBox("The drive format is not NTFS. Please use another drive or reformat it to NTFS.")
             End If
 
             If Generic.DriveCompressed(FD.SelectedPath) Then
-                Dim Msg As String = "The selected path is on a NTFS compressed drive or folder."
+                Dim Msg = "The selected path is on a NTFS compressed drive or folder."
                 Msg &= " This is not supported by Xplotter." & vbCrLf & vbCrLf
                 MsgBox(Msg, MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Compressed drive")
             End If
 
-            Dim FreeSpace As Long = Generic.GetDiskspace(txtPath.Text)  '= My.Computer.FileSystem.GetDriveInfo(txtPath.Text).TotalFreeSpace
-            Dim nonces As Long = CLng(Math.Floor(FreeSpace / 1024 / 256))
-            nonces = CLng(Math.Floor(nonces / 8)) 'make it devidable by 8
-            nonces = nonces * 8
+            Dim FreeSpace As Long = Generic.GetDiskspace(txtPath.Text) _
+            '= My.Computer.FileSystem.GetDriveInfo(txtPath.Text).TotalFreeSpace
+            Dim nonces = CLng(Math.Floor(FreeSpace/1024/256))
+            nonces = CLng(Math.Floor(nonces/8)) 'make it devidable by 8
+            nonces = nonces*8
             If nonces < 8 Then
-                MsgBox("Free space on drive is to low for plotfiles", MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "No free space.")
+                MsgBox("Free space on drive is to low for plotfiles", MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly,
+                       "No free space.")
                 nonces = 8
             End If
 
@@ -35,44 +39,40 @@ Public Class frmPlotter
             HSSize.Value = CInt(nonces)
             lblTotalNonces.Text = nonces.ToString
 
-            Dim noncespace As Long = nonces * 256 * 1024
+            Dim noncespace As Long = nonces*256*1024
 
             lblSize.Text = GetReadableSpace(noncespace) & " / " & GetReadableSpace(noncespace)
         End If
-
-
     End Sub
 
-    Private Function GetReadableSpace(ByVal space As Double) As String
-        Dim unit As String = "Byte"
+    Private Function GetReadableSpace(space As Double) As String
+        Dim unit = "Byte"
         If space > 1024 Then
-            space = space / 1024
+            space = space/1024
             unit = "KiB"
         End If
         If space > 1024 Then
-            space = space / 1024
+            space = space/1024
             unit = "MiB"
         End If
 
         If space > 1024 Then
-            space = space / 1024
+            space = space/1024
             unit = "GiB"
         End If
 
         If space > 1024 Then
-            space = space / 1024
+            space = space/1024
             unit = "TiB"
         End If
         If space > 1024 Then
-            space = space / 1024
+            space = space/1024
             unit = "PiB"
         End If
 
         space = Math.Round(space, 2)
         Return space.ToString & " " & unit
-
     End Function
-
 
 
     Private Sub frmPlotter_Load(sender As Object, e As EventArgs) Handles MyBase.Load
@@ -91,24 +91,23 @@ Public Class frmPlotter
         End Select
 
 
-
         UpdatePlotList()
 
 
         cmlAccounts.Items.Clear()
         Dim mnuitm As ToolStripMenuItem
-        For Each account As QB.clsAccounts.Account In Q.Accounts.AccArray
+        For Each account As clsAccounts.Account In Q.Accounts.AccArray
             mnuitm = New ToolStripMenuItem
             mnuitm.Name = account.AccountName
             mnuitm.Text = account.AccountName
-            AddHandler(mnuitm.Click), AddressOf SelectAccountID
+            AddHandler (mnuitm.Click), AddressOf SelectAccountID
             cmlAccounts.Items.Add(mnuitm)
         Next
         txtStartNonce.Text = CStr(GetStartNonce())
 
         Try
-            nrRam.Maximum = CDec(Math.Round((My.Computer.Info.TotalPhysicalMemory / 1024 / 1024 / 1024)))
-            Dim freeram As Integer = CInt(Math.Floor(My.Computer.Info.AvailablePhysicalMemory / 1024 / 1024 / 1024) - 1)
+            nrRam.Maximum = CDec(Math.Round((My.Computer.Info.TotalPhysicalMemory/1024/1024/1024)))
+            Dim freeram = CInt(Math.Floor(My.Computer.Info.AvailablePhysicalMemory/1024/1024/1024) - 1)
             If freeram < 1 Then freeram = 1
             If freeram > 4 Then freeram = 4
             nrRam.Value = freeram
@@ -119,10 +118,6 @@ Public Class frmPlotter
         If QGlobal.CPUInstructions.SSE Then lblcputype.Text = "SSE"
         If QGlobal.CPUInstructions.AVX Then lblcputype.Text = "AVX"
         If QGlobal.CPUInstructions.AVX2 Then lblcputype.Text = "AVX2"
-
-
-
-
     End Sub
 
     Private Sub SelectAccountID(sender As Object, e As EventArgs)
@@ -135,15 +130,17 @@ Public Class frmPlotter
             Exit Sub
         End Try
         txtAccount.Text = Q.Accounts.GetAccountID(mnuitm.Text)
-
     End Sub
+
     Private Sub btnStartPotting_Click(sender As Object, e As EventArgs) Handles btnStartPotting.Click
         StartPlotting()
     End Sub
 
     Private Sub StartPlotting()
         If Not Q.AppManager.IsAppInstalled("Xplotter") Then
-            If MsgBox("Xplotter is not installed yet. Do you want to download and install it now?", MsgBoxStyle.Information Or MsgBoxStyle.YesNo, "Download Xplotter") = MsgBoxResult.Yes Then
+            If _
+                MsgBox("Xplotter is not installed yet. Do you want to download and install it now?",
+                       MsgBoxStyle.Information Or MsgBoxStyle.YesNo, "Download Xplotter") = MsgBoxResult.Yes Then
                 Me.Hide()
                 Dim res As Boolean = Q.AppManager.InstallApp("Xplotter")
                 Me.Show()
@@ -154,22 +151,26 @@ Public Class frmPlotter
         End If
         'ok Xplotter is now installed
         If Q.settings.DynPlotEnabled Then
-            MsgBox("Dynamic plotting is enabled. You need to disable dynamic plotting while plotting like this.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Dynamic plotting")
+            MsgBox("Dynamic plotting is enabled. You need to disable dynamic plotting while plotting like this.",
+                   MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Dynamic plotting")
             Exit Sub
         End If
         'check path
         Dim Path As String = txtPath.Text
-        If Not IO.Directory.Exists(txtPath.Text) Then
-            MsgBox("Please select a valid path to store the plotfile to.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Wrong path")
+        If Not Directory.Exists(txtPath.Text) Then
+            MsgBox("Please select a valid path to store the plotfile to.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly,
+                   "Wrong path")
             Exit Sub
         End If
         If IO.Path.GetPathRoot(Path) = Path Then
-            MsgBox("Xplotter does not allow to plot directly to root path of a drive. Create a directory and put your plots in there.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Wrong path")
+            MsgBox(
+                "Xplotter does not allow to plot directly to root path of a drive. Create a directory and put your plots in there.",
+                MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Wrong path")
             Exit Sub
         End If
 
         If Generic.DriveCompressed(Path) Then
-            Dim Msg As String = "The selected path is on a NTFS compressed drive or folder."
+            Dim Msg = "The selected path is on a NTFS compressed drive or folder."
             Msg &= " This is not supported by Xplotter." & vbCrLf & vbCrLf
             MsgBox(Msg, MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Compressed drive")
             Exit Sub
@@ -181,12 +182,14 @@ Public Class frmPlotter
         Try
             StartNonce = CDbl(txtStartNonce.Text)
         Catch ex As Exception
-            MsgBox("The start nonce is not a numeric value. Please set a correct value", MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Path non existing.")
+            MsgBox("The start nonce is not a numeric value. Please set a correct value",
+                   MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Path non existing.")
             Exit Sub
         End Try
         Try
-            If Not IO.Directory.Exists(txtPath.Text) Then
-                MsgBox("The path for the plotfile does not exist. Please select a valid path.", MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Path non existing.")
+            If Not Directory.Exists(txtPath.Text) Then
+                MsgBox("The path for the plotfile does not exist. Please select a valid path.",
+                       MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Path non existing.")
                 Exit Sub
             End If
         Catch ex As Exception
@@ -195,12 +198,15 @@ Public Class frmPlotter
 
         'check size ok
         Try
-            Dim FreeSpace As Long = Generic.GetDiskspace(Path) ' = My.Computer.FileSystem.GetDriveInfo(Path).TotalFreeSpace
+            Dim FreeSpace As Long = Generic.GetDiskspace(Path) _
+            ' = My.Computer.FileSystem.GetDriveInfo(Path).TotalFreeSpace
 
 
-            Dim tobeused As Double = nonces * 1024 * 256
+            Dim tobeused As Double = nonces*1024*256
             If tobeused > CDbl(FreeSpace) Then
-                MsgBox("Free space on drive have changed and the plotfile will now be to big. Please lower the size of plotfile or select a new path.", MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Free space changed.")
+                MsgBox(
+                    "Free space on drive have changed and the plotfile will now be to big. Please lower the size of plotfile or select a new path.",
+                    MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Free space changed.")
                 Exit Sub
             End If
         Catch ex As Exception
@@ -221,14 +227,17 @@ Public Class frmPlotter
 
         'check nonce overlap.
         If checkPlotOverLapp() = False Then
-            MsgBox("You are trying to write a plot that overlap with an existing one. Please change your Startnonce.", MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Plot overlap")
+            MsgBox("You are trying to write a plot that overlap with an existing one. Please change your Startnonce.",
+                   MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Plot overlap")
             Exit Sub
         End If
 
         Try
-            Dim freeram As Integer = CInt(Math.Floor(My.Computer.Info.AvailablePhysicalMemory / 1024 / 1024 / 1024))
+            Dim freeram = CInt(Math.Floor(My.Computer.Info.AvailablePhysicalMemory/1024/1024/1024))
             If freeram < nrRam.Value Then
-                MsgBox("You are trying to use more ram than what is currently free in your computer. Please free up ram or lower your settings.", MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Free Ram")
+                MsgBox(
+                    "You are trying to use more ram than what is currently free in your computer. Please free up ram or lower your settings.",
+                    MsgBoxStyle.Critical Or MsgBoxStyle.OkOnly, "Free Ram")
                 Exit Sub
             End If
 
@@ -248,10 +257,10 @@ Public Class frmPlotter
             Q.settings.Plots &= filePath & "|"
             Q.settings.SaveSettings()
             lstPlots.Items.Add(filePath)
-            End If
+        End If
 
-            Try
-            Dim p As Process = New Process
+        Try
+            Dim p = New Process
             p.StartInfo.WorkingDirectory = QGlobal.AppDir & "Xplotter"
             Dim thepath As String = txtPath.Text
             If thepath.Contains(" ") Then thepath = Chr(34) & thepath & Chr(34)
@@ -279,19 +288,18 @@ Public Class frmPlotter
         Catch ex As Exception
             MsgBox("Failed to start Xplotter.")
         End Try
-
     End Sub
 
     Private Function GetStartNonce() As Double
 
         Return Generic.GetStartNonce(txtAccount.Text, HSSize.Value - 1)
-
     End Function
+
     Private Function checkPlotOverLapp() As Boolean
 
         Dim Plotfiles() As String
         Dim AccountID As String = txtAccount.Text
-        Dim StartNonce As Double = CDbl(txtStartNonce.Text)
+        Dim StartNonce = CDbl(txtStartNonce.Text)
         Dim EndNonce As Double = StartNonce + HSSize.Value - 1
         Dim PStartNonce As Double = 0
         Dim PEndNonce As Double = 0
@@ -312,8 +320,8 @@ Public Class frmPlotter
                     If Not IsNothing(Plotfiles) Then
                         For Each Plot As String In Plotfiles
                             If Plot.Length > 6 Then
-                                If IO.File.Exists(Plot) Then
-                                    Dim N() As String = Split(IO.Path.GetFileName(Plot), "_")
+                                If File.Exists(Plot) Then
+                                    Dim N() As String = Split(Path.GetFileName(Plot), "_")
                                     If UBound(N) = 3 Then
                                         If N(0) = Trim(AccountID) Then
                                             PStartNonce = CDbl(N(1))
@@ -344,10 +352,8 @@ Public Class frmPlotter
         End Try
 
 
-
         Return True
     End Function
-
 
 
     Private Sub btnAccounts_Click(sender As Object, e As EventArgs) Handles btnAccounts.Click
@@ -357,25 +363,24 @@ Public Class frmPlotter
         Catch ex As Exception
 
         End Try
-
-
     End Sub
 
     Private Sub btnImport_Click(sender As Object, e As EventArgs) Handles btnImport.Click
         Me.cmImport.Show(Me.btnImport, Me.btnImport.PointToClient(Cursor.Position))
-
-
     End Sub
 
     Private Sub btnRemove_Click(sender As Object, e As EventArgs) Handles btnRemove.Click
-        If lstPlots.SelectedIndex = -1 Then
-            MsgBox("You need to select a plot to remove.", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly, "Nothing to remove")
+        If lstPlots.SelectedIndex = - 1 Then
+            MsgBox("You need to select a plot to remove.", MsgBoxStyle.Information Or MsgBoxStyle.OkOnly,
+                   "Nothing to remove")
             Exit Sub
         End If
 
-        If MsgBox("Are you sure you want to remove selected plot(s)?" & vbCrLf & "It will not be deleted from disk.", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo, "Remove plotfile") = MsgBoxResult.Yes Then
+        If _
+            MsgBox("Are you sure you want to remove selected plot(s)?" & vbCrLf & "It will not be deleted from disk.",
+                   MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo, "Remove plotfile") = MsgBoxResult.Yes Then
             Q.settings.Plots = ""
-            For i As Integer = 0 To lstPlots.Items.Count - 1
+            For i = 0 To lstPlots.Items.Count - 1
                 If Not lstPlots.GetSelected(i) = True Then
                     Q.settings.Plots &= lstPlots.Items.Item(i).ToString & "|"
                 End If
@@ -392,42 +397,43 @@ Public Class frmPlotter
     End Sub
 
     Private Sub HSSize_Scroll(sender As Object, e As EventArgs) Handles HSSize.Scroll
-
     End Sub
 
     Private Sub HSSize_ValueChanged(sender As Object, e As EventArgs) Handles HSSize.ValueChanged
         Try
-            Dim FreeSpace As Double = CDbl(Generic.GetDiskspace(txtPath.Text)) 'My.Computer.FileSystem.GetDriveInfo(txtPath.Text).TotalFreeSpace
+            Dim FreeSpace = CDbl(Generic.GetDiskspace(txtPath.Text)) _
+            'My.Computer.FileSystem.GetDriveInfo(txtPath.Text).TotalFreeSpace
             lblTotalNonces.Text = HSSize.Value.ToString
             Dim Space As Double = HSSize.Value
 
-            Space = Space * 256
-            Space = Space * 1024
+            Space = Space*256
+            Space = Space*1024
             lblSize.Text = GetReadableSpace(Space) & " / " & GetReadableSpace(FreeSpace)
         Catch ex As Exception
 
         End Try
     End Sub
 
-    Private Sub ImportFileToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImportFileToolStripMenuItem.Click
+    Private Sub ImportFileToolStripMenuItem_Click(sender As Object, e As EventArgs) _
+        Handles ImportFileToolStripMenuItem.Click
         Dim ofd As New OpenFileDialog
         If ofd.ShowDialog = DialogResult.OK Then
-            If IO.File.Exists(ofd.FileName) And Generic.IsValidPlottFilename(ofd.FileName) Then
+            If File.Exists(ofd.FileName) And Generic.IsValidPlottFilename(ofd.FileName) Then
                 lstPlots.Items.Add(ofd.FileName)
                 Q.settings.Plots &= ofd.FileName & "|"
                 txtStartNonce.Text = CStr(GetStartNonce())
                 Q.settings.SaveSettings()
             End If
         End If
-
     End Sub
 
 
-    Private Sub ImportFolderToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ImportFolderToolStripMenuItem.Click
+    Private Sub ImportFolderToolStripMenuItem_Click(sender As Object, e As EventArgs) _
+        Handles ImportFolderToolStripMenuItem.Click
         Dim ofd As New FolderBrowserDialog
         If ofd.ShowDialog = DialogResult.OK Then
-            If IO.Directory.Exists(ofd.SelectedPath) Then
-                Dim fileEntries As String() = IO.Directory.GetFiles(ofd.SelectedPath)
+            If Directory.Exists(ofd.SelectedPath) Then
+                Dim fileEntries As String() = Directory.GetFiles(ofd.SelectedPath)
                 For Each file As String In fileEntries
                     If Generic.IsValidPlottFilePath(file) Then
                         lstPlots.Items.Add(file)
@@ -442,15 +448,19 @@ Public Class frmPlotter
 
     Private Sub CloseToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles CloseToolStripMenuItem.Click
         Me.Close()
-
     End Sub
-    Private Sub StartPlottingToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles StartPlottingToolStripMenuItem.Click
+
+    Private Sub StartPlottingToolStripMenuItem_Click(sender As Object, e As EventArgs) _
+        Handles StartPlottingToolStripMenuItem.Click
         StartPlotting()
     End Sub
 
-    Private Sub ResumePlottingToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles ResumePlottingToolStripMenuItem.Click
+    Private Sub ResumePlottingToolStripMenuItem_Click(sender As Object, e As EventArgs) _
+        Handles ResumePlottingToolStripMenuItem.Click
         If Not Q.AppManager.IsAppInstalled("Xplotter") Then
-            If MsgBox("Xplotter is not installed yet. Do you want to download and install it now?", MsgBoxStyle.Information Or MsgBoxStyle.YesNo, "Download Xplotter") = MsgBoxResult.Yes Then
+            If _
+                MsgBox("Xplotter is not installed yet. Do you want to download and install it now?",
+                       MsgBoxStyle.Information Or MsgBoxStyle.YesNo, "Download Xplotter") = MsgBoxResult.Yes Then
                 Me.Hide()
                 Dim res As Boolean = Q.AppManager.InstallApp("Xplotter")
                 Me.Show()
@@ -461,19 +471,20 @@ Public Class frmPlotter
         End If
 
         Dim FileParts() As String = Nothing
-        Dim FilePath As String = ""
+        Dim FilePath = ""
         Try
 
             Dim ofd As New OpenFileDialog
             If ofd.ShowDialog = DialogResult.OK Then
-                If IO.File.Exists(ofd.FileName) Then
+                If File.Exists(ofd.FileName) Then
                     'now check the plotfile
                     If Not Generic.IsValidPlottFilePath(ofd.FileName) Then
-                        MsgBox("Selected File is not a plotfile.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly, "Error")
+                        MsgBox("Selected File is not a plotfile.", MsgBoxStyle.Exclamation Or MsgBoxStyle.OkOnly,
+                               "Error")
                         Exit Sub
                     End If
-                    FileParts = Split(IO.Path.GetFileName(ofd.FileName), "_")
-                    FilePath = IO.Path.GetDirectoryName(ofd.FileName)
+                    FileParts = Split(Path.GetFileName(ofd.FileName), "_")
+                    FilePath = Path.GetDirectoryName(ofd.FileName)
                 End If
             Else
                 Exit Sub
@@ -495,7 +506,7 @@ Public Class frmPlotter
             Arg &= " -poc2"
         End If
         Try
-            Dim p As Process = New Process
+            Dim p = New Process
             p.StartInfo.WorkingDirectory = QGlobal.AppDir & "Xplotter"
             p.StartInfo.Arguments = Arg
             p.StartInfo.UseShellExecute = True
@@ -512,8 +523,6 @@ Public Class frmPlotter
             Generic.WriteDebug(ex)
             MsgBox("Failed to start Xplotter.")
         End Try
-
-
     End Sub
 
     Private Sub txtPath_TextChanged(sender As Object, e As EventArgs) Handles txtPath.TextChanged
@@ -523,17 +532,18 @@ Public Class frmPlotter
 
     Private Sub lblSelectAll_Click(sender As Object, e As EventArgs) Handles lblSelectAll.Click
         If lstPlots.Items.Count <= 0 Then Exit Sub
-        For i As Integer = 0 To lstPlots.Items.Count - 1
+        For i = 0 To lstPlots.Items.Count - 1
             Me.lstPlots.SetSelected(i, True)
         Next
     End Sub
 
     Private Sub lblDeselectAll_Click(sender As Object, e As EventArgs) Handles lblDeselectAll.Click
         If lstPlots.Items.Count <= 0 Then Exit Sub
-        For i As Integer = 0 To lstPlots.Items.Count - 1
+        For i = 0 To lstPlots.Items.Count - 1
             Me.lstPlots.SetSelected(i, False)
         Next
     End Sub
+
     Private Sub UpdatePlotList()
         lstPlots.Items.Clear()
         If Q.settings.Plots <> "" Then
@@ -545,5 +555,4 @@ Public Class frmPlotter
             Next
         End If
     End Sub
-
 End Class

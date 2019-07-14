@@ -5,14 +5,24 @@ Public Class frmImport
     Private Running As Boolean
     Private WithEvents WaitTimer As System.Windows.Forms.Timer
 
-    Private Delegate Sub DProcEvents(ByVal [AppId] As Integer, ByVal [Operation] As Integer, ByVal [data] As String)
-    Private Delegate Sub DStarting(ByVal [AppId] As Integer)
-    Private Delegate Sub DStoped(ByVal [AppId] As Integer)
-    Private Delegate Sub DAborted(ByVal [AppId] As Integer, ByVal [data] As String)
-    Private Delegate Sub DDownloadDone(ByVal [AppId] As Integer)
-    Private Delegate Sub DProgress(ByVal [JobType] As Integer, ByVal [AppId] As Integer, ByVal [Percernt] As Integer, ByVal [Speed] As Integer, ByVal [lRead] As Long, ByVal [lLength] As Long)
-    Private Delegate Sub DDLAborted(ByVal [AppId] As Integer)
-    Private Delegate Sub DUpdateinfo(ByVal [bytes] As Long, ByVal [isdone] As Boolean)
+    Private Delegate Sub DProcEvents([AppId] As Integer, [Operation] As Integer, [data] As String)
+
+    Private Delegate Sub DStarting([AppId] As Integer)
+
+    Private Delegate Sub DStoped([AppId] As Integer)
+
+    Private Delegate Sub DAborted([AppId] As Integer, [data] As String)
+
+    Private Delegate Sub DDownloadDone([AppId] As Integer)
+
+    Private Delegate Sub DProgress _
+        ([JobType] As Integer, [AppId] As Integer, [Percernt] As Integer, [Speed] As Integer, [lRead] As Long,
+         [lLength] As Long)
+
+    Private Delegate Sub DDLAborted([AppId] As Integer)
+
+    Private Delegate Sub DUpdateinfo([bytes] As Long, [isdone] As Boolean)
+
     Private RepoDBUrls() As String
     Private SelectedType As Integer
     Private StartTime As Date
@@ -20,6 +30,7 @@ Public Class frmImport
 
     Private FileSize As Long
     Private TotalRead As Long
+
     Private Sub frmImport_Load(sender As Object, e As EventArgs) Handles MyBase.Load
         Running = False
         cmbRepo.Items.Clear()
@@ -47,11 +58,9 @@ Public Class frmImport
                 chkStartWallet.Checked = False
                 chkStartWallet.Visible = False
         End Select
-
-
-
     End Sub
-    Private Sub frmImport_FormClosing(ByVal sender As Object, ByVal e As System.Windows.Forms.FormClosingEventArgs) Handles Me.FormClosing
+
+    Private Sub frmImport_FormClosing(sender As Object, e As FormClosingEventArgs) Handles Me.FormClosing
         Try
             If Running Then
                 MsgBox("You cannot close the import form while importing.", MsgBoxStyle.OkOnly, "Exit")
@@ -61,15 +70,20 @@ Public Class frmImport
         Catch ex As Exception
             Generic.WriteDebug(ex)
         End Try
-
     End Sub
+
     Private Sub btnStart_Click(sender As Object, e As EventArgs) Handles btnStart.Click
         If btnStart.Text = "Close" Then
             Me.Close()
             Exit Sub
         End If
 
-        If Not MsgBox("Warning!" & vbCrLf & vbCrLf & "All existing data in your database will be erased." & vbCrLf & "Do you want to continue?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel, "All existing data removed") = MsgBoxResult.Yes Then
+        If _
+            Not _
+            MsgBox(
+                "Warning!" & vbCrLf & vbCrLf & "All existing data in your database will be erased." & vbCrLf &
+                "Do you want to continue?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNoCancel,
+                "All existing data removed") = MsgBoxResult.Yes Then
             Exit Sub
         End If
 
@@ -81,7 +95,9 @@ Public Class frmImport
         Running = True
         'if wallet is running shut it down
         If frmMain.Running Then
-            If MsgBox("The wallet must be stopped to import the database." & vbCrLf & " Would you like to stop it now?", MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo, "Stop wallet?") = MsgBoxResult.Yes Then
+            If _
+                MsgBox("The wallet must be stopped to import the database." & vbCrLf & " Would you like to stop it now?",
+                       MsgBoxStyle.Exclamation Or MsgBoxStyle.YesNo, "Stop wallet?") = MsgBoxResult.Yes Then
                 lblStatus.Text = "Waiting for wallet to stop."
                 frmMain.StopWallet()
                 WaitTimer = New System.Windows.Forms.Timer
@@ -100,9 +116,8 @@ Public Class frmImport
         Else
             StartImport()
         End If
-
-
     End Sub
+
     Sub StartImport()
         IsAborted = False
         Select Case Q.settings.DbType
@@ -113,15 +128,15 @@ Public Class frmImport
             Case QGlobal.DbType.MariaDB
                 '     DownloadForMaria(RepoDBUrls(cmbRepo.SelectedIndex))
         End Select
-
     End Sub
-    Private Sub ImportFromFile(ByVal FileName As String)
+
+    Private Sub ImportFromFile(FileName As String)
 
         'verify that h2 is gone if we are using h2
         If Q.settings.DbType = QGlobal.DbType.H2 Then
             Try
-                If IO.File.Exists(QGlobal.BaseDir & "burst_db\burst.mv.db") Then
-                    IO.File.Delete(QGlobal.BaseDir & "burst_db\burst.mv.db")
+                If File.Exists(QGlobal.BaseDir & "burst_db\burst.mv.db") Then
+                    File.Delete(QGlobal.BaseDir & "burst_db\burst.mv.db")
                 End If
             Catch ex As Exception
                 Generic.WriteDebug(ex)
@@ -142,10 +157,9 @@ Public Class frmImport
         Pset.StartsignalMaxTime = 1
         Pset.WorkingDirectory = QGlobal.AppDir
         Q.ProcHandler.StartProcess(Pset)
-
-
     End Sub
-    Private Sub DownloadForH2(ByVal Url As String)
+
+    Private Sub DownloadForH2(Url As String)
         Dim S As frmDownloadManager
         S = New frmDownloadManager
         S.Url = Url
@@ -154,22 +168,22 @@ Public Class frmImport
         If S.ShowDialog = DialogResult.OK Then
             Me.Show()
             Try
-                If IO.File.Exists(QGlobal.BaseDir & IO.Path.GetFileName(Url)) Then
-                    IO.File.Delete(QGlobal.BaseDir & IO.Path.GetFileName(Url)) 'not if not ziped
+                If File.Exists(QGlobal.BaseDir & Path.GetFileName(Url)) Then
+                    File.Delete(QGlobal.BaseDir & Path.GetFileName(Url)) 'not if not ziped
                 End If
             Catch ex As Exception
                 Generic.WriteDebug(ex)
             End Try
             Try
-                If IO.File.Exists(QGlobal.BaseDir & "burst_db\burst.mv.db") Then
-                    IO.File.Delete(QGlobal.BaseDir & "burst_db\burst.mv.db")
+                If File.Exists(QGlobal.BaseDir & "burst_db\burst.mv.db") Then
+                    File.Delete(QGlobal.BaseDir & "burst_db\burst.mv.db")
                 End If
             Catch ex As Exception
                 Generic.WriteDebug(ex)
             End Try
             lblStatus.Text = "Moving the file to correct location."
             Try
-                IO.File.Move(QGlobal.BaseDir & "burst.mv.db", QGlobal.BaseDir & "burst_db\burst.mv.db")
+                File.Move(QGlobal.BaseDir & "burst.mv.db", QGlobal.BaseDir & "burst_db\burst.mv.db")
             Catch ex As Exception
                 Generic.WriteDebug(ex)
             End Try
@@ -189,10 +203,9 @@ Public Class frmImport
         Catch ex As Exception
 
         End Try
-
-
     End Sub
-    Private Sub DownloadForMaria(ByVal Url As String)
+
+    Private Sub DownloadForMaria(Url As String)
         Dim S As frmDownloadManager
         S = New frmDownloadManager
         S.Url = Url
@@ -201,8 +214,8 @@ Public Class frmImport
         If S.ShowDialog = DialogResult.OK Then
             Me.Show()
             Try
-                If IO.File.Exists(QGlobal.BaseDir & IO.Path.GetFileName(Url)) Then 'delete zip file
-                    IO.File.Delete(QGlobal.BaseDir & IO.Path.GetFileName(Url)) 'not if not ziped
+                If File.Exists(QGlobal.BaseDir & Path.GetFileName(Url)) Then 'delete zip file
+                    File.Delete(QGlobal.BaseDir & Path.GetFileName(Url)) 'not if not ziped
                 End If
             Catch ex As Exception
                 Generic.WriteDebug(ex)
@@ -236,9 +249,8 @@ Public Class frmImport
         Catch ex As Exception
 
         End Try
-
-
     End Sub
+
     Private Sub MariaDBUnusedCode()
 
 
@@ -254,8 +266,8 @@ Public Class frmImport
         '   conn.ConnectionString = String.Format("server={0}; user id={1}; password={2}; database={3}; pooling=false", server, userName, password, DatabaseName)
         '   conn.Open()
 
-        Dim sr As StreamReader = New StreamReader(QGlobal.BaseDir & "dump.sql")
-        Dim sql As String = ""
+        Dim sr = New StreamReader(QGlobal.BaseDir & "dump.sql")
+        Dim sql = ""
         '    Dim cmd As New MySqlCommand
         'cmd.Connection = conn
 
@@ -267,10 +279,10 @@ Public Class frmImport
         Dim dmpfile As New FileInfo(QGlobal.BaseDir & "brs.MariaDB.sql")
         Dim totalbytes As Long = dmpfile.Length
         Dim totalRead As Long = 0
-        Dim percent As Integer = 0
+        Dim percent = 0
         Do
             sql = ""
-            Dim line As String = ""
+            Dim line = ""
 
 
             Do
@@ -280,7 +292,7 @@ Public Class frmImport
                 If sr.EndOfStream Then Exit Do
             Loop
             totalRead += sql.Length
-            percent = CInt(Math.Round((totalRead / totalbytes) * 100, 0))
+            percent = CInt(Math.Round((totalRead/totalbytes)*100, 0))
             '       cmd.CommandText = sql
             '       cmd.ExecuteNonQuery()
         Loop Until sr.EndOfStream
@@ -288,8 +300,6 @@ Public Class frmImport
         '   conn.Close()
         '   conn.Dispose()
         sr.Close()
-
-
     End Sub
 
     Private Sub ImportSqlDump()
@@ -303,9 +313,10 @@ Public Class frmImport
         Dim sqlfile As String = QGlobal.BaseDir & "brs.mariadb.sql"
 
 
-        Dim p As Process = New Process
+        Dim p = New Process
         p.StartInfo.WorkingDirectory = QGlobal.BaseDir & "MariaDB\bin\"
-        p.StartInfo.Arguments = "--no-defaults -v --host=" & server & " --user=" & userName & " --password=" & password & " " & DatabaseName & " --execute=" & Chr(34) & "source " & sqlfile & Chr(34)
+        p.StartInfo.Arguments = "--no-defaults -v --host=" & server & " --user=" & userName & " --password=" & password &
+                                " " & DatabaseName & " --execute=" & Chr(34) & "source " & sqlfile & Chr(34)
         p.StartInfo.UseShellExecute = False
         p.StartInfo.RedirectStandardOutput = True
         p.StartInfo.RedirectStandardError = True
@@ -323,12 +334,13 @@ Public Class frmImport
     End Sub
 
 
-    Private Sub ReadConsoleData(ByVal Sender As Object, ByVal e As DataReceivedEventArgs)
+    Private Sub ReadConsoleData(Sender As Object, e As DataReceivedEventArgs)
         If e.Data IsNot Nothing Then
             UpdateInfo(e.Data.Length, False)
         End If
     End Sub
-    Private Sub UpdateInfo(ByVal bytes As Long, ByVal IsDone As Boolean)
+
+    Private Sub UpdateInfo(bytes As Long, IsDone As Boolean)
         If Me.InvokeRequired Then
             Dim d As New DUpdateinfo(AddressOf UpdateInfo)
             Me.Invoke(d, New Object() {bytes, IsDone})
@@ -336,7 +348,7 @@ Public Class frmImport
         End If
         TotalRead += bytes
         lblStatus.Text = "Importing: " & TotalRead.ToString & " / " & FileSize
-        Dim percent = CInt(Math.Round((TotalRead / FileSize) * 100, 0))
+        Dim percent = CInt(Math.Round((TotalRead/FileSize)*100, 0))
         If percent > 100 Then percent = 100
         pb1.Value = percent
 
@@ -346,7 +358,7 @@ Public Class frmImport
         End If
     End Sub
 
-    Private Sub ImportFromUrl(ByVal Url As String)
+    Private Sub ImportFromUrl(Url As String)
         Dim S As frmDownloadManager
         S = New frmDownloadManager
         S.Url = Url
@@ -354,7 +366,7 @@ Public Class frmImport
 
         If S.ShowDialog = DialogResult.OK Then
             Me.Show()
-            ImportFromFile(QGlobal.AppDir & IO.Path.GetFileName(Url))
+            ImportFromFile(QGlobal.AppDir & Path.GetFileName(Url))
             Exit Sub
         End If
         Me.Show()
@@ -373,17 +385,19 @@ Public Class frmImport
     Private Sub r1_Click(sender As Object, e As EventArgs) Handles r1.Click
         ' SetSelect(1)
     End Sub
+
     Private Sub r2_Click(sender As Object, e As EventArgs)
         '  SetSelect(2)
     End Sub
+
     Private Sub r3_Click(sender As Object, e As EventArgs)
         '  SetSelect(3)
     End Sub
 
 
-
 #Region " Proc Events "
-    Private Sub Starting(ByVal AppId As Integer)
+
+    Private Sub Starting(AppId As Integer)
         If Me.InvokeRequired Then
             Dim d As New DStarting(AddressOf Starting)
             Me.Invoke(d, New Object() {AppId})
@@ -395,9 +409,9 @@ Public Class frmImport
                 lblStatus.Text = "Starting to import."
                 pb1.Value = 0
         End Select
-
     End Sub
-    Private Sub Stopped(ByVal AppId As Integer)
+
+    Private Sub Stopped(AppId As Integer)
         If Me.InvokeRequired Then
             Dim d As New DStoped(AddressOf Stopped)
             Me.Invoke(d, New Object() {AppId})
@@ -415,6 +429,7 @@ Public Class frmImport
             Complete()
         End If
     End Sub
+
     Private Sub Complete()
         Try
 
@@ -428,7 +443,8 @@ Public Class frmImport
 
         If IsAborted = False Then
             Dim ElapsedTime As TimeSpan = Now.Subtract(StartTime)
-            lblStatus.Text = "Done! Import completed in " & ElapsedTime.Hours & "h " & ElapsedTime.Minutes & "m " & ElapsedTime.Seconds & "s"
+            lblStatus.Text = "Done! Import completed in " & ElapsedTime.Hours & "h " & ElapsedTime.Minutes & "m " &
+                             ElapsedTime.Seconds & "s"
             '  SetSelect(SelectedType)
             btnStart.Text = "Close"
             btnStart.Enabled = True
@@ -448,7 +464,8 @@ Public Class frmImport
             Running = False
         End If
     End Sub
-    Private Sub ProcEvents(ByVal AppId As Integer, ByVal Operation As Integer, ByVal data As String)
+
+    Private Sub ProcEvents(AppId As Integer, Operation As Integer, data As String)
         If Me.InvokeRequired Then
             Dim d As New DProcEvents(AddressOf ProcEvents)
             Me.Invoke(d, New Object() {AppId, Operation, data})
@@ -456,7 +473,7 @@ Public Class frmImport
         End If
         'threadsafe here
         Dim darray() As String = Nothing
-        Dim percent As Integer = 0
+        Dim percent = 0
         If AppId = QGlobal.AppNames.Import Then 'we need to filter messages
             Select Case Operation
                 Case QGlobal.ProcOp.Stopped
@@ -476,11 +493,12 @@ Public Class frmImport
                                 'we can now asume we have something to parse
                                 'lets create percent
                                 If Not darray(6) = "0" And Not darray(8) = "0" Then
-                                    percent = CInt(Math.Round(Val(darray(6)) / Val(darray(8)) * 100, 0))
+                                    percent = CInt(Math.Round(Val(darray(6))/Val(darray(8))*100, 0))
                                 Else
                                     percent = 100
                                 End If
-                                lblStatus.Text = "Importing " & darray(5).Replace(":", "") & " " & darray(6) & " of " & darray(8)
+                                lblStatus.Text = "Importing " & darray(5).Replace(":", "") & " " & darray(6) & " of " &
+                                                 darray(8)
                                 pb1.Value = percent
                             End If
                             If darray(5) = "Dump" And darray(6) = "loaded" Then
@@ -488,7 +506,8 @@ Public Class frmImport
 
                                 Dim ts As New TimeSpan(0, 0, CInt(Val(darray(8).Replace("seconds", ""))))
 
-                                lblStatus.Text = "Done! Export completed in " & ts.Hours & "h " & ts.Minutes & "m " & ts.Seconds & "s"
+                                lblStatus.Text = "Done! Export completed in " & ts.Hours & "h " & ts.Minutes & "m " &
+                                                 ts.Seconds & "s"
                             End If
                             'Compacting database - this may take a while
 
@@ -512,7 +531,8 @@ Public Class frmImport
             End If
         End If
     End Sub
-    Private Sub Aborted(ByVal AppId As Integer, ByVal Data As String)
+
+    Private Sub Aborted(AppId As Integer, Data As String)
         If Me.InvokeRequired Then
             Dim d As New DAborted(AddressOf Aborted)
             Me.Invoke(d, New Object() {AppId, Data})
@@ -522,8 +542,8 @@ Public Class frmImport
         If AppId = QGlobal.AppNames.Import Then
             MsgBox(Data)
         End If
-
     End Sub
+
 #End Region
 
 
@@ -546,7 +566,7 @@ Public Class frmImport
 
     Private Sub StartMaria()
         Try
-            If QB.Generic.SanityCheck Then
+            If Generic.SanityCheck Then
                 lblStatus.Text = "Starting MariaDB"
                 Dim pr As New clsProcessHandler.pSettings
                 pr.AppId = QGlobal.AppNames.MariaPortable
@@ -563,13 +583,10 @@ Public Class frmImport
         Catch ex As Exception
             MsgBox("Unable to start Maria Portable.")
         End Try
-
     End Sub
+
     Private Sub StopMaria()
         lblStatus.Text = "Stopping MariaDB"
         Q.ProcHandler.StopProcess(QGlobal.AppNames.MariaPortable)
     End Sub
-
-
-
 End Class
