@@ -39,9 +39,6 @@ Public Class frmSettings
     Private Sub Button1_Click(sender As Object, e As EventArgs) Handles Button1.Click
         SaveSettings()
     End Sub
-    Private Sub Button3_Click(sender As Object, e As EventArgs) Handles Button3.Click
-        SaveSettings()
-    End Sub
     Private Sub Button4_Click(sender As Object, e As EventArgs) Handles Button4.Click
         SaveSettings()
     End Sub
@@ -132,10 +129,6 @@ Public Class frmSettings
         Q.settings.Broadcast = txtBroadcast.Text
 
         Q.settings.ConnectFrom = buffer
-        Q.settings.DbServer = txtDbServer.Text
-
-        Q.settings.DbUser = txtDbUser.Text
-        Q.settings.DbPass = txtDbPass.Text
 
         Q.settings.JavaType = JavaType
         Q.settings.DebugMode = chkDebug.Checked
@@ -151,12 +144,6 @@ Public Class frmSettings
 
     End Sub
     Private Sub LoadSettings()
-
-
-        pnlMaria.Enabled = True
-        pnlDbSettings.Enabled = True
-        lblDb.Text = Generic.GetDbNameFromType(Q.settings.DbType)
-
         chkCheckForUpdates.Checked = Q.settings.CheckForUpdates
         chkAlwaysAdmin.Checked = Q.settings.AlwaysAdmin
         chkDebug.Checked = Q.settings.DebugMode
@@ -183,9 +170,6 @@ Public Class frmSettings
         Next
 
         chkDynPlatform.Checked = Q.settings.DynPlatform
-        txtDbServer.Text = Q.settings.DbServer
-        txtDbUser.Text = Q.settings.DbUser
-        txtDbPass.Text = Q.settings.DbPass
         ChangeJavaType(Q.settings.JavaType)
         If Generic.CheckOpenCL() Then
             chkOpenCL.Checked = Q.settings.useOpenCL
@@ -309,14 +293,6 @@ Public Class frmSettings
             End If
         Next
 
-    End Sub
-
-    Private Sub Button7_Click(sender As Object, e As EventArgs) Handles Button7.Click
-        If MsgBox("Are you sure you want to reset to default values?", MsgBoxStyle.Information Or MsgBoxStyle.YesNo, "Set default values") = MsgBoxResult.Yes Then
-            txtDbServer.Text = QGlobal.Dbinfo(Q.settings.DbType).ConnString
-            txtDbUser.Text = QGlobal.Dbinfo(Q.settings.DbType).Username
-            txtDbPass.Text = QGlobal.Dbinfo(Q.settings.DbType).Pass
-        End If
     End Sub
 
     Private Sub chkAutoIP_CheckedChanged(sender As Object, e As EventArgs) Handles chkAutoIP.Click
