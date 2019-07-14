@@ -146,7 +146,7 @@ Friend Class clsSettings
 
         FirstRun = True
         CheckForUpdates = False
-        Upgradev = 213
+        Upgradev = 214
         AlwaysAdmin = False
         Repo = QGlobal.UpdateMirrors(0)
         QBMode = 1 '0 = AIO 1 = Launcher

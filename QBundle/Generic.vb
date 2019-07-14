@@ -133,7 +133,8 @@ Friend Class Generic
                     End Try
                 Case 201 '2.0.1 - 2.0.2
                 Case 211 '2.1.1 - 2.1.2
-                Case 213 '2.3.0
+                Case 213 '2.5.1
+                Case 214 '2.5.2
             End Select
             OldVer += 1
             If CurVer = OldVer Then Exit Do
