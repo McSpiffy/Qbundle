@@ -197,7 +197,7 @@ Public Class clsAppManager
         Return "1.0"
     End Function
 
-    Friend Function InstallApp(ByVal AppName As String, Optional ForceReinstall As Boolean = False)
+    Friend Function InstallApp(ByVal AppName As String, Optional ForceReinstall As Boolean = False) As Boolean
         If AppName = "chromium" Then
             Dim s As New frmDownloadManager
             s.DownloadName = "Chromium Pocket Browser"
@@ -265,7 +265,8 @@ Public Class clsAppManager
                     result = result.Replace("java version", "")
                     result = result.Replace(" ", "")
                     result = Trim(result.Replace(Chr(34), ""))
-                    JavaFound = CheckVersion("1.8", result, False)
+                    ' Only run with Java 8
+                    JavaFound = result.Contains("1.8.")
                     If JavaFound Then
                         Messages = "Java is found installed on your system."
                         Return True

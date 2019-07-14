@@ -138,6 +138,16 @@ Public Class frmSettings
         Else
             Generic.DebugMe = False
         End If
+        
+        ' Java
+        
+        If Q.settings.JavaType = QGlobal.AppNames.JavaPortable And Not Q.AppManager.IsAppInstalled("JavaPortable") Then
+            If MsgBox("Java Portable is not installed. Would you like to download and install it now?", MsgBoxStyle.Information Or MsgBoxStyle.YesNo, "Download Portable Java?") = MsgBoxResult.Yes Then
+                If Not Q.AppManager.InstallApp("JavaPortable") Then
+                    MsgBox("Error installing Java Portable")
+                End If
+            End If
+        End If
         'ok lets fix firewall if its intended to be like that
         Me.Close()
 
@@ -206,7 +216,7 @@ Public Class frmSettings
         If nrCores.Value < 1 Then nrCores.Value = 1
 
     End Sub
-    Private Sub ChangeJavaType(ByVal id As Integer)
+    Private Sub ChangeJavaType(id As Integer)
         rJava0.Checked = False
         rJava1.Checked = False
         Select Case id

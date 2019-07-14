@@ -33,7 +33,7 @@
             ok = False
         Else
             pnlJava.BackColor = Color.PaleGreen
-            lblJavaStatus.Text = "Java is found installed-"
+            lblJavaStatus.Text = "Java 8 is installed"
         End If
 
         If Not Q.AppManager.IsAppInstalled("BRS") Then
