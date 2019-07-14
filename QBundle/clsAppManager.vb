@@ -255,8 +255,7 @@ Public Class clsAppManager
     End Function
 
     Friend Function isJavaInstalled() As Boolean
-
-        Dim JavaFound = False
+        Dim JavaFound As Boolean
         Try
             Dim p As New Process
             Dim result = ""

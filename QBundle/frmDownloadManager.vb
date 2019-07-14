@@ -114,21 +114,19 @@ Public Class frmDownloadManager
         trda = New Thread(AddressOf Download)
         trda.IsBackground = True
         trda.Start()
-        trda = Nothing
     End Sub
 
     Private Function Download() As Boolean
-
         Dim DLOk = False
         Dim filename As String = QGlobal.AppDir & Path.GetFileName(Url)
         Dim File As FileStream = Nothing
 
         Try
-            Dim bBuffer(262143) As Byte '256k chunks downloadbuffer
-            Dim TotalRead As Long = 0
-            Dim iBytesRead = 0
-            Dim ContentLength As Long = 0
-            Dim percent = 0
+            Dim bBuffer(262143) As Byte '256k chunks download buffer
+            Dim TotalRead As Long
+            Dim iBytesRead
+            Dim ContentLength As Long
+            Dim percent
 
             ServicePointManager.Expect100Continue = true
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12
@@ -174,32 +172,8 @@ Public Class frmDownloadManager
         Try
             Dim filename As String = QGlobal.AppDir & Path.GetFileName(Url)
             Dim target As String = QGlobal.AppDir
-            Dim Archive As ZipArchive = ZipFile.OpenRead(filename)
-            Dim totalfiles As Integer = Archive.Entries.Count
-            Dim counter = 0
-            Dim percent = 0
-
-
-            For Each entry As ZipArchiveEntry In Archive.Entries
-                If _Aborted Then
-                    Aborting()
-                    Exit For
-                End If
-
-                If entry.FullName.EndsWith("/") Then
-                    If Not Directory.Exists(Path.Combine(target, entry.FullName)) Then
-                        Directory.CreateDirectory(Path.Combine(target, entry.FullName))
-                    End If
-                Else
-                    entry.ExtractToFile(Path.Combine(target, entry.FullName), True)
-                End If
-
-                counter += 1
-                percent = CInt(Math.Round((counter/totalfiles)*100, 0))
-                Progress(1, 0, percent, 0, 0, 0)
-            Next
+            ZipFile.ExtractToDirectory(filename, target)
             AllOk = True
-            Archive.Dispose()
         Catch ex As Exception
             Generic.WriteDebug(ex)
         End Try
