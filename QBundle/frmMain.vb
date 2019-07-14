@@ -1177,7 +1177,7 @@ Public Class frmMain
     End Sub
 
     Private Sub QbundleManualToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles QbundleManualToolStripMenuItem.Click
-        Process.Start("https://burstwiki.org/wiki/QBundle")
+        Process.Start("https://burstwiki.org/en/qbundle")
     End Sub
 
     Private Sub BurstcoinorgToolStripMenuItem1_Click(sender As Object, e As EventArgs) Handles BurstcoinorgToolStripMenuItem1.Click
@@ -1201,7 +1201,7 @@ Public Class frmMain
     End Sub
 
     Private Sub BurstWikiToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles BurstWikiToolStripMenuItem.Click
-        Process.Start("https://burstwiki.org/wiki/Main_Page")
+        Process.Start("https://burstwiki.org/")
     End Sub
 
     Private Sub PaperburstToolStripMenuItem_Click(sender As Object, e As EventArgs) Handles PaperburstToolStripMenuItem.Click
