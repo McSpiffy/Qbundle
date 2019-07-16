@@ -172,23 +172,32 @@ Public Class frmDownloadManager
         Try
             Dim filename As String = QGlobal.AppDir & Path.GetFileName(Url)
             Dim target As String = QGlobal.AppDir
-            Using archive As ZipArchive = ZipFile.OpenRead(filename)
-                For Each entry As ZipArchiveEntry In archive.Entries
-                    If Not entry.FullName.EndsWith("/") Then
-                        Dim destFileName = Path.Combine(target, entry.FullName)
-                        Dim fullDestDirPath = Path.GetFullPath(target + Path.DirectorySeparatorChar)
-                        If Not destFileName.StartsWith(fullDestDirPath) Then
-                            Throw New Exception("Entry is outside of target dir: " + destFileName)
-                        End If
-                        Try
-                            My.Computer.FileSystem.DeleteFile(destFileName)
-                        Catch ex As FileNotFoundException
-                        End Try
+            Dim Archive As ZipArchive = ZipFile.OpenRead(filename)
+            Dim totalfiles As Integer = Archive.Entries.Count
+            Dim counter = 0
+            Dim percent As Integer
+
+
+            For Each entry As ZipArchiveEntry In Archive.Entries
+                If _Aborted Then
+                    Aborting()
+                    Exit For
+                End If
+
+                If entry.FullName.EndsWith("/") Then
+                    If Not Directory.Exists(Path.Combine(target, entry.FullName)) Then
+                        Directory.CreateDirectory(Path.Combine(target, entry.FullName))
                     End If
-                Next 
-            End Using
-            ZipFile.ExtractToDirectory(filename, target)
+                Else
+                    entry.ExtractToFile(Path.Combine(target, entry.FullName), True)
+                End If
+
+                counter += 1
+                percent = CInt(Math.Round((counter / totalfiles) * 100, 0))
+                Progress(1, 0, percent, 0, 0, 0)
+            Next
             AllOk = True
+            Archive.Dispose()
         Catch ex As Exception
             Generic.WriteDebug(ex)
         End Try
